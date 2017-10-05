@@ -69,7 +69,7 @@ public class JSONUtils {
 		return Objs;
 	}
 	
-	public static boolean bjectExists(JSONObject jsonObject, String key) {
+	public static boolean objectExists(JSONObject jsonObject, String key) {
 		Object o;
 		
 		try {
