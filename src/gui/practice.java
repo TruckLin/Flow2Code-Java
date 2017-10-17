@@ -5,8 +5,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.view.mxGraph;
+
+import graph.object.PanelFD;
 
 public class practice extends JFrame{
 	
@@ -24,28 +24,6 @@ public class practice extends JFrame{
 	    // Allocate the GUI components
 	    // .....
 	    
-	    /** mxGraphComponent construction **/
-	    mxGraph graph = new mxGraph();
-	    Object parent = graph.getDefaultParent();
-
-	    graph.getModel().beginUpdate();
-	    try{
-	    	Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 80,30);
-	    	Object v2 = graph.insertVertex(parent, null, "World!", 20, 220, 80, 30);
-	    	graph.insertEdge(parent, null, "Edge", v1, v2);
-				
-	    	//settings required for flow2code
-	    	graph.setAllowDanglingEdges(false);
-	    	graph.setCellsResizable(false);
-	    	graph.setCellsDeletable(true);
-	    	graph.setCellsEditable(false);
-	    }finally{
-	    	graph.getModel().endUpdate();
-	    }
-		
-	    // Construct mxGraphComponent from mxGraph, mxGraphComponent is an extension of JScrollPane.
-		mxGraphComponent graphComponent = new mxGraphComponent(graph);
-	     
 		/** Menu Bar Construction **/
 		// A menu-bar contains menus. A menu contains menu-items (or sub-Menu)
 	    JMenuBar menuBar;   // the menu-bar
@@ -63,15 +41,20 @@ public class practice extends JFrame{
 	    menu.setMnemonic(KeyEvent.VK_B);  // short-cut key
 	    menuBar.add(menu);  // the menu bar adds this menu
 	    
-	    /** JSplitPane Construction - we add graphComponent on to JSplitPane **/
+	    /** JScrollPane Construction **/
+	    PanelFD panelFD= new PanelFD();
+	    JScrollPane scrollPane = new JScrollPane(panelFD);
+	    
+	    /** JSplitPane Construction - we add scroll pane JSplitPane **/
 	    JSplitPane splitPane = new JSplitPane();
-	    splitPane.add(graphComponent,JSplitPane.LEFT);
+	    splitPane.setDividerLocation(300);
+	    splitPane.add(scrollPane,JSplitPane.LEFT);
 	    splitPane.add(new JTextPane(), JSplitPane.RIGHT);
-	      
+	    
 	    // Content-pane adds components
 	    this.setJMenuBar(menuBar);
 	    cp.add(splitPane, BorderLayout.CENTER);
-	 
+	    
 	    // Source object adds listener
 	    // .....
 	 
