@@ -11,6 +11,7 @@ public class PanelFD extends JPanel implements Scrollable{
 	private static final long serialVersionUID = 1L;
 	
 	private BlockFD componentBeingDragged;
+	private Point lastClickPoint;
 	private Point topLeftToMouse;
 	private Boolean isDuringDrag = false;
 	
@@ -159,8 +160,9 @@ public class PanelFD extends JPanel implements Scrollable{
 	        Component comp = getComponentAt(x,y);
 	        if(comp instanceof BlockFD && SwingUtilities.isLeftMouseButton(e)) {
 	        	componentBeingDragged = (BlockFD) comp;
-	        	Point topLeft = componentBeingDragged.getLocation();
+	        	PanelFD.this.lastClickPoint = e.getPoint();
 	        
+	        	Point topLeft = componentBeingDragged.getLocation();
 	        	int x2 = (int) (x - topLeft.getX());
 	        	int y2 = (int) (y - topLeft.getY());
 	        	topLeftToMouse = new Point(x2, y2);
@@ -182,21 +184,31 @@ public class PanelFD extends JPanel implements Scrollable{
 			// TODO Auto-generated method stub
 			int x = e.getX();
 	        int y = e.getY();
-	        
+	        int dx = (int)(x - lastClickPoint.getX());
+			int dy = (int)(y - lastClickPoint.getY());
+			
+			//Testing
+			//System.out.println("In mouseDragged(MouseEvent e) : ");
+        	//System.out.println("mouseDragged detected at (" + x + "," + y + ").");
+        	//System.out.println("Displacement is (" + dx + "," + dy + ").\n");
+			
 			if(componentBeingDragged instanceof BlockFD && SwingUtilities.isLeftMouseButton(e) && isDuringDrag) {
 		        
-	        	int x2 = (int) (x - topLeftToMouse.getX());
-	        	int y2 = (int) (y - topLeftToMouse.getY());
-	        		//componentBeingDragged.setBounds(x2, y2, 
-	        		//componentBeingDragged.getWidth(), componentBeingDragged.getHeight());
-	        	componentBeingDragged.setLocation(x2,y2);
-	        	
-	        	//Testing
-	        	//System.out.println("mouseDragged and BlockFD detected.");
+				if(componentBeingDragged instanceof BlockIF) {
+					BlockIF temp = (BlockIF)componentBeingDragged;
+					ArrayList<BlockFD> blocklist = temp.buildChildrenList();
+
+					for(int i = 0; i < blocklist.size(); i++) {
+						blocklist.get(i).translateLocation(dx, dy);
+					}
+				}else if(componentBeingDragged instanceof BlockWHILE){
+					componentBeingDragged.translateLocation(dx, dy);
+				}else {
+					componentBeingDragged.translateLocation(dx, dy);
+				}
 			}
-			//Testing
-        	//System.out.println("mouseDragged detected.");
-			
+			// update last clickPoint
+			lastClickPoint = new Point(x,y);
 		}
 		
 		public void mouseReleased(MouseEvent e) {
@@ -216,10 +228,11 @@ public class PanelFD extends JPanel implements Scrollable{
 				
 				currentLine = (LineFD)comp;
 			}else if( comp instanceof BlockFD && SwingUtilities.isRightMouseButton(e)) {
-				if( (comp instanceof BlockMAIN && comp instanceof BlockEND) )
-				blockPopup.show(e.getComponent(),e.getX(), e.getY());
+				if( !(comp instanceof BlockMAIN || comp instanceof BlockEND) ) {
+					blockPopup.show(e.getComponent(),e.getX(), e.getY());
 				
-				currentBlock = (BlockFD) comp;
+					currentBlock = (BlockFD) comp;
+				}
 				
 			}
 		}
@@ -232,6 +245,9 @@ public class PanelFD extends JPanel implements Scrollable{
 			// Step 0, get info from current line.
 			BlockFD b1 = currentLine.getSource();
 			BlockFD b3 = currentLine.getTerminal();
+			Point startpt = currentLine.getStartPoint();
+			Point endpt = currentLine.getEndPoint();
+			
 			Point centre = currentLine.getCentreOnPanel();
 						
 			// Step 1, remove currentLine from observer list and then delete current line.
@@ -256,8 +272,8 @@ public class PanelFD extends JPanel implements Scrollable{
 						
 						
 			// Step 4, construct and add two lines that connect three blocks.
-			LineFD line1 = new LineFD(b1, b2);
-			LineFD line2 = new LineFD(b2,b3);
+			LineFD line1 = new LineFD(b1, b2, startpt, b2.toContainerCoordinate(b2.getInPort()));
+			LineFD line2 = new LineFD(b2, b3, b2.toContainerCoordinate(b2.getInPort()), endpt);
 			PanelFD.this.add(line1);
 			PanelFD.this.add(line2);
 			
@@ -293,13 +309,12 @@ public class PanelFD extends JPanel implements Scrollable{
 						
 			BlockIF b2 = new BlockIF(blockName, new Rectangle(centre.x, centre.y, 100,25));
 			BlockENDIF b2_5 = new BlockENDIF("endif", new Rectangle(centre.x+50, centre.y+50, 25,25) );
+			b2.setBlockENDIF(b2_5);
 			
 			PanelFD.this.add(b2);
 			PanelFD.this.add(b2_5);
 				// Testing
-				//System.out.println(blockName);
-				//JLabel lb = (JLabel)b2.getComponent(0);
-				//System.out.println(lb.getText());
+				//System.out.println(b2.getBlockENDIF().toString());
 					
 			// Step 3, adjust the position b1,b2,b3 and possibly update the size of this panel.
 						
@@ -354,21 +369,24 @@ public class PanelFD extends JPanel implements Scrollable{
 	
 	/** ActionListener that controls the deletion of Blocks **/
 	public class deleteBlockMenuItemListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
+		
+		public void deleteBlock(BlockFD b) {
 			// TODO Auto-generated method stub
+			//Testing
+			System.out.println("In deleteBlock() : ");
 			
 			BlockFD parent = new BlockFD();
 			BlockFD child = new BlockFD();
 			Point startpt = new Point();
 			Point endpt = new Point();
 			
-			// step 1, initialise parent, child, startpt, endpt. 
+			// step 1, initialise parent, child, startpt, endpt.
 			// 		   Remove LineFDs from parent and child's listener list.
 			ArrayList<PropertyChangeListener> myLines = currentBlock.getLines();
+		
 			for(int i = 0; i < myLines.size(); i++){
 				LineFD tempLine = (LineFD)myLines.get(i);
+			
 				if(tempLine.isSource(currentBlock)) {
 					child = tempLine.getTerminal();
 					child.removeLine(myLines.get(i));
@@ -379,20 +397,60 @@ public class PanelFD extends JPanel implements Scrollable{
 					parent.removeLine(myLines.get(i));
 					startpt = tempLine.getStartPoint();
 					
-				}else {
-					
-				}
+				}else {}
+			
 				PanelFD.this.remove(tempLine);
 			}
-			
+						
+						
 			// step 2, construct the line connecting the remaining 2 blocks. Add newLine to listener Lists of parent and child.
 			LineFD newLine = new LineFD(parent, child, startpt, endpt);
 			PanelFD.this.add(newLine);
 			parent.addLine(newLine);
 			child.addLine(newLine);
-			
+						
 			// Step 3, remove currentBlock from panel.
 			PanelFD.this.remove(currentBlock);
+					
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			//Testing
+			System.out.println("In actionPerformed :");
+			
+			// step 1, initialise parent, child, startpt, endpt.
+			// 		   Remove LineFDs from parent and child's listener list.
+			ArrayList<PropertyChangeListener> myLines = currentBlock.getLines();
+			if(currentBlock instanceof BlockIF) {
+				
+				//Testing
+				System.out.println("currentBlock is BlockIF.");
+				
+				
+				currentBlock = (BlockIF)currentBlock;
+				ArrayList<BlockFD> blocklist = currentBlock.buildChildrenList();
+				int len = blocklist.size();
+				for(int i = 1; i < len-1 ; i++) {
+					
+					//Testing
+					System.out.println(" i = " + i);
+					deleteBlock(blocklist.get(i));
+				}
+				deleteBlock(blocklist.get(0));
+				deleteBlock(blocklist.get(len-1));
+				
+				
+			}else if(currentBlock instanceof BlockWHILE){
+				//Testing
+				System.out.println("currentBlock is BlockWHILE.");
+				
+			}else{
+				
+				deleteBlock(currentBlock);
+			}
 			
 			// Step 4, repaint PanelFD, do I have to repaint b2?
 			PanelFD.this.validate();

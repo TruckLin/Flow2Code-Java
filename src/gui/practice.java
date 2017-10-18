@@ -65,7 +65,6 @@ public class practice extends JFrame{
 	    setVisible(true);    // "super" JFrame shows
 	}
 	
-	
 	public static void main(String[] args) {
 		// Run the GUI construction in the Event-Dispatching thread for thread-safety
 		SwingUtilities.invokeLater(new Runnable() {

@@ -198,12 +198,13 @@ public class LineFD extends JPanel implements PropertyChangeListener{
 		
 		BlockFD SourceOfEvent = (BlockFD)evt.getSource();
 		//Testing
-		/*System.out.println("Object Name" + evt.getSource().toString() +"\n" + 
-								"Changed property: " + evt.getPropertyName() + "\n" + 
-								"[old -> " + evt.getOldValue() + "] \n" + 
-								"[new -> " + evt.getNewValue() +"]");*/
+		//System.out.println("In LineFD.propertyChange() : ");
+		//System.out.println("Object Name" + evt.getSource().toString() +"\n" + 
+		//						"Changed property: " + evt.getPropertyName() + "\n" + 
+		//						"[old -> " + evt.getOldValue() + "] \n" + 
+		//						"[new -> " + evt.getNewValue() +"] ");
 		//System.out.println(this.Source.getLocation().toString());
-		
+		//System.out.println("\n");
 		//if(SourceOfEvent.getName().equals(Source.getName())){  this works as well.
 		
 		Point oldTopLeft = (Point)evt.getOldValue();

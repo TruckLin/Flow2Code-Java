@@ -95,14 +95,20 @@ public class BlockFD extends JPanel {
 		// This method allow future modification if we ever want a different outPort position.
 		// For now we want outPort to be the bottom middle point of this panel.
 		this.outPort = new Point((int)Math.round(this.getWidth()/2) , this.getHeight());
-		
 	}
 	
 	
 	/** Event handling functions **/
 	public void notifyLines(BlockFD block, String property, Point oldValue, Point newValue) {
 		int len = lines.size();
+		
+		//Testing
+		//System.out.println("In BlockFD.notifyLines() : ");
+		//System.out.println("Number of lines = " + len);
 		for (int i = 0; i < len ; i++ ) {
+			
+			//Testing
+			//System.out.println("	Line " + i + ":");
 			
             lines.get(i).propertyChange(new PropertyChangeEvent(block, property, oldValue, newValue));
         }
@@ -124,7 +130,15 @@ public class BlockFD extends JPanel {
 	public void setLocation(int x, int y) {
 		Point old = this.getLocation();
 		super.setLocation(x,y);
-		notifyLines(this, "Location", old, new Point(x,y) );
+		Point newpt = new Point(x, y);
+		
+		// Testing
+		//System.out.println("In BlockFD.setLocation(int x, int y) : ");
+		//System.out.println("old topleft = " + old.toString());
+		//System.out.println("new topleft = " + newpt.toString() + "\n");
+	
+		//notifyLines(this, "Location", old, newpt); 
+		/** Important!!! We don't have to call notifyLines as Swing calls it whenever propertyChanges. **/
 		
 	}
 	
@@ -144,7 +158,43 @@ public class BlockFD extends JPanel {
 	public void translateLocation(int dx, int dy) {
 		int x = (int)(this.getLocation().getX() + dx);
 		int y = (int)(this.getLocation().getY() + dy);
-		this.setLocation(new Point(dx, dy));
+		
+		// Testing
+		//System.out.println("In BlockFD.translateLocation(int dx, int dy) : ");
+		//System.out.println("new location = (" + x + "," + y + ")\n");
+
+		this.setLocation(new Point(x, y));
+		
+	}
+	public ArrayList<BlockFD> buildChildrenList() {
+		// Children List will include this block itself.
+		
+		//Testing
+		//System.out.println("In BlockFD.buildChildrenList() : ");
+		
+		ArrayList<BlockFD> output = new ArrayList<BlockFD>();
+		BlockFD tempBlock = new BlockFD();
+		output.add(this);
+		
+		for(int i = 0; i < this.lines.size(); i++) {
+			LineFD L = (LineFD)this.lines.get(i);	
+			if(L.isSource(this)) {
+				tempBlock = L.getTerminal();
+				output.add(tempBlock);	
+			}
+		}
+		return output;
+	}
+	
+	public BlockFD getDirectChild() {
+		BlockFD directChild = new BlockFD();
+		for(int i = 0; i < this.lines.size(); i++) {
+			LineFD L = (LineFD)this.lines.get(i);	
+			if(L.isSource(this)) {
+				directChild = L.getTerminal();
+			}
+		}
+		return directChild;
 	}
 	
 	
