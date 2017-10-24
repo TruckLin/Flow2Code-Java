@@ -14,7 +14,6 @@ public class BlockFD extends JPanel {
 	protected ArrayList<BlockFD> children;
 	protected ArrayList<PropertyChangeListener> lines;
 	
-	
 	protected int defaultWidth = 100; // default width and height.
 	protected int defaultHeight = 25;
 	
@@ -122,23 +121,38 @@ public class BlockFD extends JPanel {
 	}
 	
 	// Notify lines when we set locations
-	public void setLocation(Point p1) {
+	public void setLocation(Point newpt) {
+		//Testing
+		//System.out.println("In BlockFD.setLocation(Point newpt) : ");
+		
 		Point old = this.getLocation();
-		super.setLocation(p1);
-		notifyLines(this, "Location", old, p1 );
+		
+		//Testing
+		//System.out.println("Before super.setLocation(newpt). ");
+				
+		super.setLocation((int)newpt.getX(), (int)newpt.getY());
+		/** Strange.... super.setLocation(newpt) calls setLocation(int x, int y) in BlockFD. **/
+		
+		//Testing
+		//System.out.println("After super.seyLocation(newpt). ");
+		
+		notifyLines(this, "Location", old, newpt); 
+		
+		
+		
 	}
 	public void setLocation(int x, int y) {
-		Point old = this.getLocation();
-		super.setLocation(x,y);
-		Point newpt = new Point(x, y);
-		
 		// Testing
 		//System.out.println("In BlockFD.setLocation(int x, int y) : ");
 		//System.out.println("old topleft = " + old.toString());
 		//System.out.println("new topleft = " + newpt.toString() + "\n");
-	
-		//notifyLines(this, "Location", old, newpt); 
-		/** Important!!! We don't have to call notifyLines as Swing calls it whenever propertyChanges. **/
+		
+		Point old = this.getLocation();
+		super.setLocation(x,y);
+		Point newpt = new Point(x, y);
+
+		
+		notifyLines(this, "Location", old, newpt );
 		
 	}
 	

@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import gui.practice;
-public class BlockMAIN extends BlockFD{
+public class BlockSTART extends BlockFD{
 
 	// The point where line flows out. Coordinate is with respect to this panel not its container.
 	
 	
 	/** Constructors **/
-	public BlockMAIN() {
-		super("Main");
+	public BlockSTART() {
+		super("Start");
 		
 		setOutPort();
 		
@@ -21,7 +21,7 @@ public class BlockMAIN extends BlockFD{
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 	}
-	public BlockMAIN(String N, Rectangle rec) {
+	public BlockSTART(String N, Rectangle rec) {
 		super(N,rec);
 		
 		setOutPort();

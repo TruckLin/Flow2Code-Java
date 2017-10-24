@@ -5,8 +5,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
-
-import graph.object.PanelFD;
+import model.FD.FlowDiagram;
+import model.FD.GraphicalInfoFD;
 
 public class practice extends JFrame{
 	
@@ -42,7 +42,16 @@ public class practice extends JFrame{
 	    menuBar.add(menu);  // the menu bar adds this menu
 	    
 	    /** JScrollPane Construction **/
-	    PanelFD panelFD= new PanelFD();
+	    FlowDiagram myDiagram =  new FlowDiagram("myDiagram","1","2");
+		GraphicalInfoFD myInfo = new GraphicalInfoFD();
+		myInfo.addBounds("1", new Rectangle(10,10,100,25));
+		myInfo.addBounds("2", new Rectangle(10,100,100,20));
+		
+		PanelFD panelFD = new PanelFD(myDiagram, myInfo);
+		panelFD.setBackground(Color.BLUE);
+		panelFD.setSize(400,400);
+		System.out.println(panelFD.getSize().toString());
+	    
 	    JScrollPane scrollPane = new JScrollPane(panelFD);
 	    
 	    /** JSplitPane Construction - we add scroll pane JSplitPane **/
