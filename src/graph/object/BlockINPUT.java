@@ -6,10 +6,17 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-public class BlockINPUT extends BlockFD {
-	public BlockINPUT(String N) {
-		super(N);
+import model.object.ComponentINPUT;
+
+public class BlockINPUT extends OrdinaryBlockFD {
+	ComponentINPUT model;
+	String expression;
+	
+	public BlockINPUT(ComponentINPUT model) {
+		super();
 		// TODO Auto-generated constructor stub
+		
+		this.model = model;
 		
 		this.add(new JLabel("INPUT"));
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -19,9 +26,14 @@ public class BlockINPUT extends BlockFD {
 
 	}
 	
-	public BlockINPUT(String N, Rectangle rec) {
-		super(N,rec);
+	public BlockINPUT(ComponentINPUT model, Rectangle bounds) {
+		super();
+		this.model = model;
+		if(bounds != null) {
+			this.setBounds(bounds);
+		}
 		
+		// Temporary
 		this.add(new JLabel("INPUT"));
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		

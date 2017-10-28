@@ -2,23 +2,19 @@ package graph.object;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-import model.object.ComponentWHILE;
-
-public class BlockWHILE extends OrdinaryBlockFD {
+public class BlockFOR extends OrdinaryBlockFD {
 	
-	public BlockWHILE(JSONObject model){
+	public BlockFOR(JSONObject model){
 		super(model);
 		
 		this.setOpaque(false); // we should always see through this while panel.
 		
-		// Set the specific outport for while
+		// Set the specific outport for FOR.
 		this.setOutport( new Point( Math.round( this.getWidth()/4), this.getHeight() ) );
 		
 		//Temporary
@@ -27,9 +23,6 @@ public class BlockWHILE extends OrdinaryBlockFD {
 	}
 	
 	/** Getters and Setters **/
-	
-	
-	/** Utility Functions **/
-	
+
 	
 }

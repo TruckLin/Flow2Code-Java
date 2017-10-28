@@ -2,39 +2,56 @@ package graph.object;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-public class BlockASSIGN extends BlockFD{
-	public BlockASSIGN(String N) {
-		super(N);
-		// TODO Auto-generated constructor stub
-		
-		this.add(new JLabel("assign"));
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		//Testing
-		//System.out.println("Constructor 1 of BlockDECLARE is called and N = " + N);
+import model.object.ComponentASSIGN;
 
-	}
+public class BlockASSIGN extends OrdinaryBlockFD{
+	private ComponentASSIGN model;
+	private String targetVariable;
+	private String inputExpression;
 	
-	public BlockASSIGN(String N, Rectangle rec) {
-		super(N,rec);
+	//private PropertyChangeListener listener = e -> update();
+	
+	public BlockASSIGN(ComponentASSIGN model) {
+		super();
+		this.model = model;
 		
+		// Temporary
 		this.add(new JLabel("assign"));
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		//Testing
-		//System.out.println("Constructor 2 of BlockDECLARE is called and N = " + N);
-		
 	}
+	
+	public BlockASSIGN(ComponentASSIGN model, Rectangle bounds) {
+		super();
+		this.model = model;
+		if(bounds != null) {
+			this.setBounds(bounds);
+		}
 		
+		// Temporary
+		this.add(new JLabel("assign : "));
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
+	}
 	
-	/** getters **/
+	/** Getters and Setters**/
+	public String getTargetVariable() {
+		return this.targetVariable;
+	}
+	public String getInputExpression() {
+		return this.inputExpression;
+	}
 	
-	
-	/** Setters **/
-	
+	/**
+	 * update(), should be invoked when anything changed in the model.
+	 * */
+	/*
+	public void update() {
+		this.targetVariable = this.model.getTargetVariable();
+		this.inputExpression = this.model.getInputExpression();
+	}*/
 
 }

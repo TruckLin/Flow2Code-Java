@@ -13,10 +13,11 @@ public class JSONUtils {
 		Scanner scanner;
 		InputStream in = FileHandle.inputStreamFromFile(path);
 		scanner = new Scanner(in);
-		String json = scanner.useDelimiter("\\z").next();
 		
-		//Testing
-		//System.out.println("Text we get from getJSONStringFromFile() : \n"+json);
+		String json = "";
+		while(scanner.hasNext()) {
+			json = json + scanner.next();
+		}
 		
 		scanner.close();
 		try {

@@ -30,7 +30,11 @@ public class GraphicalInfoFD {
 	
 	/** Getters and Setters **/
 	public Rectangle getBounds(String key) {
-		return this.info.get(key);
+		if( info.containsKey(key)) {
+			return this.info.get(key);
+		}else {
+			return null;
+		}
 	}
 	public void setBounds(String key, Rectangle rec) {
 		if( ! info.containsKey(key)) {

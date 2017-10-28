@@ -18,35 +18,35 @@
 											"isArray" : false,
 											"Size" : 1
 										  }],
-							"Child" : "If1"
+							"Child" : "StartLoop1"
+							}],
+				"Child" : "If1"
+				},
+				{"Type" : "If",
+				"Name" : "If1",
+				"Expression" : "i < 10",
+				"StartIf" : {"Type" : "StartIf",
+							"Name" : "StartIf1",
+							"TrueChild" : "Declare2",
+							"FalseChild" : "EndIf1"
 							},
-							{"Type" : "If",
-							"Name" : "If1",
-							"Expression" : "i < 10",
-							"StartIf" : {"Type" : "StartIf",
-										"Name" : "StartIf1",
-										"TrueChild" : "Declare2",
-										"FalseChild" : "EndIf1"
-										},
-							"EndIf" : {"Type" : "EndIf",
-										"Name" : "EndIf1"
-						  				},
-							"TrueMembers" : [{"Type" : "Declare",
-												"Name" : "Declare2",
-												"Variables" : [{"DataType" : "int",
-																"VarName" : "x",
-																"isArray" : false,
-																"Size" : 1}],
-												"Child" : "EndIf1"}],
-							"FalseMembers" : [{"Type" : "Declare",
+				"EndIf" : {"Type" : "EndIf",
+							"Name" : "EndIf1"
+			  				},
+				"TrueMembers" : [{"Type" : "Declare",
+								"Name" : "Declare2",
+								"Variables" : [{"DataType" : "int",
+												"VarName" : "x",
+												"isArray" : false,
+												"Size" : 1}],
+								"Child" : "EndIf1"}],
+				"FalseMembers" : [{"Type" : "Declare",
 								"Name" : "Declare3",
 								"Variables" : [{"DataType" : "int",
 												"VarName" : "x",
 												"isArray" : false,
 												"Size" : 1}],
 								"Child" : "EndIf1"}],
-							"Child" : "StartLoop1"
-							}],
 				"Child" : "End1"
 				},
 				{"Type" : "End",

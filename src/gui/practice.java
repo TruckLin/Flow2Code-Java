@@ -5,8 +5,14 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
+import org.json.JSONObject;
+
+import graph.object.BlockFD;
+import graph.object.BlockFlowDiagram;
 import model.FD.FlowDiagram;
 import model.FD.GraphicalInfoFD;
+import model.object.*;
+import saveload.SaveAndLoadManagerFD;
 
 public class practice extends JFrame{
 	
@@ -41,18 +47,23 @@ public class practice extends JFrame{
 	    menu.setMnemonic(KeyEvent.VK_B);  // short-cut key
 	    menuBar.add(menu);  // the menu bar adds this menu
 	    
-	    /** JScrollPane Construction **/
-	    FlowDiagram myDiagram =  new FlowDiagram("myDiagram","1","2");
-		GraphicalInfoFD myInfo = new GraphicalInfoFD();
-		myInfo.addBounds("1", new Rectangle(10,10,100,25));
-		myInfo.addBounds("2", new Rectangle(10,100,100,20));
-		
-		PanelFD panelFD = new PanelFD(myDiagram, myInfo);
-		panelFD.setBackground(Color.BLUE);
-		panelFD.setSize(400,400);
-		System.out.println(panelFD.getSize().toString());
 	    
-	    JScrollPane scrollPane = new JScrollPane(panelFD);
+	    
+	    /** Demo FlowDiagram construction **/
+	    
+		
+		/** JScrollPane Construction **/
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FDDemo1.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
+	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
+	    //Testing
+	    //System.out.println(flowDiagram == null);
+	    
+	    //flowDiagram.setSize(500,500);
+	    
+	    JScrollPane scrollPane = new JScrollPane(flowDiagram);
 	    
 	    /** JSplitPane Construction - we add scroll pane JSplitPane **/
 	    JSplitPane splitPane = new JSplitPane();

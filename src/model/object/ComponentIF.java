@@ -5,6 +5,7 @@ import model.FD.FlowDiagram;
 public class ComponentIF extends CompositeComponentFD{
 	private FlowDiagram trueSubDiagram;
 	private FlowDiagram falseSubDiagram;
+	private String inputExpression;
 	
 	public ComponentIF(String name) {
 		super(name);

@@ -6,6 +6,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
+import gui.interfaces.WithInport;
+import gui.interfaces.WithOutport;
+
 public class LineFD extends JPanel implements PropertyChangeListener{
 	private BlockFD Source;
 	private BlockFD Terminal;	
@@ -20,9 +23,9 @@ public class LineFD extends JPanel implements PropertyChangeListener{
 	
 	/** Constructors **/
 	// Constructor from two BlockFD object.
-	public LineFD(BlockFD b1, BlockFD b2) {
-		Point t1 = b1.getOutPort();
-		Point t2 = b2.getInPort(); 
+	public LineFD(WithOutport b1, WithInport b2) {
+		Point t1 = b1.getOutport();
+		Point t2 = b2.getInport(); 
 		// note that these are with respect to BlockFD's coordinate. 
 		// Therefore we will map them to container coordinate.
 		
@@ -30,22 +33,22 @@ public class LineFD extends JPanel implements PropertyChangeListener{
 		//Testing 
 		//System.out.println("outPort = " + t1.toString());
 		//System.out.println("b1 = " + b1.toString());
-		//System.out.println("b1.getLocation() = " + b1.getLocation().toString());
+		//System.out.println("b1.getLocation() = " + ((BlockFD)b1).getLocation().toString());
 		
-		int x1 = (int)(b1.getLocation().getX() + t1.getX());
-		int y1 = (int)(b1.getLocation().getY() + t1.getY());
-		int x2 = (int)(b2.getLocation().getX() + t2.getX());
-		int y2 = (int)(b2.getLocation().getY() + t2.getY());
+		int x1 = (int)(((BlockFD)b1).getLocation().getX() + t1.getX());
+		int y1 = (int)(((BlockFD)b1).getLocation().getY() + t1.getY());
+		int x2 = (int)(((BlockFD)b2).getLocation().getX() + t2.getX());
+		int y2 = (int)(((BlockFD)b2).getLocation().getY() + t2.getY());
 		Point p1 = new Point(x1, y1);
 		Point p2 = new Point(x2, y2);
 		initialise(p1, p2);
 		
-		this.Source = b1;
-		this.Terminal = b2;
+		this.Source = (BlockFD)b1;
+		this.Terminal = (BlockFD)b2;
 	}
 	// Constructor from two BlockFD object and specified points.
-	public LineFD(BlockFD b1, BlockFD b2, Point startpt, Point endpt) {
-		// note that these outport, inport are with respect to container's coordinate.
+	public LineFD(WithOutport b1, WithInport b2, Point startpt, Point endpt) {
+		// note that these startpt, endpt are with respect to container's coordinate.
 		
 		//Testing 
 		//System.out.println("outPort = " + t1.toString());
@@ -55,8 +58,8 @@ public class LineFD extends JPanel implements PropertyChangeListener{
 		
 		initialise(startpt, endpt);
 			
-		this.Source = b1;
-		this.Terminal = b2;
+		this.Source = (BlockFD)b1;
+		this.Terminal = (BlockFD)b2;
 	}
 	
 	// Initialisatise, should make the code easier to read, p1, p2 are with respect to container's coordinate.
@@ -120,7 +123,7 @@ public class LineFD extends JPanel implements PropertyChangeListener{
         //System.out.println("x2 = " + x2);
         //System.out.println("y2 = " + y2);
         
-        g.setColor(Color.yellow);
+        g.setColor(Color.red);
         g.drawLine(x1, y1, x2, y2);
         
     }
@@ -150,15 +153,15 @@ public class LineFD extends JPanel implements PropertyChangeListener{
 	
 	/** Utility functions **/
 	// This function re-initialise the line, essentially redraw.
-	public void reDrawLine(BlockFD b1, BlockFD b2){
-		Point t1 = b1.getOutPort();
-		Point t2 = b2.getInPort(); 
+	public void reDrawLine(WithOutport b1, WithInport b2){
+		Point t1 = b1.getOutport();
+		Point t2 = b2.getInport(); 
 		// note that these are with respect to BlockFD's coordinate. 
 		// Therefore we will map them to container coordinate.
-		int x1 = (int)(b1.getLocation().getX() + t1.getX());
-		int y1 = (int)(b1.getLocation().getY() + t1.getY());
-		int x2 = (int)(b2.getLocation().getX() + t2.getX());
-		int y2 = (int)(b2.getLocation().getY() + t2.getY());
+		int x1 = (int)(((BlockFD)b1).getLocation().getX() + t1.getX());
+		int y1 = (int)(((BlockFD)b1).getLocation().getY() + t1.getY());
+		int x2 = (int)(((BlockFD)b2).getLocation().getX() + t2.getX());
+		int y2 = (int)(((BlockFD)b2).getLocation().getY() + t2.getY());
 		Point p1 = new Point(x1, y1);
 		Point p2 = new Point(x2, y2);
 		initialise(p1, p2);

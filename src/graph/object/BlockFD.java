@@ -5,211 +5,106 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import org.json.JSONObject;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class BlockFD extends JPanel {
-	protected String name;
-	protected String input;
-	protected ArrayList<BlockFD> children;
-	protected ArrayList<PropertyChangeListener> lines;
+public abstract class BlockFD extends JPanel {
 	
-	protected int defaultWidth = 100; // default width and height.
-	protected int defaultHeight = 25;
-	
-	protected Point outPort;
-	protected Point inPort;
-	
+	private JSONObject model;
 	
 	/** Constructors **/
-	public BlockFD() {
-		this.name = "";
-		this.children = new ArrayList<BlockFD>();
-		this.lines = new ArrayList<PropertyChangeListener>();
+	public BlockFD(JSONObject model) {
+		super();
+		this.model = model;
+		this.setLayout(null);
 		
-		this.setSize(defaultWidth, defaultHeight);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		this.setInPort();
-		this.setOutPort();
-		
-	}
-	public BlockFD(String N) {
-		this.name = N;
-		this.children = new ArrayList<BlockFD>();
-		this.lines = new ArrayList<PropertyChangeListener>();
-		
-		this.setSize(defaultWidth, defaultHeight);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		this.setInPort();
-		this.setOutPort();
+		// Temporary
+		this.setSize(100,25);
 		
 	}
 	
-	public BlockFD(String N, Rectangle rec) {
-		this.name = N;
-		this.children = new ArrayList<BlockFD>();
-		this.lines = new ArrayList<PropertyChangeListener>();
-		if(rec == null) {
-			rec = new Rectangle(10,10,defaultWidth,defaultHeight); // Default bounds.
-		}
-		
-		this.setBounds(rec);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		this.setInPort();
-		this.setOutPort();
-	}
 	
-	
-	/** getters **/
-	public Point getInPort() {
-		// This method allow future modification if we ever want a different outPort position.
-		// For now we want outPort to be the bottom middle point of this panel.
-		return this.inPort;
-		
+	/** Getters and Setters **/
+	public JSONObject getModel() {
+		return this.model;
 	}
-	public Point getOutPort() {
-		// This method allow future modification if we ever want a different outPort position.
-		// For now we want outPort to be the bottom middle point of this panel.
-		return this.outPort;
-		
-	}
-	public String getName() {
-		return this.name;
-	}
-	public ArrayList<PropertyChangeListener> getLines(){
-		return this.lines; 
-	}
-	
-	/** Setters **/
-	public void setInPort() {
-		// This method allow future modification if we ever want a different inPort position.
-		// For now we want inPort to be the top middle point of this panel.
-		this.inPort = new Point((int)Math.round(this.getWidth()/2) , 0);
-		
-	}
-	public void setOutPort() {
-		// This method allow future modification if we ever want a different outPort position.
-		// For now we want outPort to be the bottom middle point of this panel.
-		this.outPort = new Point((int)Math.round(this.getWidth()/2) , this.getHeight());
-	}
-	
+
+
 	
 	/** Event handling functions **/
-	public void notifyLines(BlockFD block, String property, Point oldValue, Point newValue) {
-		int len = lines.size();
-		
-		//Testing
-		//System.out.println("In BlockFD.notifyLines() : ");
-		//System.out.println("Number of lines = " + len);
-		for (int i = 0; i < len ; i++ ) {
-			
-			//Testing
-			//System.out.println("	Line " + i + ":");
-			
-            lines.get(i).propertyChange(new PropertyChangeEvent(block, property, oldValue, newValue));
-        }
-	}
-	public void addLine(PropertyChangeListener ln) {
-		// TODO Auto-generated method stub
-		this.lines.add(ln);
-	}
-	public void removeLine(PropertyChangeListener ln) {
-		this.lines.remove(ln);
-	}
-	
-	// Notify lines when we set locations
-	public void setLocation(Point newpt) {
-		//Testing
-		//System.out.println("In BlockFD.setLocation(Point newpt) : ");
-		
-		Point old = this.getLocation();
-		
-		//Testing
-		//System.out.println("Before super.setLocation(newpt). ");
-				
-		super.setLocation((int)newpt.getX(), (int)newpt.getY());
-		/** Strange.... super.setLocation(newpt) calls setLocation(int x, int y) in BlockFD. **/
-		
-		//Testing
-		//System.out.println("After super.seyLocation(newpt). ");
-		
-		notifyLines(this, "Location", old, newpt); 
-		
-		
-		
-	}
-	public void setLocation(int x, int y) {
-		// Testing
-		//System.out.println("In BlockFD.setLocation(int x, int y) : ");
-		//System.out.println("old topleft = " + old.toString());
-		//System.out.println("new topleft = " + newpt.toString() + "\n");
-		
-		Point old = this.getLocation();
-		super.setLocation(x,y);
-		Point newpt = new Point(x, y);
-
-		
-		notifyLines(this, "Location", old, newpt );
-		
-	}
-	
 	
 	/** Utility functions **/
-	public void addChild(BlockFD block) {
-		this.children.add(block);
-	}
-	public void removeChild(BlockFD block) {
-		this.children.remove(block);
-	}
 	public Point toContainerCoordinate(Point coordWRTblock) {
 		int x = (int)(this.getLocation().getX() + coordWRTblock.getX());
 		int y = (int)(this.getLocation().getY() + coordWRTblock.getY());
 		return new Point(x,y);
 	}
-	public void translateLocation(int dx, int dy) {
-		int x = (int)(this.getLocation().getX() + dx);
-		int y = (int)(this.getLocation().getY() + dy);
-		
-		// Testing
-		//System.out.println("In BlockFD.translateLocation(int dx, int dy) : ");
-		//System.out.println("new location = (" + x + "," + y + ")\n");
-
-		this.setLocation(new Point(x, y));
-		
-	}
-	public ArrayList<BlockFD> buildChildrenList() {
-		// Children List will include this block itself.
+	
+	public void setAppropriateBounds() {
+		// This function set appropriate size according to it's children.
+		// Size that is just big enough to contain all the children.
 		
 		//Testing
-		//System.out.println("In BlockFD.buildChildrenList() : ");
+		//System.out.println("setAppropriateBounds() is called :");
+		//System.out.println("Initial parameters : ");
+		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
 		
-		ArrayList<BlockFD> output = new ArrayList<BlockFD>();
-		BlockFD tempBlock = new BlockFD();
-		output.add(this);
-		
-		for(int i = 0; i < this.lines.size(); i++) {
-			LineFD L = (LineFD)this.lines.get(i);	
-			if(L.isSource(this)) {
-				tempBlock = L.getTerminal();
-				output.add(tempBlock);	
+		int x_min = Integer.MAX_VALUE;
+		int y_min = Integer.MAX_VALUE;
+		int x_max = Integer.MIN_VALUE;
+		int y_max = Integer.MIN_VALUE;
+		int len = this.getComponents().length;
+		for(int i = 0; i < len; i++) {
+			Rectangle tempBounds = this.getComponent(i).getBounds();
+
+			//Testing
+			//System.out.println(i + "th component's bounds : " + tempBounds.toString());
+			
+			if(tempBounds.getMinX() < x_min) {
+				x_min = (int)tempBounds.getMinX();
+			}
+			if(tempBounds.getMaxX() > x_max) {
+				x_max = (int)tempBounds.getMaxX();
+			}
+			if(tempBounds.getMinY() < y_min) {
+				y_min = (int)tempBounds.getMinY();
+			}
+			if(tempBounds.getMaxY() > y_max) {
+				y_max = (int)tempBounds.getMaxY();
 			}
 		}
-		return output;
-	}
-	
-	public BlockFD getDirectChild() {
-		BlockFD directChild = new BlockFD();
-		for(int i = 0; i < this.lines.size(); i++) {
-			LineFD L = (LineFD)this.lines.get(i);	
-			if(L.isSource(this)) {
-				directChild = L.getTerminal();
-			}
+		
+		//Testing
+		//System.out.println("\nEnd parameters : ");
+		
+		// Shift children components according to minimums.
+		int x;
+		int y;
+		for(int i = 0; i < len; i++) {
+			
+			Point tempPoint = this.getComponent(i).getLocation();
+			x = (int)tempPoint.getX() - x_min + 5;
+			y = (int)tempPoint.getY() - y_min + 5;
+			this.getComponent(i).setLocation(new Point(x,y));
+			
+			//Testing
+			//System.out.println(i + "th component's bounds : " + 
+			//					this.getComponent(i).getBounds().toString());
+		
 		}
-		return directChild;
+		
+		// Now set the bounds for While panel
+		int width = x_max - x_min + 10;
+		int height = y_max - y_min + 10; // just big enough to contain all of them.
+		Point tempPoint = this.getLocation();
+		x = (int)tempPoint.getX() + x_min - 5;
+		y = (int)tempPoint.getY() + y_min - 5;
+		this.setBounds(x,y,width,height);
+		
+		//Testing
+		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
+		
 	}
-	
-	
 }
