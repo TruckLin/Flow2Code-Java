@@ -6,40 +6,22 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import model.object.ComponentOUTPUT;
+import org.json.JSONObject;
 
 public class BlockOUTPUT extends OrdinaryBlockFD{
-	ComponentOUTPUT model;
-	String expression;
 	
-	public BlockOUTPUT(ComponentOUTPUT model) {
-		super();
-		this.model = model;
-		
+	public BlockOUTPUT(JSONObject model) {
+		super(model);
 		
 		//Temporary
-		this.add(new JLabel("OUTPUT"));
+		JLabel temp = new JLabel("Declare");
+		this.add(temp);
+		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		//Testing
 		//System.out.println("Constructor 1 of BlockDECLARE is called and N = " + N);
 
-	}
-	
-	public BlockOUTPUT(ComponentOUTPUT model, Rectangle bounds) {
-		super();
-		this.model = model;
-		if(bounds != null) {
-			this.setBounds(bounds);
-		}
-		
-		//Temporary
-		this.add(new JLabel("OUTPUT"));
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
-		//Testing
-		//System.out.println("Constructor 2 of BlockDECLARE is called and N = " + N);
-		
 	}
 	
 	/** getters **/

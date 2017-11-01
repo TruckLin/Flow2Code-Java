@@ -9,13 +9,14 @@ import org.json.JSONObject;
 
 import gui.practice;
 import gui.interfaces.WithOutport;
-import model.object.ComponentSTART;
+
 public class BlockSTART extends BlockFD implements WithOutport{
 	private Point outport;
 	
 	/** Constructors **/
 	public BlockSTART(JSONObject model){
 		super(model);
+		
 		// Initialise outport
 		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight());
 				

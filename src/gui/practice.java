@@ -9,9 +9,7 @@ import org.json.JSONObject;
 
 import graph.object.BlockFD;
 import graph.object.BlockFlowDiagram;
-import model.FD.FlowDiagram;
-import model.FD.GraphicalInfoFD;
-import model.object.*;
+import gui.manager.UndoManager;
 import saveload.SaveAndLoadManagerFD;
 
 public class practice extends JFrame{
@@ -37,7 +35,7 @@ public class practice extends JFrame{
 	 
 	    menuBar = new JMenuBar();
 	 
-	    // First Menu
+	    // First Menu	
 	    menu = new JMenu("Menu-A");
 	    menu.setMnemonic(KeyEvent.VK_A);  // alt short-cut key
 	    menuBar.add(menu);  // the menu-bar adds this menu
@@ -48,26 +46,24 @@ public class practice extends JFrame{
 	    menuBar.add(menu);  // the menu bar adds this menu
 	    
 	    
-	    
 	    /** Demo FlowDiagram construction **/
-	    
-		
-		/** JScrollPane Construction **/
 	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FDDemo1.json");
 	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
 	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
-	    //Testing
-	    //System.out.println(flowDiagram == null);
+		
+	    	// Attach Listeners to the Blocks
+	    UndoManager undoManager = new UndoManager();
+	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram);
 	    
-	    //flowDiagram.setSize(500,500);
-	    
+		/** JScrollPane Construction **/
 	    JScrollPane scrollPane = new JScrollPane(flowDiagram);
+	    
 	    
 	    /** JSplitPane Construction - we add scroll pane JSplitPane **/
 	    JSplitPane splitPane = new JSplitPane();
-	    splitPane.setDividerLocation(300);
+	    splitPane.setDividerLocation(700);
 	    splitPane.add(scrollPane,JSplitPane.LEFT);
 	    splitPane.add(new JTextPane(), JSplitPane.RIGHT);
 	    

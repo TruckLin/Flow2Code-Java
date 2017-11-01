@@ -25,14 +25,14 @@
 							"Expression" : "i < 10",
 							"StartIf" : {"Type" : "StartIf",
 										"Name" : "StartIf1",
-										"TrueChild" : "Declare2",
-										"FalseChild" : "EndIf1"
+										"TrueChild" : "Assign1",
+										"FalseChild" : "Declare3"
 										},
 							"EndIf" : {"Type" : "EndIf",
 										"Name" : "EndIf1"
 						  				},
-							"TrueMembers" : [{"Type" : "Declare",
-												"Name" : "Declare2",
+							"TrueMembers" : [{"Type" : "Assign",
+												"Name" : "Assign1",
 												"Variables" : [{"DataType" : "int",
 																"VarName" : "x",
 																"isArray" : false,

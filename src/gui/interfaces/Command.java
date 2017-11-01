@@ -7,5 +7,9 @@ public interface Command {
 	
 	void redo();
 	
+	boolean isCollapsible(Command command);
+	
+	void collapse(Command comand);
+	
 	String getName();
 }

@@ -9,7 +9,14 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-public class BlockEndIF extends BlockSTART{
+import gui.interfaces.WithOutport;
+
+public class BlockEndIF extends BlockFD implements WithOutport{
+	private Point outport;
+	
+	private Point trueInport;
+	private Point falseInport;
+	
 	public BlockEndIF(JSONObject model){
 		super(model);
 		this.removeAll();
@@ -21,6 +28,10 @@ public class BlockEndIF extends BlockSTART{
 		
 		// Initialise outport
 		this.setOutport(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()));
+		
+		// Initialise inports
+		this.trueInport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
+		this.falseInport = new Point(0, Math.round(this.getHeight()/2));
 	}
 	
 	/** Graphics setting **/
@@ -35,5 +46,28 @@ public class BlockEndIF extends BlockSTART{
         g.fillOval(x, y, width, height);
     }
 	
+	/** Getters and Setters **/
+	public Point getTrueInport(){
+		return this.trueInport;
+	}
+	public void setTrueInport(Point p){
+		this.trueInport = p;
+	}
+	public Point getFalseInport(){
+		return this.falseInport;
+	}
+	public void setFalseInport(Point p){
+		this.falseInport = p;
+	}
+	@Override
+	public Point getOutport() {
+		// TODO Auto-generated method stub
+		return this.outport;
+	}
+	@Override
+	public void setOutport(Point p) {
+		// TODO Auto-generated method stub
+		this.outport = p;
+	}
 
 }

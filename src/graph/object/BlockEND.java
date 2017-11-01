@@ -7,7 +7,6 @@ import javax.swing.*;
 import org.json.JSONObject;
 
 import gui.interfaces.WithInport;
-import model.object.ComponentEND;
 
 public class BlockEND extends BlockFD implements WithInport{
 	private Point inport;
@@ -16,7 +15,7 @@ public class BlockEND extends BlockFD implements WithInport{
 	public BlockEND(JSONObject model) {
 		super(model);
 		
-		// Initialise outport
+		// Initialise inport
 		this.inport = new Point( Math.round(this.getWidth()/2), 0);
 		
 		// Temporary

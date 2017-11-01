@@ -1,5 +1,9 @@
 package graph.object;
 
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+
 import org.json.JSONObject;
 
 public class BlockFlowDiagram extends BlockFD{
@@ -7,6 +11,11 @@ public class BlockFlowDiagram extends BlockFD{
 	public BlockFlowDiagram(JSONObject model) {
 		super(model);
 		this.setLayout(null);
+		
+		// Temporary
+		this.setOpaque(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
 	}
 	
 	/** Getters and Setters **/

@@ -1,6 +1,8 @@
 package graph.object;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -9,10 +11,25 @@ import org.json.JSONObject;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
-public abstract class BlockFD extends JPanel {
+public abstract class BlockFD extends JPanel{
 	
 	private JSONObject model;
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+	public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+	}
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(propertyName,listener);
+	}
 	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
@@ -22,6 +39,7 @@ public abstract class BlockFD extends JPanel {
 		
 		// Temporary
 		this.setSize(100,25);
+		this.setOpaque(false);
 		
 	}
 	
@@ -29,6 +47,31 @@ public abstract class BlockFD extends JPanel {
 	/** Getters and Setters **/
 	public JSONObject getModel() {
 		return this.model;
+	}
+	public void setLocation(int x, int y) {
+		Point oldValue = this.getLocation();
+		super.setLocation(x, y);
+		propertyChangeSupport.firePropertyChange("Location", oldValue, this.getLocation());
+	}
+	public void setLocation(Point p) {
+		Point oldValue = this.getLocation();
+		super.setLocation(p);
+		propertyChangeSupport.firePropertyChange("Location", oldValue, p);
+	}
+	
+	public void setBounds(int x, int y, int width, int height) {
+		Rectangle oldValue = this.getBounds();
+		super.setBounds(x, y, width, height);
+		propertyChangeSupport.firePropertyChange("Bounds", oldValue, this.getBounds());
+	}
+	public void setBounds(Rectangle rec) {
+		Rectangle oldValue = this.getBounds();
+		super.setBounds(rec);
+		propertyChangeSupport.firePropertyChange("Bounds", oldValue, rec);
+	}
+	
+	public PropertyChangeSupport getPropertyChangeSupport() {
+		return this.propertyChangeSupport;
 	}
 
 
@@ -83,7 +126,7 @@ public abstract class BlockFD extends JPanel {
 		int x;
 		int y;
 		for(int i = 0; i < len; i++) {
-			
+			if(! (this.getComponent(i) instanceof LineFD)) {
 			Point tempPoint = this.getComponent(i).getLocation();
 			x = (int)tempPoint.getX() - x_min + 5;
 			y = (int)tempPoint.getY() - y_min + 5;
@@ -92,7 +135,7 @@ public abstract class BlockFD extends JPanel {
 			//Testing
 			//System.out.println(i + "th component's bounds : " + 
 			//					this.getComponent(i).getBounds().toString());
-		
+			}
 		}
 		
 		// Now set the bounds for While panel
@@ -103,8 +146,24 @@ public abstract class BlockFD extends JPanel {
 		y = (int)tempPoint.getY() + y_min - 5;
 		this.setBounds(x,y,width,height);
 		
+		
+		if(this.getParent() instanceof BlockFD) {
+			((BlockFD)this.getParent()).setAppropriateBounds();
+		}
+		
+		
 		//Testing
 		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
 		
+	}
+
+	public void translateLocation(int dx, int dy) {
+		int x = (int)this.getLocation().getX();
+		int y = (int)this.getLocation().getY();
+		
+		x = x + dx;
+		y = y + dy;
+		
+		this.setLocation(x, y);
 	}
 }

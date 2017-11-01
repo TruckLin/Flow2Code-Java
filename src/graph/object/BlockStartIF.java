@@ -8,7 +8,12 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-public class BlockStartIF extends BlockEND{
+import gui.mouselistener.MouseEnterListener;
+import gui.interfaces.WithInport;
+
+public class BlockStartIF extends BlockFD implements WithInport{
+	private Point inport;
+	
 	private Point trueOutport;
 	private Point falseOutport;
 	
@@ -18,6 +23,11 @@ public class BlockStartIF extends BlockEND{
 		this.removeAll();
 		this.setLayout(null);
 		
+		// Initialise inport
+		this.inport = new Point( Math.round(this.getWidth()/2), 0);
+		// set the Outports
+		this.trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
+		this.falseOutport = new Point(0, Math.round(this.getHeight()/2));
 		
 		// Temporary
 		JLabel temp = new JLabel("StartIF");
@@ -25,9 +35,6 @@ public class BlockStartIF extends BlockEND{
 		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		// set the Outports
-		this.trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
-		this.falseOutport = new Point(0, Math.round(this.getHeight()/2));
 	}
 	
 	/** Getters and Setters **/
@@ -38,10 +45,21 @@ public class BlockStartIF extends BlockEND{
 		this.trueOutport = p;
 	}
 	public Point getFalseOutport(){
-		return this.trueOutport;
+		return this.falseOutport;
 	}
 	public void setFalseOutport(Point p){
 		this.falseOutport = p;
+	}
+	
+	@Override
+	public Point getInport() {
+		// TODO Auto-generated method stub
+		return this.inport;
+	}
+	@Override
+	public void setInport(Point p) {
+		// TODO Auto-generated method stub
+		this.inport = p;
 	}
 	
 	

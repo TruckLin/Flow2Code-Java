@@ -7,8 +7,6 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
-import model.object.ComponentDECLARE;
-
 public class BlockDECLARE extends OrdinaryBlockFD {
 	
 	public BlockDECLARE(JSONObject model) {
