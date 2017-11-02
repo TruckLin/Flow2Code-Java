@@ -1,15 +1,16 @@
-package graph.object;
+package gui.object;
 
-import java.awt.*;
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Rectangle;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-public class BlockDECLARE extends OrdinaryBlockFD {
+public class BlockOUTPUT extends OrdinaryBlockFD{
 	
-	public BlockDECLARE(JSONObject model) {
+	public BlockOUTPUT(JSONObject model) {
 		super(model);
 		
 		//Temporary
@@ -27,6 +28,4 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 	
 	
 	/** Setters **/
-	
-
 }

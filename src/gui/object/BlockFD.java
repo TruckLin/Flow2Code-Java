@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.*;
 import java.awt.event.MouseListener;

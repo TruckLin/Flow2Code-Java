@@ -7,18 +7,18 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
-import graph.object.BlockFD;
-import graph.object.BlockFlowDiagram;
 import gui.manager.UndoManager;
+import gui.object.BlockFD;
+import gui.object.BlockFlowDiagram;
 import saveload.SaveAndLoadManagerFD;
 
-public class practice extends JFrame{
+public class Flow2Code extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	// Private instance variables
 	// ......
 	
-	public practice() {
+	public Flow2Code() {
 		// Retrieve the top-level content-pane from JFrame
 	    Container cp = getContentPane();
 	 
@@ -53,19 +53,39 @@ public class practice extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
 	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
 		
-	    	// Attach Listeners to the Blocks
+	    // Attach Listeners to the Blocks
 	    UndoManager undoManager = new UndoManager();
 	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram);
+	    //Testing
+	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
 	    
 		/** JScrollPane Construction **/
+	    //ScrollablePanelForFD sp = new ScrollablePanelForFD();
+	    //sp.add(flowDiagram);
+	    //sp.setSize(flowDiagram);
 	    JScrollPane scrollPane = new JScrollPane(flowDiagram);
 	    
+	    /** Left flowDiagram tool bar **/
+	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager);
 	    
-	    /** JSplitPane Construction - we add scroll pane JSplitPane **/
+	    /** Left Panel Construction **/
+	    JPanel leftPanel = new JPanel(new BorderLayout());
+	    leftPanel.add(fdToolBar, BorderLayout.NORTH);
+	    leftPanel.add(scrollPane, BorderLayout.CENTER);
+	    
+	    /** Right Panel Construction **/
+	    JPanel rightPanel = new JPanel(new BorderLayout());
+	    JTextArea codeView = new JTextArea();
+	    codeView.setText(myModel.toString(10));
+	    codeView.setEditable(false);
+	    JScrollPane textScrollPane = new JScrollPane(codeView);
+	    rightPanel.add(textScrollPane, BorderLayout.CENTER);
+	    
+	    /** JSplitPane Construction**/
 	    JSplitPane splitPane = new JSplitPane();
 	    splitPane.setDividerLocation(700);
-	    splitPane.add(scrollPane,JSplitPane.LEFT);
-	    splitPane.add(new JTextPane(), JSplitPane.RIGHT);
+	    splitPane.add(leftPanel,JSplitPane.LEFT);
+	    splitPane.add(rightPanel, JSplitPane.RIGHT);
 	    
 	    // Content-pane adds components
 	    this.setJMenuBar(menuBar);
@@ -86,7 +106,7 @@ public class practice extends JFrame{
 		SwingUtilities.invokeLater(new Runnable() {
 	         @Override
 	         public void run() {
-	            new practice(); // Let the constructor do the job
+	            new Flow2Code(); // Let the constructor do the job
 	         }
 	    });
 	}

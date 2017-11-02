@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingUtilities;
 
-public class RightClickListener implements MouseListener{
+public class LineRightClickListener implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

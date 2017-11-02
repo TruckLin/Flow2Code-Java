@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -24,11 +24,11 @@ public class LineFD extends JPanel{
 	
 	private PropertyChangeListener listener = e -> {
 													// Testing
-													System.out.println("Line Source : " + this.Source.toString());
+													/*System.out.println("Line Source : " + this.Source.toString());
 													System.out.println("Line Terminal : " + this.Terminal.toString());
 													System.out.println("Receive propertyChangeEvent.");
 													System.out.println("Source of Event : " + e.getSource().toString());
-													System.out.println("");
+													System.out.println("");*/
 													
 													reDrawLine();};
 	

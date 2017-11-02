@@ -5,9 +5,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import graph.object.BlockFD;
 import gui.commands.TranslateLocationCommand;
 import gui.manager.UndoManager;
+import gui.object.BlockFD;
 
 public class DemoMouseListener extends MouseAdapter{
 	private UndoManager undoManager;

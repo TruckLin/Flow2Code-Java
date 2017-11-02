@@ -1,7 +1,7 @@
 package gui.commands;
 
-import graph.object.BlockFD;
 import gui.interfaces.Command;
+import gui.object.BlockFD;
 
 public class TranslateLocationCommand implements Command {
 	private BlockFD block;
@@ -12,6 +12,17 @@ public class TranslateLocationCommand implements Command {
 		this.block = block;
 		this.dx = dx;
 		this.dy = dy;
+	}
+	
+	/** Getters and Setters **/
+	public BlockFD getBlock() {
+		return block;
+	}
+	public int getdx() {
+		return this.dx;
+	}
+	public int getdy() {
+		return this.dy;
 	}
 	
 	@Override
@@ -39,13 +50,20 @@ public class TranslateLocationCommand implements Command {
 	public boolean isCollapsible(Command command) {
 		// TODO Auto-generated method stub
 		
+		boolean sameClass = this.getClass().equals(command.getClass());
+		if(sameClass) {
+			if(this.block.equals(((TranslateLocationCommand)command).getBlock())) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	@Override
-	public void collapse(Command comand) {
+	public void collapse(Command command) {
 		// TODO Auto-generated method stub
-		
+		this.dx = this.dx + ((TranslateLocationCommand)command).getdx();
+		this.dy = this.dy + ((TranslateLocationCommand)command).getdy();
 	}
 
 	@Override

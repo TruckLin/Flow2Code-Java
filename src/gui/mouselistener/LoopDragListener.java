@@ -3,9 +3,9 @@ package gui.mouselistener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import graph.object.BlockFD;
 import gui.commands.TranslateLocationCommand;
 import gui.manager.UndoManager;
+import gui.object.BlockFD;
 
 public class LoopDragListener extends MouseAdapter{
 	private UndoManager undoManager;

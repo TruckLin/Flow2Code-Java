@@ -3,7 +3,7 @@ package gui.mouselistener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import graph.object.BlockFD;
+import gui.object.BlockFD;
 
 public class DoubleClickListener implements MouseListener{
 	private BlockFD block;

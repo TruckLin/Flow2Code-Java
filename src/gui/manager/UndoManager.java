@@ -36,7 +36,11 @@ public class UndoManager {
 		try {
 			OldState oldState = new OldState();
 			command.execute();
-			undoStack.push(command);
+			if( !undoStack.isEmpty() && undoStack.peek().isCollapsible(command)) {
+				undoStack.peek().collapse(command);
+			}else {
+				undoStack.push(command);
+			}
 			redoStack.clear();
 			fireChanges(oldState);
 		} catch (IllegalStateException e) {
@@ -83,6 +87,11 @@ public class UndoManager {
 	}
 
 	public boolean isUndoAvailable() {
+		//Testing
+		//System.out.println("In isUndoAvailable() : ");
+		//System.out.println("undoStack.isEmpty() = " + undoStack.isEmpty());
+		
+		
 		return !undoStack.isEmpty();
 	}
 	public boolean isRedoAvailable() {

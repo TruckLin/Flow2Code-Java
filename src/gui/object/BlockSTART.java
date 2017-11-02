@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
-import gui.practice;
 import gui.interfaces.WithOutport;
 
 public class BlockSTART extends BlockFD implements WithOutport{

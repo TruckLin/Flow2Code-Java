@@ -9,8 +9,8 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import graph.object.BlockFD;
 import gui.manager.UndoManager;
+import gui.object.BlockFD;
 
 
 // This listener is should be registered by BlockStartLOOP, BlockStartIF, maybe BlockSTART.

@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -28,6 +28,9 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		// set the Outports
 		this.trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
 		this.falseOutport = new Point(0, Math.round(this.getHeight()/2));
+		
+		// Set Default bounds
+		this.setBounds(5,5,100,25);
 		
 		// Temporary
 		JLabel temp = new JLabel("StartIF");

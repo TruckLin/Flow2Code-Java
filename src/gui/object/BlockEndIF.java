@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -22,8 +22,8 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 		this.removeAll();
 		this.setLayout(null);
 		
-		// Temporary
-		this.setBounds(0,0,25,25);
+		// setDefault bounds
+		this.setBounds(43,80,25,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		// Initialise outport

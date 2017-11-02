@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -6,15 +6,17 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-public class BlockFOR extends OrdinaryBlockFD {
+
+public class BlockWHILE extends OrdinaryBlockFD {
 	private BlockStartLOOP blockStartLOOP;
 	
 	private PropertyChangeListener listener = e -> resetOutInPorts();
 	
-	public BlockFOR(JSONObject model){
+	public BlockWHILE(JSONObject model){
 		super(model);
 		
 		this.setOpaque(false); // we should always see through this while panel.

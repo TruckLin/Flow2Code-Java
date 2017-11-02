@@ -1,4 +1,4 @@
-package graph.object;
+package gui.object;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -24,7 +24,7 @@ public class BlockIF extends OrdinaryBlockFD{
 
 		this.setOpaque(false); // we should always see through this while panel.
 		
-		//Temporary
+		//Set various default property
 		this.setSize(110,110);
 		this.setLayout(null);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -44,7 +44,8 @@ public class BlockIF extends OrdinaryBlockFD{
 		resetInport();
 		
 		// Testing
-		System.out.println("resetOutInPorts() is called.");
+		//System.out.println("resetOutInPorts() is called.");
+		
 		this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
 		
 	}

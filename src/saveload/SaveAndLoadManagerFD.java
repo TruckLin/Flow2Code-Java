@@ -8,7 +8,6 @@ import org.json.*;
 
 import com.tcg.json.JSONUtils;
 
-import graph.object.*;
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
 import gui.manager.UndoManager;
@@ -16,6 +15,7 @@ import gui.mouselistener.BlockDragListener;
 import gui.mouselistener.DoubleClickListener;
 import gui.mouselistener.LoopDragListener;
 import gui.mouselistener.MouseEnterListener;
+import gui.object.*;
 
 public abstract class SaveAndLoadManagerFD {
 	
@@ -551,7 +551,7 @@ public abstract class SaveAndLoadManagerFD {
 			}
 		}else if(currentBlock instanceof BlockStartIF) {
 			// Testing
-			System.out.println("CurrentBlock is StartIF.");
+			//System.out.println("CurrentBlock is StartIF.");
 			
 			LoopDragListener loopDragListener = new LoopDragListener(undoManager, currentBlock);
 			currentBlock.addMouseMotionListener(loopDragListener);
@@ -572,6 +572,5 @@ public abstract class SaveAndLoadManagerFD {
 			
 		}
 	}
-	
 	
 }

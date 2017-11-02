@@ -1,21 +1,20 @@
-package graph.object;
+package gui.object;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-public class BlockASSIGN extends OrdinaryBlockFD{
+public class BlockINPUT extends OrdinaryBlockFD {
 	
-	public BlockASSIGN(JSONObject model) {
+	public BlockINPUT(JSONObject model) {
 		super(model);
 		
 		//Temporary
-		JLabel temp = new JLabel("Assign");
+		JLabel temp = new JLabel("Declare");
 		this.add(temp);
 		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -29,5 +28,5 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 	
 	
 	/** Setters **/
-
+	
 }
