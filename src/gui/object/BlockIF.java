@@ -14,8 +14,13 @@ import gui.mouselistener.DemoMouseListener;
 import gui.mouselistener.MouseEnterListener;
 
 public class BlockIF extends OrdinaryBlockFD{
-	BlockStartIF blockStartIF;
-	BlockEndIF blockEndIF;
+	private BlockStartIF blockStartIF;
+	private BlockEndIF blockEndIF;
+	
+	private LineFD trueLine;
+	private LineFD falseLine; 
+	// This is a stupid check that I need when adding blocks inside BlockIF, trueLine is the line on the right,
+	// falseLine is the line one the left.
 	
 	private PropertyChangeListener listener = e -> resetOutInPorts();
 	
@@ -93,6 +98,18 @@ public class BlockIF extends OrdinaryBlockFD{
 			// initialize fields in the UI
 			resetOutport();
 		}
+	}
+	public LineFD getTrueLine() {
+		return this.trueLine;
+	}
+	public void setTrueLine(LineFD line) {
+		this.trueLine = line;
+	}
+	public LineFD getFalseLine() {
+		return this.falseLine;
+	}
+	public void setFalseLine(LineFD line) {
+		this.falseLine = line;
 	}
 	
 	

@@ -8,11 +8,15 @@ import org.json.*;
 
 import com.tcg.json.JSONUtils;
 
+import gui.BlockPopup;
+import gui.LinePopup;
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
 import gui.manager.UndoManager;
 import gui.mouselistener.BlockDragListener;
+import gui.mouselistener.BlockRightClickListener;
 import gui.mouselistener.DoubleClickListener;
+import gui.mouselistener.LineRightClickListener;
 import gui.mouselistener.LoopDragListener;
 import gui.mouselistener.MouseEnterListener;
 import gui.object.*;
@@ -71,6 +75,11 @@ public abstract class SaveAndLoadManagerFD {
 							LineFD line = new LineFD(b1,b2,p1,p2);
 							myPanel.add(line);
 							// Then we might want to register line as the listener of both block.
+							
+							//Testing
+							//System.out.println("In SaveAndLoadManager.constructBlockFD()  FlowDiagram section:");
+							//System.out.println("line" + i + " Source: " + line.getSource().toString());
+							//System.out.println("line" + i + " Terminal: " + line.getTerminal().toString());
 							
 							//Finally
 							break;
@@ -255,6 +264,10 @@ public abstract class SaveAndLoadManagerFD {
 				Point p1 = startIf.toContainerCoordinate(startIf.getTrueOutport());
 				Point p2 = endIf.toContainerCoordinate(endIf.getTrueInport());
 				LineFD line = new LineFD(startIf,endIf,p1,p2);
+				
+				// Stupid check when adding block
+				myPanel.setTrueLine(line);
+				
 				myPanel.add(line);
 			}else {
 				String childName = startIf.getModel().getString("TrueChild");
@@ -329,6 +342,10 @@ public abstract class SaveAndLoadManagerFD {
 				Point p1 = startIf.toContainerCoordinate(startIf.getFalseOutport());
 				Point p2 = endIf.toContainerCoordinate(endIf.getFalseInport());
 				LineFD line = new LineFD(startIf,endIf,p1,p2);
+				
+				// Stupid check when adding block
+				myPanel.setFalseLine(line);
+				
 				myPanel.add(line);
 			}else {
 				//Testing
@@ -446,7 +463,7 @@ public abstract class SaveAndLoadManagerFD {
 		}
 	}
 
-	public static void attachMouseListenersToBlock(UndoManager undoManager,BlockFD currentBlock) {
+	public static void attachMouseListenersToBlock(UndoManager undoManager,BlockFD currentBlock, BlockPopup blockPopup) {
 		//Testing
 		//System.out.println(currentBlock.toString() + "\n");
 		
@@ -454,7 +471,7 @@ public abstract class SaveAndLoadManagerFD {
 			Component[] compList = currentBlock.getComponents();
 			for(Component comp : compList) {
 				if(!(comp instanceof LineFD)) {
-					attachMouseListenersToBlock(undoManager, (BlockFD)comp);
+					attachMouseListenersToBlock(undoManager, (BlockFD)comp, blockPopup);
 				}
 			}
 		}else if(currentBlock instanceof BlockSTART) {
@@ -472,6 +489,9 @@ public abstract class SaveAndLoadManagerFD {
 			currentBlock.addMouseListener(blockDragListener);
 			
 		}else if(currentBlock instanceof BlockDECLARE) {
+			//Testing
+			//System.out.println("Attach listeners to BlockDECLARE.");
+			
 			BlockDragListener blockDragListener = new BlockDragListener(undoManager,currentBlock);
 			currentBlock.addMouseMotionListener(blockDragListener);
 			currentBlock.addMouseListener(blockDragListener);
@@ -479,6 +499,10 @@ public abstract class SaveAndLoadManagerFD {
 			// register a double click listener.
 			DoubleClickListener doubleClickListener = new DoubleClickListener(currentBlock);
 			currentBlock.addMouseListener(doubleClickListener);
+			
+			// register a block right click listener.
+			BlockRightClickListener rightClickListener = new BlockRightClickListener(blockPopup);
+			currentBlock.addMouseListener(rightClickListener);
 			
 		}else if(currentBlock instanceof BlockASSIGN) {
 			BlockDragListener blockDragListener = new BlockDragListener(undoManager,currentBlock);
@@ -489,6 +513,10 @@ public abstract class SaveAndLoadManagerFD {
 			DoubleClickListener doubleClickListener = new DoubleClickListener(currentBlock);
 			currentBlock.addMouseListener(doubleClickListener);
 			
+			// register a block right click listener.
+			BlockRightClickListener rightClickListener = new BlockRightClickListener(blockPopup);
+			currentBlock.addMouseListener(rightClickListener);
+			
 		}else if(currentBlock instanceof BlockOUTPUT) {
 			BlockDragListener blockDragListener = new BlockDragListener(undoManager,currentBlock);
 			currentBlock.addMouseMotionListener(blockDragListener);
@@ -498,6 +526,10 @@ public abstract class SaveAndLoadManagerFD {
 			DoubleClickListener doubleClickListener = new DoubleClickListener(currentBlock);
 			currentBlock.addMouseListener(doubleClickListener);
 			
+			// register a block right click listener.
+			BlockRightClickListener rightClickListener = new BlockRightClickListener(blockPopup);
+			currentBlock.addMouseListener(rightClickListener);
+			
 		}else if(currentBlock instanceof BlockINPUT) {
 			BlockDragListener blockDragListener = new BlockDragListener(undoManager,currentBlock);
 			currentBlock.addMouseMotionListener(blockDragListener);
@@ -506,19 +538,23 @@ public abstract class SaveAndLoadManagerFD {
 			// register a double click listener.
 			DoubleClickListener doubleClickListener = new DoubleClickListener(currentBlock);
 			currentBlock.addMouseListener(doubleClickListener);
+			
+			// register a block right click listener.
+			BlockRightClickListener rightClickListener = new BlockRightClickListener(blockPopup);
+			currentBlock.addMouseListener(rightClickListener);
 
 		}else if(currentBlock instanceof BlockFOR) {
 			Component[] compList = currentBlock.getComponents();
 			for(Component comp : compList) {
 				if(!(comp instanceof LineFD)) {
-					attachMouseListenersToBlock(undoManager, (BlockFD)comp);
+					attachMouseListenersToBlock(undoManager, (BlockFD)comp, blockPopup);
 				}
 			}
 		}else if(currentBlock instanceof BlockWHILE) {
 			Component[] compList = currentBlock.getComponents();
 			for(Component comp : compList) {
 				if(!(comp instanceof LineFD)) {
-					attachMouseListenersToBlock(undoManager, (BlockFD)comp);
+					attachMouseListenersToBlock(undoManager, (BlockFD)comp, blockPopup);
 			
 				}
 			}
@@ -538,6 +574,10 @@ public abstract class SaveAndLoadManagerFD {
 			DoubleClickListener doubleClickListener = new DoubleClickListener(currentBlock);
 			currentBlock.addMouseListener(doubleClickListener);
 			
+			// register a block right click listener.
+			BlockRightClickListener rightClickListener = new BlockRightClickListener(blockPopup);
+			currentBlock.addMouseListener(rightClickListener);
+			
 		}else if(currentBlock instanceof BlockIF) {
 			Component[] compList = currentBlock.getComponents();
 			for(Component comp : compList) {
@@ -546,7 +586,7 @@ public abstract class SaveAndLoadManagerFD {
 				//System.out.println("comp instanceof BlockStartIF = " + (comp instanceof BlockStartIF));
 				//System.out.println("comp instanceof LineFD = " + (comp instanceof LineFD) + "\n");
 				if(!(comp instanceof LineFD)) {
-					attachMouseListenersToBlock(undoManager, (BlockFD)comp);
+					attachMouseListenersToBlock(undoManager, (BlockFD)comp, blockPopup);
 				}
 			}
 		}else if(currentBlock instanceof BlockStartIF) {
@@ -565,6 +605,10 @@ public abstract class SaveAndLoadManagerFD {
 			DoubleClickListener doubleClickListener = new DoubleClickListener(currentBlock);
 			currentBlock.addMouseListener(doubleClickListener);
 			
+			// register a block right click listener.
+			BlockRightClickListener rightClickListener = new BlockRightClickListener(blockPopup);
+			currentBlock.addMouseListener(rightClickListener);
+			
 		}else if(currentBlock instanceof BlockEndIF) {
 			BlockDragListener blockDragListener = new BlockDragListener(undoManager,currentBlock);
 			currentBlock.addMouseMotionListener(blockDragListener);
@@ -572,5 +616,66 @@ public abstract class SaveAndLoadManagerFD {
 			
 		}
 	}
+	
+
+	public static void attachMouseListenersToLine(LineFD line,LinePopup linePopup) {
+		//Testing
+		//System.out.println(currentBlock.toString() + "\n");
+		
+		LineRightClickListener listener = new LineRightClickListener(linePopup);
+		line.addMouseListener(listener);
+	}
+	
+	public static void attachMouseListenersToAllLines(BlockFD currentBlock, LinePopup linePopup) {
+		//Testing
+		//System.out.println(currentBlock.toString() + "\n");
+		
+		if(currentBlock instanceof BlockFlowDiagram) {
+			
+			Component[] compList = currentBlock.getComponents();
+			for(Component comp : compList) {
+				if(!(comp instanceof LineFD)) {
+					attachMouseListenersToAllLines((BlockFD)comp, linePopup);
+				}else {
+					attachMouseListenersToLine((LineFD)comp, linePopup);
+				}
+			}
+			
+		}else if(currentBlock instanceof BlockFOR) {
+			
+			Component[] compList = currentBlock.getComponents();
+			for(Component comp : compList) {
+				if(!(comp instanceof LineFD)) {
+					attachMouseListenersToAllLines((BlockFD)comp, linePopup);
+				}else {
+					attachMouseListenersToLine((LineFD)comp, linePopup);
+				}
+			}
+			
+		}else if(currentBlock instanceof BlockWHILE) {
+			
+			Component[] compList = currentBlock.getComponents();
+			for(Component comp : compList) {
+				if(!(comp instanceof LineFD)) {
+					attachMouseListenersToAllLines((BlockFD)comp, linePopup);
+				}else {
+					attachMouseListenersToLine((LineFD)comp, linePopup);
+				}
+			}
+			
+		}else if(currentBlock instanceof BlockIF) {
+			
+			Component[] compList = currentBlock.getComponents();
+			for(Component comp : compList) {
+				if(!(comp instanceof LineFD)) {
+					attachMouseListenersToAllLines((BlockFD)comp, linePopup);
+				}else {
+					attachMouseListenersToLine((LineFD)comp, linePopup);
+				}
+			}
+			
+		}
+	}
+	
 	
 }

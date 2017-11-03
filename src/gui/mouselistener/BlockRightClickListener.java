@@ -5,19 +5,20 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingUtilities;
 
+import gui.BlockPopup;
 import gui.LinePopup;
-import gui.manager.UndoManager;
+import gui.object.BlockFD;
 import gui.object.LineFD;
 
-public class LineRightClickListener implements MouseListener{
-	LinePopup linePopup;
-	public LineRightClickListener(LinePopup linePopup) {
-		this.linePopup = linePopup;
+public class BlockRightClickListener implements MouseListener{
+	BlockPopup blockPopup;
+	public BlockRightClickListener(BlockPopup blockPopup) {
+		this.blockPopup = blockPopup;
 	}
 	
 	/** Getter and Setters **/
-	public LinePopup getLinePopup() {
-		return this.linePopup;
+	public BlockPopup getBlockPopup() {
+		return this.blockPopup;
 	}
 	
 	@Override
@@ -25,8 +26,8 @@ public class LineRightClickListener implements MouseListener{
 		// TODO Auto-generated method stub
 		if(SwingUtilities.isRightMouseButton(e)) {
 			// Do some thing
-			linePopup.setLine((LineFD)e.getComponent());
-			linePopup.show(e.getComponent(),e.getX(), e.getY());
+			blockPopup.setBlockFD((BlockFD)e.getComponent());
+			blockPopup.show(e.getComponent(),e.getX(), e.getY());
 		}
 	}
 
@@ -53,5 +54,4 @@ public class LineRightClickListener implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

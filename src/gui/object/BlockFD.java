@@ -9,6 +9,9 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
+import gui.BlockEditDialog;
+import gui.manager.UndoManager;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -48,6 +51,9 @@ public abstract class BlockFD extends JPanel{
 	public JSONObject getModel() {
 		return this.model;
 	}
+	public void setModel(JSONObject model) {
+		this.model = model;
+	}
 	public void setLocation(int x, int y) {
 		Point oldValue = this.getLocation();
 		super.setLocation(x, y);
@@ -77,8 +83,17 @@ public abstract class BlockFD extends JPanel{
 
 	
 	/** Event handling functions **/
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		// this function should be implemented by various block like BlockIF, BlockWHILE and many more.
+		return null;
+	}
 	
 	/** Utility functions **/
+	public void updateBlock() {
+		// this function should be implemented by various block like BlockIF, BlockWHILE and many more.
+	}
+	
+	
 	public Point toContainerCoordinate(Point coordWRTblock) {
 		int x = (int)(this.getLocation().getX() + coordWRTblock.getX());
 		int y = (int)(this.getLocation().getY() + coordWRTblock.getY());

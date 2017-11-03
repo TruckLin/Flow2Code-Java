@@ -14,7 +14,7 @@ public class BlockINPUT extends OrdinaryBlockFD {
 		super(model);
 		
 		//Temporary
-		JLabel temp = new JLabel("Declare");
+		JLabel temp = new JLabel("Input");
 		this.add(temp);
 		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));

@@ -18,6 +18,11 @@ public class BlockDragListener extends MouseAdapter{
 		this.block = block;
 	}
 	
+	/** Getters and Setters **/
+	public UndoManager getUndoManager() {
+		return this.undoManager;
+	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		//Testing

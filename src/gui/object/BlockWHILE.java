@@ -10,20 +10,29 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
+import gui.BlockEditDialog;
+import gui.WhileEditDialog;
+import gui.manager.UndoManager;
+
 
 public class BlockWHILE extends OrdinaryBlockFD {
 	private BlockStartLOOP blockStartLOOP;
 	
 	private PropertyChangeListener listener = e -> resetOutInPorts();
 	
+	// Block defining variables
+	private WhileEditDialog editDialog;
+	
 	public BlockWHILE(JSONObject model){
 		super(model);
+		if(!model.getString("Type").equals("While")) {
+			System.out.println("Incompatible model with BlockWHILE.");
+		}else {
+			this.setOpaque(false); // we should always see through this while panel.
 		
-		this.setOpaque(false); // we should always see through this while panel.
-		
-		//Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
+			//Temporary
+			this.setBorder(BorderFactory.createLineBorder(Color.black));
+		}
 	}
 	
 	/** Getters and Setters **/
@@ -39,12 +48,39 @@ public class BlockWHILE extends OrdinaryBlockFD {
 		if (this.blockStartLOOP != null) {
 			// connect to new model
 			this.blockStartLOOP.addPropertyChangeListener(listener);
-
-			// initialize fields in the UI
+			
+			String displayString = ("While( " + this.getExpression() + " )");
+			this.blockStartLOOP.getDisplayLabel().setText(displayString);
+			
+			// initialize inports and outports in the UI
 			resetOutInPorts();
 		}
 	}
+	public String getExpression() {
+		return this.getModel().getString("Expression");
+	}
 	
+	/** EventHanling functions **/
+	@Override
+	public void updateBlock() {
+		String displayString = ("While( " + this.getExpression() + " )");
+		this.blockStartLOOP.getDisplayLabel().setText(displayString);
+		
+		//Testing
+		System.out.println("blockStartLOOP's label's preferrable size = : " + 
+								this.blockStartLOOP.getDisplayLabel().getPreferredSize());
+		
+		// blockStartLOOP may need to change size and location
+		//this.blockStartLOOP.setAppropriateBounds();
+		
+		// update inports and outports in the UI
+		resetOutInPorts();
+	}
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new WhileEditDialog(undoManager, this);
+		return this.editDialog;
+	}
 	
 	/** Utility Functions **/
 	public void resetOutInPorts() {

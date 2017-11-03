@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
+import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
@@ -46,6 +47,12 @@ public class Flow2Code extends JFrame{
 	    menuBar.add(menu);  // the menu bar adds this menu
 	    
 	    
+	    /** Initialisation of various managers and user interfaces **/
+	    UndoManager undoManager = new UndoManager();
+	    NameCounterManager nameManager = new NameCounterManager();
+	    LinePopup linePopup = new LinePopup(undoManager, nameManager);
+	    BlockPopup blockPopup = new BlockPopup(undoManager);
+	    
 	    /** Demo FlowDiagram construction **/
 	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FDDemo1.json");
@@ -53,16 +60,19 @@ public class Flow2Code extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
 	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
 		
-	    // Attach Listeners to the Blocks
-	    UndoManager undoManager = new UndoManager();
-	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram);
+	    /** Attach Listeners to the Blocks **/
+	    
+	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram, blockPopup);
+	    SaveAndLoadManagerFD.attachMouseListenersToAllLines(flowDiagram, linePopup);
+	    
 	    //Testing
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
 	    
 		/** JScrollPane Construction **/
-	    //ScrollablePanelForFD sp = new ScrollablePanelForFD();
-	    //sp.add(flowDiagram);
-	    //sp.setSize(flowDiagram);
+	    ScrollablePanelForFD sp = new ScrollablePanelForFD();
+	    sp.setLayout(new BorderLayout());
+	    sp.add(flowDiagram, BorderLayout.CENTER);
+	    flowDiagram.setLocation(0,0);
 	    JScrollPane scrollPane = new JScrollPane(flowDiagram);
 	    
 	    /** Left flowDiagram tool bar **/
@@ -76,7 +86,9 @@ public class Flow2Code extends JFrame{
 	    /** Right Panel Construction **/
 	    JPanel rightPanel = new JPanel(new BorderLayout());
 	    JTextArea codeView = new JTextArea();
-	    codeView.setText(myModel.toString(10));
+	    codeView.setText(myModel.toString(10));	    
+	    TextFetcher txtFetcher = new TextFetcher(myModel,codeView);
+	    txtFetcher.start();
 	    codeView.setEditable(false);
 	    JScrollPane textScrollPane = new JScrollPane(codeView);
 	    rightPanel.add(textScrollPane, BorderLayout.CENTER);
@@ -100,6 +112,31 @@ public class Flow2Code extends JFrame{
 	    setSize(1000, 600);   // "super" JFrame sets initial size
 	    setVisible(true);    // "super" JFrame shows
 	}
+	
+	/**
+	*	This named inner class TextFetcher extends Thread, fetch text from JSONOBject every 0.5 second.
+	*/
+	class TextFetcher extends Thread {
+		JSONObject model;
+		JTextArea textArea;
+		TextFetcher(JSONObject model, JTextArea textArea){
+			this.model = model;
+			this.textArea = textArea;
+		}
+		public void run() {
+			try {
+				boolean stop = false;
+				while(!stop){
+					textArea.setText(model.toString(10) + "\n executed.");
+					
+					Thread.sleep(500);
+				}
+			}catch (InterruptedException e) {
+					System.out.println("Thread interrupted.");
+			}
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		// Run the GUI construction in the Event-Dispatching thread for thread-safety

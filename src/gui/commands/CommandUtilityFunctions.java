@@ -174,14 +174,32 @@ public class CommandUtilityFunctions {
 			BlockFOR block = new BlockFOR(generateEmptyJSONModel(nameManager,type));
 			JSONObject model = block.getModel();
 			BlockStartLOOP blockStartLOOP = new BlockStartLOOP(model.getJSONObject("StartLoop"));
+			block.add(blockStartLOOP);
+			
+			// Add loop line
+			Point p1 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getOutport());
+			Point p2 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getInport());
+			LineFD line1 = new LineFD(blockStartLOOP, blockStartLOOP,p1,p2 );
+			block.add(line1);
+			
 			block.setBlockStartLOOP(blockStartLOOP);
+			block.setAppropriateBounds();
 			
 			return block;
 		}else if(type.equals("While")) {
 			BlockWHILE block = new BlockWHILE(generateEmptyJSONModel(nameManager,type));
 			JSONObject model = block.getModel();
 			BlockStartLOOP blockStartLOOP = new BlockStartLOOP(model.getJSONObject("StartLoop"));
+			block.add(blockStartLOOP);
+			
+			// Add loop line
+			Point p1 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getOutport());
+			Point p2 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getInport());
+			LineFD line1 = new LineFD(blockStartLOOP, blockStartLOOP,p1,p2 );
+			block.add(line1);
+			
 			block.setBlockStartLOOP(blockStartLOOP);
+			block.setAppropriateBounds();
 			
 			return block;
 		}else if(type.equals("StartLoop")){
@@ -205,11 +223,19 @@ public class CommandUtilityFunctions {
 			Point p2 = blockEndIF.toContainerCoordinate(blockEndIF.getTrueInport());
 			LineFD line1 = new LineFD(blockStartIF, blockEndIF,p1,p2 );
 			block.add(line1);
+			
+			// Stupid check when adding block
+			block.setTrueLine(line1);
+			
 			Point p3 = blockStartIF.toContainerCoordinate(blockStartIF.getFalseOutport());
 			Point p4 = blockEndIF.toContainerCoordinate(blockEndIF.getFalseInport());
 			LineFD line2 = new LineFD(blockStartIF, blockEndIF,p3,p4);
 			block.add(line2);
 			
+			// Stupid check when adding block
+			block.setFalseLine(line2);
+			
+			block.setAppropriateBounds();
 			return block;
 		}else if(type.equals("StartIf")) {
 			BlockStartIF block = new BlockStartIF(generateEmptyJSONModel(nameManager,type));
@@ -228,6 +254,109 @@ public class CommandUtilityFunctions {
 			return block;
 		}
 		return null;
+	}
+	
+	public static void addJSONObjectToParentModel(JSONObject parentModel, JSONObject currentModel, JSONObject sourceModel, JSONObject terminalModel,
+													BlockFD parentBlock, LineFD sourceLine) {
+		if(parentModel.has("Members")) {
+			parentModel.append("Members", currentModel);
+			sourceModel.put("Child", currentModel.getString("Name"));
+			currentModel.put("Child",terminalModel.getString("Name"));
+		}else if(parentModel.getString("Type").equals("If")) {
+			// the parent block is BlockIF.
+			
+			// A test to check if wither source or terminal is in trueMembers. 
+			boolean inTrueMembers = false;
+			JSONArray trueModelList = parentModel.getJSONArray("TrueMembers");
+			for(int i = 0; i < trueModelList.length(); i++) {
+				String tempName = trueModelList.getJSONObject(i).getString("Name");
+				if(tempName.equals(sourceModel.getString("Name")) || tempName.equals(terminalModel.getString("Name"))) {
+					inTrueMembers = true;
+					break;
+				}
+			}
+			boolean inFalseMembers = false;
+			JSONArray falseModelList = parentModel.getJSONArray("FalseMembers");
+			for(int i = 0; i < falseModelList.length(); i++) {
+				String tempName = falseModelList.getJSONObject(i).getString("Name");
+				if(tempName.equals(sourceModel.getString("Name")) || tempName.equals(terminalModel.getString("Name"))) {
+					inFalseMembers = true;
+					break;
+				}
+			}
+			
+			if(inTrueMembers) {
+				parentModel.append("TrueMembers", currentModel);
+				sourceModel.put("Child", currentModel.getString("Name"));
+				currentModel.put("Child",terminalModel.getString("Name"));
+			}else if(inFalseMembers){
+				parentModel.append("TrueMembers", currentModel);
+				sourceModel.put("Child", currentModel.getString("Name"));
+				currentModel.put("Child",terminalModel.getString("Name"));
+			}else {
+				if( ((BlockIF)parentBlock).getTrueLine().equals(sourceLine) ) {
+					parentModel.append("TrueMembers", currentModel);
+					sourceModel.put("Child", currentModel.getString("Name"));
+					currentModel.put("Child",terminalModel.getString("Name"));
+				}else if( ((BlockIF)parentBlock).getFalseLine().equals(sourceLine) ) {
+					parentModel.append("FalseMembers", currentModel);
+					sourceModel.put("Child", currentModel.getString("Name"));
+					currentModel.put("Child",terminalModel.getString("Name"));
+				}else {
+					System.err.println("Something unexpected happened in AddBlockCommand :\nIn redo() \n add block within BlockIF, insert model section");
+				}
+			}
+			
+		}else {
+			System.err.println("Parent Model has no key called Members and it's not If.\nIn redo() \n Detail:" + parentModel.toString(10));
+		}
+	}
+	
+	public static void removeJSONObjectFromParentModel(JSONObject parentModel, JSONObject currentModel, JSONObject sourceModel, JSONObject terminalModel) {
+		// This method also changes the child of sourceModel.
+		
+		/** Remove the model we inserted into parent model **/
+		// Change the child name of sourceModel to terminalModel's name.
+		sourceModel.put("Child", terminalModel.getString("Name"));
+		// Remove emptyBlock's model from parentModel.
+		if(parentModel.has("Members")) {
+			JSONArray myArray = parentModel.getJSONArray("Members");
+			for(int i = 0; i < myArray.length(); i++) {
+				if( myArray.getJSONObject(i).getString("Name").equals(currentModel.getString("Name")) ) {
+					myArray.remove(i);
+					break;
+				}
+			}
+		}else if(parentModel.getString("Type").equals("If")) {
+			// the parent block is BlockIF.
+			
+			// A test to check if wither source or terminal is in trueMembers. 
+			boolean checkFalse = true;
+			JSONArray trueModelList = parentModel.getJSONArray("TrueMembers");
+			for(int i = 0; i < trueModelList.length(); i++) {
+				String tempName = trueModelList.getJSONObject(i).getString("Name");
+				if(tempName.equals(currentModel.getString("Name"))) {
+					trueModelList.remove(i);
+					checkFalse = true;
+					break;
+				}
+			}
+			
+			if(checkFalse) {
+				JSONArray falseModelList = parentModel.getJSONArray("FalseMembers");
+				for(int i = 0; i < falseModelList.length(); i++) {
+				String tempName = falseModelList.getJSONObject(i).getString("Name");
+					if( tempName.equals(currentModel.getString("Name")) ) {
+						trueModelList.remove(i);
+						break;
+					}
+				}
+			}
+		}else {
+			System.err.println("Parent Model has no key called Members and it's not If. \n Detail:");
+			System.err.println("In CommandUtilityFunctions.removeJSONObjectFromParentModel()");
+			System.err.println(parentModel.toString(10));
+		}
 	}
 	
 	public static void main(String[] args) {

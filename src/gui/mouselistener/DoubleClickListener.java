@@ -15,7 +15,8 @@ public class DoubleClickListener implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		// Testing
+		//System.out.println("On my god");
 	}
 
 	@Override

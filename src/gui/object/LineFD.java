@@ -22,16 +22,22 @@ public class LineFD extends JPanel{
 	private double endPositionRatioY; // Keep these variable so we don't have to call getOut/Inport() methods from Source
 									// and terminal.
 	
-	private PropertyChangeListener listener = e -> {
-													// Testing
-													/*System.out.println("Line Source : " + this.Source.toString());
-													System.out.println("Line Terminal : " + this.Terminal.toString());
-													System.out.println("Receive propertyChangeEvent.");
-													System.out.println("Source of Event : " + e.getSource().toString());
-													System.out.println("");*/
-													
-													reDrawLine();};
+	private BlockChangeListener listener = new BlockChangeListener();
 	
+	// Named inner class which serve as a PropertyChangeListener¡C
+	public class BlockChangeListener implements PropertyChangeListener{	
+		public LineFD getOwnerLine() {
+			return LineFD.this;
+		}
+		
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			reDrawLine();
+			
+		}
+	}
+			
+
 	/** Constructors **/
 	// Constructor from two BlockFD object and specified points.
 	public LineFD(BlockFD b1, BlockFD b2, Point startpt, Point endpt) {
@@ -91,7 +97,7 @@ public class LineFD extends JPanel{
         //System.out.println("getLocation() = " + this.getLocation().toString());
         //System.out.println("width = " + width);
 		
-		int tolerance = 2;
+		int tolerance = 5;
 		int width2 = width + tolerance;
 		int height2 = height + tolerance;
 		// +2 makes sure that horizontal or vertical line will not have 0 height or width respectively.
@@ -101,7 +107,8 @@ public class LineFD extends JPanel{
 		this.setBounds(new Rectangle(xmin, ymin, width2, height2));
 		this.setOpaque(false);
 		
-		//this.setBorder(BorderFactory.createLineBorder(Color.black));
+		// Temporary
+		this.setBorder(BorderFactory.createLineBorder(Color.yellow));
 		
 		//this.addMouseListener(new LineMouseClickListener());
 	}
@@ -151,6 +158,9 @@ public class LineFD extends JPanel{
 		int y = (int)(topleft.getY() + Math.round(this.getHeight()/2));
 		return new Point(x,y);
 	}
+	public BlockChangeListener getBlockChangeListener() {
+		return this.listener;
+	}
 	
 	/** Setters **/
 	
@@ -161,8 +171,8 @@ public class LineFD extends JPanel{
 		//System.out.println("Line between " + Source.getModel().getString("Name") + " and " + Terminal.getModel().getString("Name"));
 		//System.out.println("reDrawLine() is called.");
 		
-		boolean isLoop = this.Source instanceof BlockIF || this.Source instanceof BlockWHILE || this.Source instanceof BlockFOR ||
-						this.Terminal instanceof BlockIF || this.Terminal instanceof BlockWHILE || this.Terminal instanceof BlockFOR;
+		boolean sourceIsLoop = this.Source instanceof BlockIF || this.Source instanceof BlockWHILE || this.Source instanceof BlockFOR;
+		boolean terminalIsLoop	= this.Terminal instanceof BlockIF || this.Terminal instanceof BlockWHILE || this.Terminal instanceof BlockFOR;
 		
 		int x1 = (int)Math.round(this.Source.getWidth() * this.startPositionRatioX);
 		int y1 = (int)Math.round(this.Source.getHeight() * this.startPositionRatioY);
@@ -170,18 +180,10 @@ public class LineFD extends JPanel{
 		int y2 = (int)Math.round(this.Terminal.getHeight() * this.endPositionRatioY);
 		Point p1 = new Point(x1, y1);
 		Point p2 = new Point(x2, y2);
-		if(isLoop) {
-			/*
-			if(this.Source instanceof BlockIF || this.Terminal instanceof BlockIF) {
-				//Testing
-				System.out.println("isLoop is true and triggered.");
-				System.out.println("Source : " + Source.toString());
-				System.out.println("Source outport = " + ((WithOutport)this.Source).getOutport().toString());
-				System.out.println("Terminal : " + Terminal.toString());
-				System.out.println("Terminal inport = " + ((WithInport)this.Terminal).getInport().toString() + "\n");
-			}*/
-			
+		if(sourceIsLoop) {
 			p1 = ((WithOutport)this.Source).getOutport();
+		}
+		if(terminalIsLoop) {
 			p2 = ((WithInport)this.Terminal).getInport();
 		}
 		
@@ -205,7 +207,18 @@ public class LineFD extends JPanel{
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		
+		Point a = new Point(1,1);
+		Point b = new Point(2,2);
+		Point temp;
+		temp = a;
+		a = b;
+		b = temp;
+		System.out.println("After swap : ");
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(temp);
+		
 	}
 	
 

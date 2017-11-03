@@ -9,7 +9,7 @@ import javax.swing.Scrollable;
 public class ScrollablePanelForFD extends JPanel implements Scrollable {
 
 	public ScrollablePanelForFD() {
-		
+		super();
 	}
 	
 	@Override
