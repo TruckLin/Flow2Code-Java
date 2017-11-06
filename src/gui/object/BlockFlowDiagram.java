@@ -1,0 +1,29 @@
+package gui.object;
+
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+
+import org.json.JSONObject;
+
+public class BlockFlowDiagram extends BlockFD{
+	
+	public BlockFlowDiagram(JSONObject model) {
+		super(model);
+		this.setLayout(null);
+		
+		// Temporary
+		this.setOpaque(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+	}
+	
+	/** Getters and Setters **/
+	
+	
+	/** Utility Functions **/
+	public void setAppropriateBounds() {
+		super.setAppropriateBounds();
+		// We need a minimum size for FlowDiagram Panel.
+	}
+}

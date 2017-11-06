@@ -1,0 +1,157 @@
+{"Name" : "main1",
+"Type" : "main",
+"child" : "declare1",
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "declare1",
+"Type" : "declare",
+"Child" : "declare2",
+"DeclareInput" : 	{"DataType" : "integer",
+					"VariableName" : "i",					
+					"Size" : 1
+					},
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "declare2",
+"Type" : "declare",
+"child" : "declare3",
+"DeclareInput" : 	{"DataType" : "integer",
+					"VariableName" : "j",					
+					"Size" : 1
+					},
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "declare3",
+"Type" : "declare",
+"child" : "for1",
+"DeclareInput" : 	{"DataType" : "integer",
+					"VariableName" : "x",					
+					"Size" : 10
+					},
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "for1",
+"Type" : "for",
+"ChildInLoop" : "assign1",
+"Child" : "for2";
+"ForInput" : 	{"Initialisation" : "i=0",
+				"Condition" : "i < 9"
+				"LoopStep" : "i++"
+				}, 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "assign1",
+"Type" : "assign",
+"Child": "for1",
+"Input" : "x[i] <- 10-i", 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "for2",
+"Type" : "for",
+"ChildInLoop" : "for3",
+"Child" : "for4";
+"ForInput" : 	{"Initialisation" : "i=0",
+				"Condition" : "i < 9",
+				"LoopStep" : "i++"
+				}, 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "for3",
+"Type" : "for",
+"ChildInLoop" : "if1",
+"Child" : "for2";
+"ForInput" : 	{"Initialisation" : "j=0",
+				"Condition" : "j < 8",
+				"LoopStep" : "j++"
+				}, 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "if1",
+"Type" : "if",
+"TrueChild" : "declare4",
+"FalseChild" : "endif1",
+"Input" : "x[j] > x[j+1]",
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "declare4",
+"Type" : "declare",
+"child" : "assign2",
+"DeclareInput" : 	{"DataType" : "integer",
+					"VariableName" : "temp",					
+					"Size" : 1
+					},
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "assign2",
+"Type" : "assign",
+"Child": "assign3",
+"Input" : "temp <- x[j]", 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "assign3",
+"Type" : "assign",
+"Child": "assign4",
+"Input" : "x[j] <- x[j+1]", 
+"x" : "10",
+"y" : "10"
+}
+{"Name" : "assign4",
+"Type" : "assign",
+"Child": "endif1",
+"Input" : "x[j+1] <- temp", 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" :¡@"endif1"
+"Type" : "endif",
+"Child" : for3
+}
+
+{"Name" : "for4",
+"Type" : "for",
+"ChildInLoop" : "output1",
+"Child" : "end1";
+"ForInput" : 	{"Initialisation" : "i=0",
+				"Condition" : "i < 9",
+				"LoopStep" : "i++"
+				}, 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "output1",
+"Type" : "output",
+"Child" : "for4";
+"Input" : "x[i]" 
+"x" : "10",
+"y" : "10"
+}
+
+{"Name" : "end1",
+"Type" : "end",
+"x" : "10",
+"y" : "10"
+}
