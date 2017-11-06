@@ -108,7 +108,7 @@ public class LineFD extends JPanel{
 		this.setOpaque(false);
 		
 		// Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.yellow));
+		//this.setBorder(BorderFactory.createLineBorder(Color.yellow));
 		
 		//this.addMouseListener(new LineMouseClickListener());
 	}

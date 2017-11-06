@@ -59,7 +59,7 @@ public class Flow2Code extends JFrame{
 	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
 	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
-		
+		flowDiagram.setAppropriateBounds(); // make sure it's the right size.
 	    /** Attach Listeners to the Blocks **/
 	    
 	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram, blockPopup);
@@ -69,11 +69,10 @@ public class Flow2Code extends JFrame{
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
 	    
 		/** JScrollPane Construction **/
-	    ScrollablePanelForFD sp = new ScrollablePanelForFD();
-	    sp.setLayout(new BorderLayout());
-	    sp.add(flowDiagram, BorderLayout.CENTER);
-	    flowDiagram.setLocation(0,0);
-	    JScrollPane scrollPane = new JScrollPane(flowDiagram);
+	    ScrollablePanelForFD sp = new ScrollablePanelForFD((BlockFlowDiagram) flowDiagram);
+	    JScrollPane scrollPane = new JScrollPane(sp);
+	    
+	    
 	    
 	    /** Left flowDiagram tool bar **/
 	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager);
