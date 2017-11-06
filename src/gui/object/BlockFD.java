@@ -89,7 +89,7 @@ public abstract class BlockFD extends JPanel{
 	}
 	
 	/** Utility functions **/
-	public void updateBlock() {
+	public void updateBlockContent() {
 		// this function should be implemented by various block like BlockIF, BlockWHILE and many more.
 	}
 	
