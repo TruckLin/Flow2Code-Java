@@ -10,28 +10,13 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
-public class BlockFlowDiagram extends BlockFD{
-	
-	ArrayList<LineFD> lineList = new ArrayList<LineFD>();
+public class BlockFlowDiagram extends CompositeBlock{
 	
 	public BlockFlowDiagram(JSONObject model) {
 		super(model);
-		this.setLayout(null);
-		
-		// Temporary
-		this.setOpaque(false);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
 	/** Getters and Setters **/
-	
-	
-	/** Paint Component function**/
-	// This function is responsible for painting the lines.
-	@Override
-	public void paintComponent(Graphics g) {
-		
-	}
 	
 	/** Utility Functions **/
 	public void setAppropriateBounds() {

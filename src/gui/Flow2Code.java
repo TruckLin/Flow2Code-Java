@@ -72,8 +72,6 @@ public class Flow2Code extends JFrame{
 	    ScrollablePanelForFD sp = new ScrollablePanelForFD((BlockFlowDiagram) flowDiagram);
 	    JScrollPane scrollPane = new JScrollPane(sp);
 	    
-	    
-	    
 	    /** Left flowDiagram tool bar **/
 	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager);
 	    
@@ -138,6 +136,8 @@ public class Flow2Code extends JFrame{
 	
 	
 	public static void main(String[] args) {
+		
+		
 		// Run the GUI construction in the Event-Dispatching thread for thread-safety
 		SwingUtilities.invokeLater(new Runnable() {
 	         @Override

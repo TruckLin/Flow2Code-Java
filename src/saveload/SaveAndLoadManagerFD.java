@@ -28,7 +28,7 @@ public abstract class SaveAndLoadManagerFD {
 		return myObj;
 	}
 	public static JSONObject loadGraphicalInfoFromJSON(String path) {
-		JSONObject myObj = JSONUtils.getJSONObjectFromFile("/info.json");
+		JSONObject myObj = JSONUtils.getJSONObjectFromFile(path);
 		return myObj;
 	}
 	
@@ -640,7 +640,6 @@ public abstract class SaveAndLoadManagerFD {
 					attachMouseListenersToLine((LineFD)comp, linePopup);
 				}
 			}
-			
 		}else if(currentBlock instanceof BlockFOR) {
 			
 			Component[] compList = currentBlock.getComponents();

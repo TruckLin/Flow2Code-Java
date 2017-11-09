@@ -146,6 +146,7 @@ public class CommandUtilityFunctions {
 			JSONObject model = new JSONObject();
 			JSONObject START = generateEmptyJSONModel(nameManager,"Start");
 			JSONObject END = generateEmptyJSONModel(nameManager,"End");
+			model.put("Name",nameManager.getAvailableName());
 			model.put("Type", type);
 			model.append("Members",START);
 			model.append("Members",END);
@@ -180,7 +181,8 @@ public class CommandUtilityFunctions {
 			Point p1 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getOutport());
 			Point p2 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getInport());
 			LineFD line1 = new LineFD(blockStartLOOP, blockStartLOOP,p1,p2 );
-			block.add(line1);
+			
+			//block.add(line1);
 			
 			block.setBlockStartLOOP(blockStartLOOP);
 			block.setAppropriateBounds();
@@ -196,7 +198,8 @@ public class CommandUtilityFunctions {
 			Point p1 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getOutport());
 			Point p2 = blockStartLOOP.toContainerCoordinate(blockStartLOOP.getInport());
 			LineFD line1 = new LineFD(blockStartLOOP, blockStartLOOP,p1,p2 );
-			block.add(line1);
+			
+			//block.add(line1);
 			
 			block.setBlockStartLOOP(blockStartLOOP);
 			block.setAppropriateBounds();
@@ -222,7 +225,8 @@ public class CommandUtilityFunctions {
 			Point p1 = blockStartIF.toContainerCoordinate(blockStartIF.getTrueOutport());
 			Point p2 = blockEndIF.toContainerCoordinate(blockEndIF.getTrueInport());
 			LineFD line1 = new LineFD(blockStartIF, blockEndIF,p1,p2 );
-			block.add(line1);
+			
+			//block.add(line1);
 			
 			// Stupid check when adding block
 			block.setTrueLine(line1);
@@ -230,7 +234,8 @@ public class CommandUtilityFunctions {
 			Point p3 = blockStartIF.toContainerCoordinate(blockStartIF.getFalseOutport());
 			Point p4 = blockEndIF.toContainerCoordinate(blockEndIF.getFalseInport());
 			LineFD line2 = new LineFD(blockStartIF, blockEndIF,p3,p4);
-			block.add(line2);
+			
+			//block.add(line2);
 			
 			// Stupid check when adding block
 			block.setFalseLine(line2);

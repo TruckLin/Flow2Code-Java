@@ -60,7 +60,7 @@ public class BlockWHILE extends OrdinaryBlockFD {
 		return this.getModel().getString("Expression");
 	}
 	
-	/** EventHanling functions **/
+	/** EventHandling functions **/
 	@Override
 	public void updateBlock() {
 		String displayString = ("While( " + this.getExpression() + " )");

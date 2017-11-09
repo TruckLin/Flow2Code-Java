@@ -1,6 +1,9 @@
 package gui.object;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -57,7 +60,8 @@ public class LineFD{
 		}
 	}
 	
-	private ArrayList<Line2D> lineSegments;
+	// A LineFD consists of a few shape, which could be line, curve or other.
+	private ArrayList<Line2D> lineSegments; // use Line2D just for now.
 	
 	
 	/** Constructors **/
@@ -66,7 +70,7 @@ public class LineFD{
 		
 		// note that these startpt, endpt are with respect to container's coordinate.
 		
-		//Testing 
+		//Testing
 		//System.out.println("outPort = " + t1.toString());
 		//System.out.println("b1 = " + b1.toString());
 		//System.out.println("b1.getLocation() = " + b1.getLocation().toString());
@@ -84,7 +88,7 @@ public class LineFD{
 		this.Terminal = b2;
 		
 		this.startPt = startpt;
-		this.endPt = endPt;
+		this.endPt = endpt;
 		
 		Source.addPropertyChangeListener(blocklistener);
 		Terminal.addPropertyChangeListener(blocklistener);
@@ -116,6 +120,9 @@ public class LineFD{
 	}
 	public BlockChangeListener getBlockChangeListener() {
 		return this.blocklistener;
+	}
+	public ArrayList<Line2D> getLineSegments(){
+		return this.lineSegments;
 	}
 	
 	/** Setters **/
@@ -158,23 +165,16 @@ public class LineFD{
 		return this.Terminal.equals(b);
 	}
 	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	// this function is used to determine whether a mouse click point should trigger mouse event
+	public boolean isInRange(Point p) {
+		Point2D.Double p2 = new Point2D.Double(p.getX(), p.getY());
+		double triggerRadius = 2;
 		
-		Point a = new Point(1,1);
-		Point b = new Point(2,2);
-		Point temp;
-		temp = a;
-		a = b;
-		b = temp;
-		System.out.println("After swap : ");
-		System.out.println(a);
-		System.out.println(b);
-		System.out.println(temp);
-		
+		for(int i = 0; i < lineSegments.size(); i++) {
+			if(lineSegments.get(i).ptSegDist(p2) <= triggerRadius) {
+				return true;
+			}
+		}
+		return false;
 	}
-	
-
 }

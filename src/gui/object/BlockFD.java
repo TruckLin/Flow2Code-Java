@@ -141,7 +141,7 @@ public abstract class BlockFD extends JPanel{
 		int x;
 		int y;
 		for(int i = 0; i < len; i++) {
-			if(! (this.getComponent(i) instanceof LineFD)) {
+			
 			Point tempPoint = this.getComponent(i).getLocation();
 			x = (int)tempPoint.getX() - x_min + 5;
 			y = (int)tempPoint.getY() - y_min + 5;
@@ -150,7 +150,6 @@ public abstract class BlockFD extends JPanel{
 			//Testing
 			//System.out.println(i + "th component's bounds : " + 
 			//					this.getComponent(i).getBounds().toString());
-			}
 		}
 		
 		// Now set the bounds for While panel
