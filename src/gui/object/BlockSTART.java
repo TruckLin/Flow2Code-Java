@@ -38,5 +38,11 @@ public class BlockSTART extends BlockFD implements WithOutport{
 		// TODO Auto-generated method stub
 		this.outport = p;
 	}
+
+	@Override
+	protected void setCustomBounds(int x, int y, int width, int height) {
+		this.setBounds(x, y, width, height);
+		
+	}
 	
 }

@@ -56,10 +56,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 			Point p2 = endIf.toContainerCoordinate(endIf.getTrueInport());
 			LineFD line = new LineFD(startIf,endIf,p1,p2);
 			
-			// Stupid check when adding block
-			myPanel.setTrueLine(line);
-			
-			//myPanel.add(line);
+			myPanel.addLineFD(line);
 		}else {
 			String childName = startIf.getModel().getString("TrueChild");
 			
@@ -73,7 +70,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 					Point p2 = block_i.toContainerCoordinate(((WithInport)block_i).getInport());
 					LineFD line = new LineFD(startIf,block_i,p1,p2);
 					
-					//myPanel.add(line);
+					myPanel.addLineFD(line);
 					
 					//Testing
 					//System.out.println("line 1 : \n" + line.toString());
@@ -99,7 +96,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 							Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
 							LineFD line = new LineFD(b1,b2,p1,p2);
 							
-							//myPanel.add(line);
+							myPanel.addLineFD(line);
 							
 							// Then we might want to register line as the listener of both block.
 							
@@ -119,7 +116,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 					Point p2 = endIf.toContainerCoordinate(endIf.getTrueInport());
 					LineFD line = new LineFD(block_i,endIf,p1,p2);
 					
-					//myPanel.add(line);
+					myPanel.addLineFD(line);
 					
 					//Testing
 					//System.out.println("line 2 : \n" + line.toString());
@@ -138,10 +135,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 			Point p2 = endIf.toContainerCoordinate(endIf.getFalseInport());
 			LineFD line = new LineFD(startIf,endIf,p1,p2);
 			
-			// Stupid check when adding block
-			myPanel.setFalseLine(line);
-			
-			//myPanel.add(line);
+			myPanel.addLineFD(line);
 		}else {
 			//Testing
 			//System.out.println("false else part executed.");
@@ -160,7 +154,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 					Point p2 = block_i.toContainerCoordinate(((WithInport)block_i).getInport());
 					LineFD line = new LineFD(startIf,block_i,p1,p2);
 					
-					//myPanel.add(line);
+					myPanel.addLineFD(line);
 					
 					// Then we might want to register line as the listener of both block.
 
@@ -183,7 +177,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 							Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
 							LineFD line = new LineFD(b1,b2,p1,p2);
 							
-							//myPanel.add(line);
+							myPanel.addLineFD(line);
 							// Then we might want to register line as the listener of both block.
 							
 							//Finally
@@ -200,7 +194,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 					Point p2 = endIf.toContainerCoordinate(endIf.getFalseInport());
 					LineFD line = new LineFD(block_i,endIf,p1,p2);
 					
-					//myPanel.add(line);
+					myPanel.addLineFD(line);
 					// Then we might want to register line as the listener of both block.
 
 					//Finally

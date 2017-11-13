@@ -55,11 +55,12 @@ public class generateFlowDiagramProcess implements BlockGenerationProcess{
 						Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
 						LineFD line = new LineFD(b1,b2,p1,p2);
 						
-						//myPanel.add(line);
+						myPanel.addLineFD(line);
+						
 						// Then we might want to register line as the listener of both block.
 						
 						//Testing
-						//System.out.println("In SaveAndLoadManager.constructBlockFD()  FlowDiagram section:");
+						//System.out.println("In generateFlowDiagramProcess:");
 						//System.out.println("line" + i + " Source: " + line.getSource().toString());
 						//System.out.println("line" + i + " Terminal: " + line.getTerminal().toString());
 						
@@ -69,7 +70,11 @@ public class generateFlowDiagramProcess implements BlockGenerationProcess{
 				}
 			}
 		}
+		// Generate Line segments for all lines
+		myPanel.generateLineSegmentsForAllLines();
+		
 		BlockGenerationProcess.setGraphicalDetail(myPanel,graphicalInfo);
+		myPanel.setAppropriateBounds();
 		return myPanel;
 	}
 

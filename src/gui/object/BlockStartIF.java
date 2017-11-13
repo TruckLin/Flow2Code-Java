@@ -65,5 +65,11 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		this.inport = p;
 	}
 	
+	@Override
+	protected void setCustomBounds(int x, int y, int width, int height) {
+		this.setBounds(x, y, width, height);
+		
+	}
+	
 	
 }

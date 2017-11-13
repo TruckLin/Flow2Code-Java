@@ -12,27 +12,30 @@ import org.json.JSONObject;
 
 import gui.BlockEditDialog;
 import gui.WhileEditDialog;
+import gui.interfaces.WithInport;
+import gui.interfaces.WithOutport;
 import gui.manager.UndoManager;
 
 
-public class BlockWHILE extends OrdinaryBlockFD {
+public class BlockWHILE extends OrdinaryCompositeBlockFD{
 	private BlockStartLOOP blockStartLOOP;
+	private BlockEndLOOP blockEndLOOP;
 	
-	private PropertyChangeListener listener = e -> resetOutInPorts();
+	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
+	//private PropertyChangeListener BlockEndLoopListener = e -> {int h = BlockWHILE.this.getHeight() - blockEndLOOP.getHeight();
+	//												blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);};
 	
-	// Block defining variables
 	private WhileEditDialog editDialog;
 	
 	public BlockWHILE(JSONObject model){
 		super(model);
-		if(!model.getString("Type").equals("While")) {
-			System.out.println("Incompatible model with BlockWHILE.");
-		}else {
-			this.setOpaque(false); // we should always see through this while panel.
 		
-			//Temporary
-			this.setBorder(BorderFactory.createLineBorder(Color.black));
-		}
+		//this.addPropertyChangeListener(BlockEndLoopListener);
+		
+		this.setOpaque(false); // we should always see through this while panel.
+		
+		//Temporary
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	/** Getters and Setters **/
@@ -53,16 +56,34 @@ public class BlockWHILE extends OrdinaryBlockFD {
 			this.blockStartLOOP.getDisplayLabel().setText(displayString);
 			
 			// initialize inports and outports in the UI
-			resetOutInPorts();
+			resetInport();
 		}
 	}
+	public BlockEndLOOP getBlockEndLOOP() {
+		return this.blockEndLOOP;
+	}
+	public void setBlockEndLOOP(BlockEndLOOP comp) {
+		if (this.blockEndLOOP != null) {
+			// disconnect from previous model
+			this.blockEndLOOP.removePropertyChangeListener(listener);
+		}
+		this.blockEndLOOP = comp;
+		if (this.blockEndLOOP != null) {
+			// connect to new model
+			this.blockEndLOOP.addPropertyChangeListener(listener);
+
+			// initialize fields in the UI
+			resetOutport();
+		}
+	}
+	
 	public String getExpression() {
 		return this.getModel().getString("Expression");
 	}
 	
 	/** EventHandling functions **/
 	@Override
-	public void updateBlock() {
+	public void updateBlockContent() {
 		String displayString = ("While( " + this.getExpression() + " )");
 		this.blockStartLOOP.getDisplayLabel().setText(displayString);
 		
@@ -74,8 +95,9 @@ public class BlockWHILE extends OrdinaryBlockFD {
 		//this.blockStartLOOP.setAppropriateBounds();
 		
 		// update inports and outports in the UI
-		resetOutInPorts();
+		resetInOutPorts();
 	}
+	
 	@Override
 	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
 		this.editDialog = new WhileEditDialog(undoManager, this);
@@ -83,15 +105,28 @@ public class BlockWHILE extends OrdinaryBlockFD {
 	}
 	
 	/** Utility Functions **/
-	public void resetOutInPorts() {
-		Rectangle rec = this.getBlockStartLOOP().getBounds();
-		Point outport = new Point( (int)Math.round(rec.getWidth())/4,(int)rec.getHeight());
-		outport = new Point(blockStartLOOP.toContainerCoordinate(outport));
-		this.setOutport(outport);
+	@Override
+	public void resetInOutPorts() {
+		resetInport();
+		resetOutport();
+	}
 
+	@Override
+	public void resetInport() {
+		Rectangle rec = blockStartLOOP.getBounds();
 		Point inport = new Point( (int)Math.round(rec.getWidth())/2,0);
 		inport = new Point(blockStartLOOP.toContainerCoordinate(inport));
 		this.setInport(inport);
+		
 	}
+
+	@Override
+	public void resetOutport() {
+		Rectangle rec = blockEndLOOP.getBounds();
+		Point outport = new Point( (int)Math.round(rec.getWidth())/2,(int)rec.getHeight());
+		outport = new Point(blockEndLOOP.toContainerCoordinate(outport));
+		this.setOutport(outport);
+	}
+
 	
 }

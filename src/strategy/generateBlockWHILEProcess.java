@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
+import gui.object.BlockEndLOOP;
 import gui.object.BlockFD;
 import gui.object.BlockStartLOOP;
 import gui.object.BlockWHILE;
@@ -21,13 +22,19 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 		this.processor = processor;
 	}
 	
-	
 	@Override
 	public BlockFD generateBlock(JSONObject model, JSONObject graphicalInfo) {
 		BlockWHILE myPanel = new BlockWHILE(model);
 		BlockStartLOOP myStartLoop = (BlockStartLOOP) processor.generate(model.getJSONObject("StartLoop"), graphicalInfo);
+		BlockEndLOOP myEndLoop = new BlockEndLOOP();
 		myPanel.add(myStartLoop);
+		myPanel.add(myEndLoop);
 		myPanel.setBlockStartLOOP(myStartLoop);
+		myPanel.setBlockEndLOOP(myEndLoop);
+		myPanel.addLineFD(new LineFD(myStartLoop, myEndLoop,
+									myStartLoop.toContainerCoordinate(myStartLoop.getLoopOutport()),
+									myEndLoop.toContainerCoordinate(myEndLoop.getInport())) );
+		
 		
 		ArrayList<BlockFD> BlockList = new ArrayList<BlockFD>(); // keeping the list to add lines.
 		JSONArray myMembers = model.getJSONArray("Members");
@@ -61,7 +68,7 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 						Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
 						LineFD line = new LineFD(b1,b2,p1,p2);
 						
-						//myPanel.add(line);
+						myPanel.addLineFD(line);
 						// Then we might want to register line as the listener of both block.
 						
 						//Finally

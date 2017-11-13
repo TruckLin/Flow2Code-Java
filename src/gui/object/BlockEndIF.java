@@ -19,7 +19,6 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 	
 	public BlockEndIF(JSONObject model){
 		super(model);
-		this.removeAll();
 		this.setLayout(null);
 		
 		// setDefault bounds
@@ -42,7 +41,7 @@ public class BlockEndIF extends BlockFD implements WithOutport{
         int width = this.getWidth();
         int height = this.getHeight();
         
-        g.setColor(Color.red);
+        g.setColor(Color.yellow);
         g.fillOval(x, y, width, height);
     }
 	
@@ -68,6 +67,13 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 	public void setOutport(Point p) {
 		// TODO Auto-generated method stub
 		this.outport = p;
+	}
+	
+	/** override abstract methods**/
+	@Override
+	protected void setCustomBounds(int x, int y, int width, int height) {
+		this.setBounds(x, y, width, height);
+		
 	}
 
 }

@@ -1,7 +1,7 @@
 package gui;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -11,7 +11,9 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
+import gui.object.LineFD;
 import saveload.SaveAndLoadManagerFD;
+import strategy.BlockGenerator;
 
 public class Flow2Code extends JFrame{
 	
@@ -54,19 +56,25 @@ public class Flow2Code extends JFrame{
 	    BlockPopup blockPopup = new BlockPopup(undoManager);
 	    
 	    /** Demo FlowDiagram construction **/
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
-//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FDDemo1.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info.json");
-//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
-	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
-		flowDiagram.setAppropriateBounds(); // make sure it's the right size.
-	    /** Attach Listeners to the Blocks **/
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
+
 	    
-	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram, blockPopup);
-	    SaveAndLoadManagerFD.attachMouseListenersToAllLines(flowDiagram, linePopup);
+	    BlockGenerator blockGenerator = new BlockGenerator();
+	    BlockFD flowDiagram =  blockGenerator.generate(myModel, myInfo);
 	    
 	    //Testing
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
+	    //ArrayList<LineFD> linelist = ((BlockFlowDiagram)flowDiagram).getLineList();
+	    //for(LineFD line : linelist) {
+	    // 	System.out.println("LineFD :" );
+	    //	System.out.println("    Source : " + line.getSource().getModel().getString("Type"));
+	    //	System.out.println("    Terminal : " + line.getTerminal().getModel().getString("Type"));
+	    //}
 	    
 		/** JScrollPane Construction **/
 	    ScrollablePanelForFD sp = new ScrollablePanelForFD((BlockFlowDiagram) flowDiagram);

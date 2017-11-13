@@ -27,7 +27,7 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 		this.flowDiagram.addPropertyChangeListener(listener);
 		
 		this.add(this.flowDiagram);
-		this.revalidate();
+		this.updateSize();
 	}
 	
 	public void updateSize() {

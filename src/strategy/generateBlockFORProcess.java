@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
+import gui.object.BlockEndLOOP;
 import gui.object.BlockFD;
 import gui.object.BlockFOR;
 import gui.object.BlockStartLOOP;
@@ -26,8 +27,17 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 	public BlockFD generateBlock(JSONObject model, JSONObject graphicalInfo) {
 		BlockFOR myPanel = new BlockFOR(model);
 		BlockStartLOOP myStartLoop = (BlockStartLOOP) processor.generate(model.getJSONObject("StartLoop"), graphicalInfo);
+		BlockEndLOOP myEndLoop = new BlockEndLOOP();
 		myPanel.add(myStartLoop);
+		myPanel.add(myEndLoop);
 		myPanel.setBlockStartLOOP(myStartLoop);
+		myPanel.setBlockEndLOOP(myEndLoop);
+		myPanel.addLineFD(new LineFD(myStartLoop, myEndLoop,
+				myStartLoop.toContainerCoordinate(myStartLoop.getLoopOutport()),
+				myEndLoop.toContainerCoordinate(myEndLoop.getInport())) );
+		
+		//Testing
+		//System.out.println("step1,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 		
 		ArrayList<BlockFD> BlockList = new ArrayList<BlockFD>(); // keeping the list to add lines.
 		JSONArray myMembers = model.getJSONArray("Members");
@@ -38,6 +48,9 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 			BlockList.add(tempBlock); // add to the collection of Blocks.
 			myPanel.add(tempBlock);
 		}
+		
+		//Testing
+		//System.out.println("step2,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 		
 		BlockList.add(myStartLoop); // also add BlockStartLoop into the list.
 		
@@ -61,7 +74,7 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 						Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
 						LineFD line = new LineFD(b1,b2,p1,p2);
 						
-						//myPanel.add(line);
+						myPanel.addLineFD(line);
 						// Then we might want to register line as the listener of both block.
 						
 						//Finally
@@ -70,8 +83,18 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 				}
 			}
 		}
+		//Testing
+		System.out.println("Before setGraphicalDetail,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
+
 		BlockGenerationProcess.setGraphicalDetail(myPanel,graphicalInfo);
+		//Testing
+		System.out.println("After setGraphicalDetail, \nEndLoop's bounds = " + myEndLoop.getBounds().toString());
+			
+		
 		myPanel.setAppropriateBounds();
+		
+		//Testing
+		//System.out.println("after setAppropriateBounds(), \nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 		return myPanel;
 	}
 }

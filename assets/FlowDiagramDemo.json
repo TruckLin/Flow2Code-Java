@@ -47,6 +47,18 @@
 								"Child" : "EndIf1"}],
 							"Child" : "StartLoop1"
 							}],
+				"Child" : "For1"
+				},
+				{"Type" : "For",
+				"Name" : "For1",
+				"Initialisation" : "i = 0",
+				"Condition" : "i < 10",
+				"Step" : "i = i+1",
+				"StartLoop" : {"Type" : "StartLoop",
+								"Name" : "StartLoop2",
+								"Child" : "StartLoop2"
+							  },
+				"Members" : [],
 				"Child" : "End1"
 				},
 				{"Type" : "End",

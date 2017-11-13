@@ -13,6 +13,8 @@ import org.json.JSONObject;
 public class BlockStartLOOP extends OrdinaryBlockFD{
 	JLabel displayLabel;
 	
+	Point loopOutport;
+	
 	public BlockStartLOOP(JSONObject model) {
 		super(model);
 		this.setLayout(new FlowLayout());
@@ -22,6 +24,9 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		
 		// set the specific inport for BlockStartLOOP
 		this.setInport(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() ));
+		
+		// tset default loopOutport
+		this.setLoopOutport(new Point( Math.round(this.getWidth()/4), this.getHeight() ));
 		
 		// Set the location of BlockStartLOOP
 		this.setLocation(5, 5);
@@ -44,6 +49,12 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 			this.displayLabel = temp;
 			this.add(temp);
 		}
+	}
+	public Point getLoopOutport() {
+		return this.loopOutport;
+	}
+	public void setLoopOutport(Point p) {
+		this.loopOutport = p;
 	}
 	
 	/** Utility Functions **/

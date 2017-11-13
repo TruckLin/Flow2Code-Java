@@ -10,7 +10,7 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
-public class BlockFlowDiagram extends CompositeBlock{
+public class BlockFlowDiagram extends CompositeBlockFD{
 	
 	public BlockFlowDiagram(JSONObject model) {
 		super(model);
@@ -19,8 +19,5 @@ public class BlockFlowDiagram extends CompositeBlock{
 	/** Getters and Setters **/
 	
 	/** Utility Functions **/
-	public void setAppropriateBounds() {
-		super.setAppropriateBounds();
-		// We need a minimum size for FlowDiagram Panel.
-	}
+
 }

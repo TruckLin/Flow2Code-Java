@@ -19,7 +19,7 @@ import java.beans.PropertyChangeSupport;
 public abstract class BlockFD extends JPanel{
 	
 	private JSONObject model;
-	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
@@ -107,7 +107,8 @@ public abstract class BlockFD extends JPanel{
 		//Testing
 		//System.out.println("setAppropriateBounds() is called :");
 		//System.out.println("Initial parameters : ");
-		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
+		//System.out.println("Type of the Block = " + this.getModel().getString("Type"));
+		//System.out.println("Name of the Block = " + this.getModel().getString("Name"));
 		
 		int x_min = Integer.MAX_VALUE;
 		int y_min = Integer.MAX_VALUE;
@@ -118,7 +119,9 @@ public abstract class BlockFD extends JPanel{
 			Rectangle tempBounds = this.getComponent(i).getBounds();
 
 			//Testing
+			//System.out.println(i + "th component's name : " + this.getComponent(i).getClass());
 			//System.out.println(i + "th component's bounds : " + tempBounds.toString());
+			
 			
 			if(tempBounds.getMinX() < x_min) {
 				x_min = (int)tempBounds.getMinX();
@@ -143,8 +146,8 @@ public abstract class BlockFD extends JPanel{
 		for(int i = 0; i < len; i++) {
 			
 			Point tempPoint = this.getComponent(i).getLocation();
-			x = (int)tempPoint.getX() - x_min + 5;
-			y = (int)tempPoint.getY() - y_min + 5;
+			x = (int)tempPoint.getX() - x_min;
+			y = (int)tempPoint.getY() - y_min;
 			this.getComponent(i).setLocation(new Point(x,y));
 			
 			//Testing
@@ -153,13 +156,12 @@ public abstract class BlockFD extends JPanel{
 		}
 		
 		// Now set the bounds for While panel
-		int width = x_max - x_min + 10;
-		int height = y_max - y_min + 10; // just big enough to contain all of them.
+		int width = x_max - x_min;
+		int height = y_max - y_min; // just big enough to contain all of them.
 		Point tempPoint = this.getLocation();
-		x = (int)tempPoint.getX() + x_min - 5;
-		y = (int)tempPoint.getY() + y_min - 5;
-		this.setBounds(x,y,width,height);
-		
+		x = (int)tempPoint.getX() + x_min;
+		y = (int)tempPoint.getY() + y_min;
+		this.setCustomBounds(x, y, width, height);
 		
 		if(this.getParent() instanceof BlockFD) {
 			((BlockFD)this.getParent()).setAppropriateBounds();
@@ -170,6 +172,8 @@ public abstract class BlockFD extends JPanel{
 		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
 		
 	}
+	// Some obstract methods that change how each blocks deal with setAppropriateBounds() method
+	protected abstract void setCustomBounds(int x, int y, int width, int height);
 
 	public void translateLocation(int dx, int dy) {
 		int x = (int)this.getLocation().getX();

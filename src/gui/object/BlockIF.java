@@ -13,22 +13,15 @@ import gui.manager.UndoManager;
 import gui.mouselistener.DemoMouseListener;
 import gui.mouselistener.MouseEnterListener;
 
-public class BlockIF extends OrdinaryBlockFD{
+public class BlockIF extends OrdinaryCompositeBlockFD{
 	private BlockStartIF blockStartIF;
 	private BlockEndIF blockEndIF;
-	
-	private LineFD trueLine;
-	private LineFD falseLine; 
-	// This is a stupid check that I need when adding blocks inside BlockIF, trueLine is the line on the right,
-	// falseLine is the line one the left.
-	
-	private PropertyChangeListener listener = e -> resetOutInPorts();
 	
 	public BlockIF(JSONObject model) {
 		super(model);
 
 		this.setOpaque(false); // we should always see through this while panel.
-		
+
 		//Set various default property
 		this.setSize(110,110);
 		this.setLayout(null);
@@ -37,31 +30,12 @@ public class BlockIF extends OrdinaryBlockFD{
 		//DemoMouseListener myListener = new DemoMouseListener(undoManager,this);
 		//this.addMouseMotionListener(myListener);
 		//this.addMouseListener(myListener);
-		
+
 		//Finally set the location of ports.
 		//this.setPorts();
 	}
 	
-	/** Utility Functions **/
-	public void resetOutInPorts() {
-		Point oldPoint = this.getOutport();
-		resetOutport();
-		resetInport();
-		
-		// Testing
-		//System.out.println("resetOutInPorts() is called.");
-		
-		this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
-		
-	}
-	public void resetOutport() {
-		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport());
-		this.setOutport(p);
-	}
-	public void resetInport() {
-		Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport());
-		this.setInport(p);
-	}
+
 	
 	
 	/** Getters and Setters **/
@@ -99,25 +73,27 @@ public class BlockIF extends OrdinaryBlockFD{
 			resetOutport();
 		}
 	}
-	public LineFD getTrueLine() {
-		return this.trueLine;
-	}
-	public void setTrueLine(LineFD line) {
-		this.trueLine = line;
-	}
-	public LineFD getFalseLine() {
-		return this.falseLine;
-	}
-	public void setFalseLine(LineFD line) {
-		this.falseLine = line;
-	}
-	
 	
 	/** Utilities **/
-	public void setAppropriateBounds() {
-		// This function set approriate size according to it's children.
-		// Size that is just big enough to contain all the children.
-		super.setAppropriateBounds();
-		resetOutInPorts();
+	@Override
+	public void resetInOutPorts() {
+		resetInport();
+		resetOutport();
+	}
+	
+	@Override
+	public void resetInport() {
+		Point oldPoint = this.getInport();
+		Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport());
+		this.setInport(p);
+	//	this.getPropertyChangeSupport().firePropertyChange("Inport", oldPoint, this.getInport());
+	}
+
+	@Override
+	public void resetOutport() {
+		Point oldPoint = this.getOutport();
+		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport());
+		this.setOutport(p);
+	//	this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
 	}
 }

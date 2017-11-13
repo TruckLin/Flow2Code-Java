@@ -54,6 +54,9 @@ public class LineFD{
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			
+			// Testing
+			//System.out.println("Property of Blocks changed and detected by line.");
+			
 			updateLine();
 			/** tell parent panel to repaint **/
 			propertyChangeSupport.firePropertyChange("EndPoints",null, this); // we don't really care about old value.
@@ -61,7 +64,7 @@ public class LineFD{
 	}
 	
 	// A LineFD consists of a few shape, which could be line, curve or other.
-	private ArrayList<Line2D> lineSegments; // use Line2D just for now.
+	private ArrayList<Line2D> lineSegments = new ArrayList<Line2D>(); // use Line2D just for now.
 	
 	
 	/** Constructors **/
@@ -152,6 +155,9 @@ public class LineFD{
 		
 		p1 = Source.toContainerCoordinate(p1);
 		p2 = Terminal.toContainerCoordinate(p2);
+		
+		this.startPt = p1;
+		this.endPt = p2;
 		
 		//Testing
 		//System.out.println("LineFD.reDrawLine() has been called.");

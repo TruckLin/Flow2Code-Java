@@ -41,8 +41,12 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 
 	@Override
 	public void setInport(Point p) {
-		this.inport = p;
-		
+		this.inport = p;	
+	}
+	
+	@Override
+	protected void setCustomBounds(int x, int y, int width, int height) {
+		this.setBounds(x,y,width,height);
 	}
 
 }

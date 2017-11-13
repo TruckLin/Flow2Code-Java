@@ -9,13 +9,26 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
-public class BlockFOR extends OrdinaryBlockFD {
+import gui.interfaces.WithInport;
+import gui.interfaces.WithOutport;
+
+public class BlockFOR extends OrdinaryCompositeBlockFD {
 	private BlockStartLOOP blockStartLOOP;
+	private BlockEndLOOP blockEndLOOP;
 	
-	private PropertyChangeListener listener = e -> resetOutInPorts();
-	
+	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
+	private PropertyChangeListener MoveBlockEndLoopListener = 
+			e -> {int h = BlockFOR.this.getHeight() - blockEndLOOP.getHeight();
+				blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
+				
+				//Testing
+				System.out.println("MoveBlockEndLoopListener triggered.");
+			};
+														
 	public BlockFOR(JSONObject model){
 		super(model);
+		
+		this.addPropertyChangeListener(MoveBlockEndLoopListener);
 		
 		this.setOpaque(false); // we should always see through this while panel.
 		
@@ -39,21 +52,50 @@ public class BlockFOR extends OrdinaryBlockFD {
 			this.blockStartLOOP.addPropertyChangeListener(listener);
 
 			// initialize fields in the UI
-			resetOutInPorts();
+			resetInport();
+		}
+	}
+	public BlockEndLOOP getBlockEndLOOP() {
+		return this.blockEndLOOP;
+	}
+	public void setBlockEndLOOP(BlockEndLOOP comp) {
+		if (this.blockEndLOOP != null) {
+			// disconnect from previous model
+			this.blockEndLOOP.removePropertyChangeListener(listener);
+		}
+		this.blockEndLOOP = comp;
+		if (this.blockEndLOOP != null) {
+			// connect to new model
+			this.blockEndLOOP.addPropertyChangeListener(listener);
+
+			// initialize fields in the UI
+			resetOutport();
 		}
 	}
 	
 	
 	/** Utility Functions **/
-	public void resetOutInPorts() {
-		Rectangle rec = this.getBlockStartLOOP().getBounds();
-		Point outport = new Point( (int)Math.round(rec.getWidth())/4,(int)rec.getHeight());
-		outport = new Point(blockStartLOOP.toContainerCoordinate(outport));
-		this.setOutport(outport);
+	@Override
+	public void resetInOutPorts() {
+		resetInport();
+		resetOutport();
+	}
 
+	@Override
+	public void resetInport() {
+		Rectangle rec = blockStartLOOP.getBounds();
 		Point inport = new Point( (int)Math.round(rec.getWidth())/2,0);
 		inport = new Point(blockStartLOOP.toContainerCoordinate(inport));
 		this.setInport(inport);
+		
+	}
+
+	@Override
+	public void resetOutport() {
+		Rectangle rec = blockEndLOOP.getBounds();
+		Point outport = new Point( (int)Math.round(rec.getWidth())/2,(int)rec.getHeight());
+		outport = new Point(blockEndLOOP.toContainerCoordinate(outport));
+		this.setOutport(outport);
 	}
 	
 }
