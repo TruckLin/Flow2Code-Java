@@ -30,8 +30,8 @@ public class TranslateLocationCommand implements Command {
 		// Testing
 		//System.out.println("In execution of TranslateLocationCommand:");
 		
-		
 		block.translateLocation(dx, dy);
+		
 		((BlockFD)block.getParent()).setAppropriateBounds();
 		
 		//Testing

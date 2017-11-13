@@ -70,5 +70,10 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 	protected boolean shouldAddLoopDrag() {
 		return false;
 	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

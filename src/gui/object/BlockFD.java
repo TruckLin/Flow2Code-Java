@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import gui.BlockEditDialog;
 import gui.manager.UndoManager;
 import gui.mouselistener.BlockDragListener;
+import gui.mouselistener.EndLoopDragListener;
 import gui.mouselistener.LoopDragListener;
 
 import java.beans.PropertyChangeEvent;
@@ -22,21 +23,6 @@ public abstract class BlockFD extends JPanel{
 	
 	private JSONObject model;
 	protected UndoManager undoManager;
-	
-	protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-	
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		propertyChangeSupport.addPropertyChangeListener(listener);
-	}
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		propertyChangeSupport.removePropertyChangeListener(listener);
-	}
-	public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) {
-		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
-	}
-	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		propertyChangeSupport.removePropertyChangeListener(propertyName,listener);
-	}
 	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
@@ -61,27 +47,22 @@ public abstract class BlockFD extends JPanel{
 	public void setLocation(int x, int y) {
 		Point oldValue = this.getLocation();
 		super.setLocation(x, y);
-		propertyChangeSupport.firePropertyChange("Location", oldValue, this.getLocation());
 	}
 	public void setLocation(Point p) {
 		Point oldValue = this.getLocation();
 		super.setLocation(p);
-		propertyChangeSupport.firePropertyChange("Location", oldValue, p);
+		this.firePropertyChange("Location", oldValue, p);
 	}
 	
 	public void setBounds(int x, int y, int width, int height) {
 		Rectangle oldValue = this.getBounds();
 		super.setBounds(x, y, width, height);
-		propertyChangeSupport.firePropertyChange("Bounds", oldValue, this.getBounds());
+		this.firePropertyChange("Bounds", oldValue, this.getBounds());
 	}
 	public void setBounds(Rectangle rec) {
 		Rectangle oldValue = this.getBounds();
 		super.setBounds(rec);
-		propertyChangeSupport.firePropertyChange("Bounds", oldValue, rec);
-	}
-	
-	public PropertyChangeSupport getPropertyChangeSupport() {
-		return this.propertyChangeSupport;
+		this.firePropertyChange("Bounds", oldValue, rec);
 	}
 	
 	public UndoManager getUndoManager() {
@@ -184,6 +165,7 @@ public abstract class BlockFD extends JPanel{
 	// Some obstract methods that change how each blocks deal with setAppropriateBounds() method
 	protected abstract void setCustomBounds(int x, int y, int width, int height);
 
+	/** Move the block by displacement **/
 	public void translateLocation(int dx, int dy) {
 		int x = (int)this.getLocation().getX();
 		int y = (int)this.getLocation().getY();
@@ -221,12 +203,19 @@ public abstract class BlockFD extends JPanel{
 			this.addMouseListener(lis);
 		}
 		
+		if(this.shouldAddEndLoopDrag()) {
+			EndLoopDragListener lis = new EndLoopDragListener(this.undoManager, this);
+			this.addMouseMotionListener(lis);
+			this.addMouseListener(lis);
+		}
+		
 		// Testing
 		//System.out.println("end by : " + this.getClass());
 	}
 	protected abstract boolean isCompositeBlockFD();
 	protected abstract boolean shouldAddBlockDrag();
 	protected abstract boolean shouldAddLoopDrag();
+	protected abstract boolean shouldAddEndLoopDrag();
 	
 	
 }

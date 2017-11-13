@@ -91,11 +91,16 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 	@Override
 	protected boolean shouldAddBlockDrag() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 	@Override
 	protected boolean shouldAddLoopDrag() {
 		return false;
+	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

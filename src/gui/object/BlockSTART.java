@@ -65,5 +65,10 @@ public class BlockSTART extends BlockFD implements WithOutport{
 	protected boolean shouldAddLoopDrag() {
 		return false;
 	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

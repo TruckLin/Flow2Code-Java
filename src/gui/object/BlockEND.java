@@ -39,11 +39,10 @@ public class BlockEND extends BlockFD implements WithInport{
 		this.inport = p;
 	}
 	
-	/** override abstract methods**/
+		/** override abstract methods**/
 	@Override
 	protected void setCustomBounds(int x, int y, int width, int height) {
 		this.setBounds(x, y, width, height);
-		
 	}
 
 	@Override
@@ -64,6 +63,12 @@ public class BlockEND extends BlockFD implements WithInport{
 	}
 	@Override
 	protected boolean shouldAddLoopDrag() {
+		return false;
+	}
+
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	

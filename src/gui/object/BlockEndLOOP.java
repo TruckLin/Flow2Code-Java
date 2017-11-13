@@ -24,6 +24,16 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 		this.setInport(new Point(Math.round(this.getWidth()/2),0));
 		
 	}
+	/** Override the setLocation function **/
+	public void setLocation(int x, int y) {
+		Point oldValue = this.getLocation();
+		super.setLocation(x, y);
+	}
+	public void setLocation(Point p) {
+		Point oldValue = this.getLocation();
+		super.setLocation(p);
+		this.firePropertyChange("Location", oldValue, p);
+	}
 	
 	/** Graphics setting **/
 	protected void paintComponent(Graphics g) {
@@ -68,12 +78,17 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 	@Override
 	protected boolean shouldAddBlockDrag() {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 	
 	@Override
 	protected boolean shouldAddLoopDrag() {
 		return false;
+	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 }

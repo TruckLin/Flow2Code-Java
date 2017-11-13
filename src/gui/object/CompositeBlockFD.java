@@ -118,4 +118,9 @@ public abstract class CompositeBlockFD extends BlockFD{
 	protected boolean shouldAddLoopDrag() {
 		return false;
 	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

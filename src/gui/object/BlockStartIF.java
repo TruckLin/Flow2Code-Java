@@ -92,6 +92,11 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	protected boolean shouldAddLoopDrag() {
 		return true;
 	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 	
