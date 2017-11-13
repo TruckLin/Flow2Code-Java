@@ -56,12 +56,12 @@ public class Flow2Code extends JFrame{
 	    BlockPopup blockPopup = new BlockPopup(undoManager);
 	    
 	    /** Demo FlowDiagram construction **/
-//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
-//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
 
 	    
 	    BlockGenerator blockGenerator = new BlockGenerator();
@@ -75,6 +75,11 @@ public class Flow2Code extends JFrame{
 	    //	System.out.println("    Source : " + line.getSource().getModel().getString("Type"));
 	    //	System.out.println("    Terminal : " + line.getTerminal().getModel().getString("Type"));
 	    //}
+	    
+	    // Set a common UndoManager for all Blocks.
+	    flowDiagram.setUndoManager(undoManager);
+	    // Attach various listeners for blocks
+	    flowDiagram.addVariousMouseListeners();
 	    
 		/** JScrollPane Construction **/
 	    ScrollablePanelForFD sp = new ScrollablePanelForFD((BlockFlowDiagram) flowDiagram);

@@ -22,18 +22,23 @@ public class BlockFOR extends OrdinaryCompositeBlockFD {
 				blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
 				
 				//Testing
-				System.out.println("MoveBlockEndLoopListener triggered.");
+				//System.out.println("MoveBlockEndLoopListener triggered.");
+				//System.out.println("height = " + h);
+				
 			};
 														
 	public BlockFOR(JSONObject model){
 		super(model);
 		
-		this.addPropertyChangeListener(MoveBlockEndLoopListener);
-		
 		this.setOpaque(false); // we should always see through this while panel.
 		
 		//Temporary
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBounds(0,0,100,80); // initial bounds
+		
+		// Add listener that change the position of BlockEndLOOP, order is important,
+		// it needs to be put after setBounds or any setters of the component.
+		this.addPropertyChangeListener(MoveBlockEndLoopListener);
 		
 	}
 	

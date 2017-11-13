@@ -56,7 +56,15 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 	public void setLoopOutport(Point p) {
 		this.loopOutport = p;
 	}
-	
-	/** Utility Functions **/
+
+	/** override abstract method **/
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		return false;
+	}
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return true;
+	}
 
 }

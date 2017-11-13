@@ -84,11 +84,11 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 			}
 		}
 		//Testing
-		System.out.println("Before setGraphicalDetail,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
+		//System.out.println("Before setGraphicalDetail,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 
 		BlockGenerationProcess.setGraphicalDetail(myPanel,graphicalInfo);
 		//Testing
-		System.out.println("After setGraphicalDetail, \nEndLoop's bounds = " + myEndLoop.getBounds().toString());
+		//System.out.println("After setGraphicalDetail, \nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 			
 		
 		myPanel.setAppropriateBounds();

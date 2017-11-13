@@ -26,7 +26,7 @@ public class BlockDragListener extends MouseAdapter{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		//Testing
-		//System.out.println("mousePressed triggered.");
+		System.out.println("mousePressed triggered.");
 		
 		this.x = e.getX();
 		this.y = e.getY();
@@ -34,7 +34,7 @@ public class BlockDragListener extends MouseAdapter{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		//Testing
-		//System.out.println("mouseDragged triggered.");
+		System.out.println("mouseDragged triggered.");
 		
 		int x2 = e.getX();
 		int y2 = e.getY();

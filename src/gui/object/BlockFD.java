@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import gui.BlockEditDialog;
 import gui.manager.UndoManager;
+import gui.mouselistener.BlockDragListener;
+import gui.mouselistener.LoopDragListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -19,6 +21,8 @@ import java.beans.PropertyChangeSupport;
 public abstract class BlockFD extends JPanel{
 	
 	private JSONObject model;
+	protected UndoManager undoManager;
+	
 	protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -79,7 +83,12 @@ public abstract class BlockFD extends JPanel{
 	public PropertyChangeSupport getPropertyChangeSupport() {
 		return this.propertyChangeSupport;
 	}
-
+	
+	public UndoManager getUndoManager() {
+		return this.undoManager;
+	}
+	
+	public abstract void setUndoManager(UndoManager undoManager);
 
 	
 	/** Event handling functions **/
@@ -184,4 +193,40 @@ public abstract class BlockFD extends JPanel{
 		
 		this.setLocation(x, y);
 	}
+	
+	
+	/** Methods that attach listeners to Blocks **/
+	public void addVariousMouseListeners() {
+		//Testing
+		//System.out.println("addVariousMouseListeners() is called by : " + this.getClass());
+		
+		if(isCompositeBlockFD()) {
+			Component[] componentList = this.getComponents();
+			for(Component comp:componentList ) {
+				if(comp instanceof BlockFD) {
+					((BlockFD)comp).addVariousMouseListeners();
+				}
+			}
+		}
+		
+		if(this.shouldAddBlockDrag()) {
+			BlockDragListener lis = new BlockDragListener(this.undoManager, this);
+			this.addMouseMotionListener(lis);
+			this.addMouseListener(lis);
+		}
+		
+		if(this.shouldAddLoopDrag()) {
+			LoopDragListener lis = new LoopDragListener(this.undoManager, this);
+			this.addMouseMotionListener(lis);
+			this.addMouseListener(lis);
+		}
+		
+		// Testing
+		//System.out.println("end by : " + this.getClass());
+	}
+	protected abstract boolean isCompositeBlockFD();
+	protected abstract boolean shouldAddBlockDrag();
+	protected abstract boolean shouldAddLoopDrag();
+	
+	
 }

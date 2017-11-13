@@ -8,6 +8,7 @@ import javax.swing.*;
 import org.json.JSONObject;
 
 import gui.interfaces.WithOutport;
+import gui.manager.UndoManager;
 
 public class BlockSTART extends BlockFD implements WithOutport{
 	private Point outport;
@@ -38,11 +39,31 @@ public class BlockSTART extends BlockFD implements WithOutport{
 		// TODO Auto-generated method stub
 		this.outport = p;
 	}
-
+	
+	/** override abstract methods**/
 	@Override
 	protected void setCustomBounds(int x, int y, int width, int height) {
 		this.setBounds(x, y, width, height);
 		
+	}
+	@Override
+	public void setUndoManager(UndoManager undoManager) {
+		this.undoManager = undoManager;
+	}
+
+	@Override
+	protected boolean isCompositeBlockFD() {
+		return false;
+	}
+	
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return false;
 	}
 	
 }

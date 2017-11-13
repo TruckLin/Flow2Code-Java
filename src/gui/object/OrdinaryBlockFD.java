@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
+import gui.manager.UndoManager;
 
 public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, WithOutport{
 	private Point inport;
@@ -44,9 +45,30 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 		this.inport = p;	
 	}
 	
+	/** Override the abstract methods **/
 	@Override
 	protected void setCustomBounds(int x, int y, int width, int height) {
 		this.setBounds(x,y,width,height);
+	}
+	
+	@Override
+	public void setUndoManager(UndoManager undoManager) {
+		this.undoManager = undoManager;
+	}
+	
+	@Override
+	protected boolean isCompositeBlockFD() {
+		return false;
+	}
+	
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return false;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.awt.Point;
 import javax.swing.BorderFactory;
 
 import gui.interfaces.WithInport;
+import gui.manager.UndoManager;
 
 public class BlockEndLOOP extends BlockFD implements WithInport{
 	
@@ -47,11 +48,32 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 		
 	}
 	
-	/** override abstract methods**/
+	/** override abstract methods **/
 	@Override
 	protected void setCustomBounds(int x, int y, int width, int height) {
 		this.setBounds(x, y, width, height);
 		
+	}
+
+	@Override
+	public void setUndoManager(UndoManager undoManager) {
+		this.undoManager = undoManager;
+	}
+	
+	@Override
+	protected boolean isCompositeBlockFD() {
+		return false;
+	}
+	
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return false;
 	}
 	
 }

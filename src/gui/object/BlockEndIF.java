@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import org.json.JSONObject;
 
 import gui.interfaces.WithOutport;
+import gui.manager.UndoManager;
 
 public class BlockEndIF extends BlockFD implements WithOutport{
 	private Point outport;
@@ -74,6 +75,27 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 	protected void setCustomBounds(int x, int y, int width, int height) {
 		this.setBounds(x, y, width, height);
 		
+	}
+
+	@Override
+	public void setUndoManager(UndoManager undoManager) {
+		this.undoManager = undoManager;
+		
+	}
+	
+	@Override
+	protected boolean isCompositeBlockFD() {
+		return false;
+	}
+
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return false;
 	}
 
 }

@@ -27,9 +27,15 @@ public class TranslateLocationCommand implements Command {
 	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
+		// Testing
+		//System.out.println("In execution of TranslateLocationCommand:");
+		
+		
 		block.translateLocation(dx, dy);
 		((BlockFD)block.getParent()).setAppropriateBounds();
+		
+		//Testing
+		//System.out.println("this print line is executed after getParent(). ");
 		
 	}
 

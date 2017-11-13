@@ -22,20 +22,29 @@ public class BlockWHILE extends OrdinaryCompositeBlockFD{
 	private BlockEndLOOP blockEndLOOP;
 	
 	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
-	//private PropertyChangeListener BlockEndLoopListener = e -> {int h = BlockWHILE.this.getHeight() - blockEndLOOP.getHeight();
-	//												blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);};
-	
+		private PropertyChangeListener MoveBlockEndLoopListener = 
+				e -> {int h = BlockWHILE.this.getHeight() - blockEndLOOP.getHeight();
+					blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
+					
+					//Testing
+					//System.out.println("MoveBlockEndLoopListener triggered.");
+					//System.out.println("height = " + h);
+					
+				};
 	private WhileEditDialog editDialog;
 	
 	public BlockWHILE(JSONObject model){
 		super(model);
 		
-		//this.addPropertyChangeListener(BlockEndLoopListener);
-		
 		this.setOpaque(false); // we should always see through this while panel.
 		
 		//Temporary
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBounds(0,0,100,80); // initial bounds
+		
+		// Add listener that change the position of BlockEndLOOP, order is important,
+		// it needs to be put after setBounds or any setters of the component.
+		this.addPropertyChangeListener(MoveBlockEndLoopListener);
 	}
 	
 	/** Getters and Setters **/

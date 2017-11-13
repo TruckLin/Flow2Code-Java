@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
+
+import gui.manager.UndoManager;
 
 public abstract class CompositeBlockFD extends BlockFD{
 
@@ -27,9 +30,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 		super(model);
 		
 		this.setLayout(null);
-		
-		
-		
+				
 		// Temporary
 		this.setOpaque(false);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -92,5 +93,29 @@ public abstract class CompositeBlockFD extends BlockFD{
 	@Override
 	protected void setCustomBounds(int x, int y, int width, int height) {
 		this.setBounds(x,y,width,height);
+	}
+	@Override
+	public void setUndoManager(UndoManager undoManager) {
+		this.undoManager = undoManager;
+		Component[] componentList = this.getComponents();
+		for(Component comp:componentList ) {
+			if(comp instanceof BlockFD) {
+				((BlockFD)comp).setUndoManager(undoManager);
+			}
+		}
+	}
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isCompositeBlockFD() {
+		return true;
+	}
+	
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return false;
 	}
 }
