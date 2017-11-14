@@ -122,9 +122,9 @@ public class ModelGenerator{
 			(modelGenerator, nameCounterManager) -> {
 				JSONObject model = new JSONObject();
 				model.put("Type", "Declare");
-				model.put("Name","");
+				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("Variables",new JSONArray());
-				model.put("Child", nameCounterManager.getAvailableName());
+				model.put("Child", "");
 				
 				return model;
 			});

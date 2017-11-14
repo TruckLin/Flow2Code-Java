@@ -13,12 +13,13 @@ public interface BlockGenerationProcess{
 
 			//Testing
 			//System.out.println("Within setGraphicalDetail() : myKey = " + myKey);
+			if(graphicalInfo!= null && graphicalInfo.has(myKey) ) {
+				JSONObject info = graphicalInfo.getJSONObject(myKey);
+				int x = info.getInt("x");
+				int y = info.getInt("y");
 		
-			JSONObject info = graphicalInfo.getJSONObject(myKey);
-			int x = info.getInt("x");
-			int y = info.getInt("y");
-		
-			tempBlock.setLocation(x,y);
+				tempBlock.setLocation(x,y);
+			}
 		}
 	}
 }

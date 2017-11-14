@@ -1,9 +1,13 @@
 package gui.interfaces;
 
 import java.awt.Point;
+import java.beans.PropertyChangeListener;
 
 public interface WithInport {
-	Point getInport();
-	void setInport(Point p);
+	
+	public Point getInport();
+	public void setInport(Point p);
+
+	//public PropertyChangeListener InportUpdateListener = e -> resetInport();
 	
 }

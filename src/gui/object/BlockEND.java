@@ -7,17 +7,18 @@ import javax.swing.*;
 import org.json.JSONObject;
 
 import gui.interfaces.WithInport;
+import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockEND extends BlockFD implements WithInport{
-	private Point inport;
+	private Point Inport;
 	
 	/** Constructors **/
 	public BlockEND(JSONObject model) {
 		super(model);
 		
 		// Initialise inport
-		this.inport = new Point( Math.round(this.getWidth()/2), 0);
+		this.Inport = new Point( Math.round(this.getWidth()/2), 0);
 		
 		// Temporary
 		JLabel temp = new JLabel("End");
@@ -31,20 +32,15 @@ public class BlockEND extends BlockFD implements WithInport{
 	@Override
 	public Point getInport() {
 		// TODO Auto-generated method stub
-		return this.inport;
+		return this.Inport;
 	}
 	@Override
 	public void setInport(Point p) {
 		// TODO Auto-generated method stub
-		this.inport = p;
+		this.Inport = p;
 	}
 	
-		/** override abstract methods**/
-	@Override
-	protected void setCustomBounds(int x, int y, int width, int height) {
-		this.setBounds(x, y, width, height);
-	}
-
+	/** override abstract methods**/
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
@@ -71,5 +67,13 @@ public class BlockEND extends BlockFD implements WithInport{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void setNameCounterManager(NameCounterManager nameManager) {
+		// TODO Auto-generated method stub
+		this.nameManager = nameManager;
+	}
+
+	
 	
 }

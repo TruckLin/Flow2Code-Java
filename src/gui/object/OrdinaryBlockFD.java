@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
+import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, WithOutport{
@@ -47,15 +48,14 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 	
 	/** Override the abstract methods **/
 	@Override
-	protected void setCustomBounds(int x, int y, int width, int height) {
-		this.setBounds(x,y,width,height);
-	}
-	
-	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
 	}
-	
+	@Override
+	public void setNameCounterManager(NameCounterManager nameManager) {
+		// TODO Auto-generated method stub
+		this.nameManager = nameManager;
+	}
 	@Override
 	protected boolean isCompositeBlockFD() {
 		return false;

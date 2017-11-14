@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -10,13 +11,34 @@ import javax.swing.BorderFactory;
 import org.json.JSONObject;
 
 import gui.manager.UndoManager;
-import gui.mouselistener.DemoMouseListener;
 import gui.mouselistener.MouseEnterListener;
 
 public class BlockIF extends OrdinaryCompositeBlockFD{
 	private BlockStartIF blockStartIF;
 	private BlockEndIF blockEndIF;
 	
+	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
+	private PropertyChangeListener MoveBlockEndLoopListener = 
+			e -> {  // Find out the maximum Y coordinate without BlockEndLOOP.
+					Component[] compList = BlockIF.this.getComponents();
+					double parentMaxY = Double.MIN_VALUE;
+					for(Component comp : compList) {
+						if(comp == blockEndIF) continue;
+						else {
+							if(parentMaxY < comp.getBounds().getMaxY())
+								parentMaxY = comp.getBounds().getMaxY();
+						}
+					}
+					if(blockEndIF.getBounds().getMaxY() < parentMaxY) {
+						int h = BlockIF.this.getHeight() - blockEndIF.getHeight();
+						blockEndIF.setLocation((int)blockEndIF.getLocation().getX(),h);
+					}
+						
+					//Testing
+					//System.out.println("MoveBlockEndLoopListener triggered.");
+					//System.out.println("height = " + h);
+				};
+
 	public BlockIF(JSONObject model) {
 		super(model);
 
@@ -33,6 +55,10 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 
 		//Finally set the location of ports.
 		//this.setPorts();
+		
+		// Add listener that change the position of BlockEndLOOP, order is important,
+		// it needs to be put after setBounds or any setters of the component.
+		this.addPropertyChangeListener(MoveBlockEndLoopListener);
 	}
 	
 

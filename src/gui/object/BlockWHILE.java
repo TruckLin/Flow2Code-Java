@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -22,9 +23,21 @@ public class BlockWHILE extends OrdinaryCompositeBlockFD{
 	private BlockEndLOOP blockEndLOOP;
 	
 	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
-		private PropertyChangeListener MoveBlockEndLoopListener = 
-				e -> {int h = BlockWHILE.this.getHeight() - blockEndLOOP.getHeight();
-					blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
+	private PropertyChangeListener MoveBlockEndLoopListener = 
+			e -> {  // Find out the maximum Y coordinate without BlockEndLOOP.
+					Component[] compList = BlockWHILE.this.getComponents();
+					double parentMaxY = Double.MIN_VALUE;
+					for(Component comp : compList) {
+						if(comp == blockEndLOOP) continue;
+						else {
+							if(parentMaxY < comp.getBounds().getMaxY())
+								parentMaxY = comp.getBounds().getMaxY();
+						}
+					}
+					if(blockEndLOOP.getBounds().getMaxY() < parentMaxY) {
+						int h = BlockWHILE.this.getHeight() - blockEndLOOP.getHeight();
+						blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
+					}
 					
 					//Testing
 					//System.out.println("MoveBlockEndLoopListener triggered.");
@@ -63,6 +76,8 @@ public class BlockWHILE extends OrdinaryCompositeBlockFD{
 			
 			String displayString = ("While( " + this.getExpression() + " )");
 			this.blockStartLOOP.getDisplayLabel().setText(displayString);
+			
+			
 			
 			// initialize inports and outports in the UI
 			resetInport();

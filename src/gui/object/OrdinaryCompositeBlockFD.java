@@ -13,7 +13,9 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	protected Point inport;
 	protected Point outport; // with respect to Block's coordinate.
 	
-	protected PropertyChangeListener listener = e -> resetInOutPorts();
+	protected PropertyChangeListener listener = e -> {resetInOutPorts();
+														this.firePropertyChange("Ports", null, null);
+														};
 	
 	public OrdinaryCompositeBlockFD(JSONObject model) {
 		super(model);
@@ -31,6 +33,9 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 		// Size that is just big enough to contain all the children.
 		super.setAppropriateBounds();
 		resetInOutPorts();
+		
+		// Testing
+		//System.out.println("setAppropriateBounds() in OrdinaryCompositeBlockFD is called.");
 	}
 	
 	@Override
@@ -55,5 +60,4 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	public void setInport(Point p) {
 		this.inport = p;	
 	}
-
 }

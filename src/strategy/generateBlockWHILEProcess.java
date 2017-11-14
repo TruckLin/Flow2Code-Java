@@ -79,6 +79,7 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 		}
 		BlockGenerationProcess.setGraphicalDetail(myPanel,graphicalInfo);
 		myPanel.setAppropriateBounds();
+		
 		return myPanel;
 	}
 

@@ -14,7 +14,10 @@ import gui.object.BlockFlowDiagram;
 public class ScrollablePanelForFD extends JPanel implements Scrollable {
 	BlockFlowDiagram flowDiagram;
 	
-	PropertyChangeListener listener = e -> updateSize();
+	PropertyChangeListener listener = e -> {updateSize(); 
+											//Testing
+											//System.out.println("FlowDiagram update detected.");
+											};
 	
 	
 	public ScrollablePanelForFD(BlockFlowDiagram flowDiagram) {

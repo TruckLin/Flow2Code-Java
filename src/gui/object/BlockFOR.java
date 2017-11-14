@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -18,14 +19,25 @@ public class BlockFOR extends OrdinaryCompositeBlockFD {
 	
 	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
 	private PropertyChangeListener MoveBlockEndLoopListener = 
-			e -> {int h = BlockFOR.this.getHeight() - blockEndLOOP.getHeight();
-				blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
-				
-				//Testing
-				//System.out.println("MoveBlockEndLoopListener triggered.");
-				//System.out.println("height = " + h);
-				
-			};
+			e -> {  // Find out the maximum Y coordinate without BlockEndLOOP.
+					Component[] compList = BlockFOR.this.getComponents();
+					double parentMaxY = Double.MIN_VALUE;
+					for(Component comp : compList) {
+						if(comp == blockEndLOOP) continue;
+						else {
+							if(parentMaxY < comp.getBounds().getMaxY())
+								parentMaxY = comp.getBounds().getMaxY();
+						}
+					}
+					if(blockEndLOOP.getBounds().getMaxY() < parentMaxY) {
+						int h = BlockFOR.this.getHeight() - blockEndLOOP.getHeight();
+						blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
+					}
+						
+						//Testing
+						//System.out.println("MoveBlockEndLoopListener triggered.");
+						//System.out.println("height = " + h);
+				};
 														
 	public BlockFOR(JSONObject model){
 		super(model);

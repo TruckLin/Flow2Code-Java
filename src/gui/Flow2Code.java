@@ -52,14 +52,12 @@ public class Flow2Code extends JFrame{
 	    /** Initialisation of various managers and user interfaces **/
 	    UndoManager undoManager = new UndoManager();
 	    NameCounterManager nameManager = new NameCounterManager();
-	    LinePopup linePopup = new LinePopup(undoManager, nameManager);
-	    BlockPopup blockPopup = new BlockPopup(undoManager);
 	    
 	    /** Demo FlowDiagram construction **/
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
-//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If.json");
-//	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
 
@@ -78,6 +76,9 @@ public class Flow2Code extends JFrame{
 	    
 	    // Set a common UndoManager for all Blocks.
 	    flowDiagram.setUndoManager(undoManager);
+	    // Set a common NameCounterManager for all Blocks.
+	    flowDiagram.setNameCounterManager(nameManager);
+	    
 	    // Attach various listeners for blocks
 	    flowDiagram.addVariousMouseListeners();
 	    

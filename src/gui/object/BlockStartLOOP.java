@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
+import gui.mouselistener.MouseEnterListener;
+
 
 public class BlockStartLOOP extends OrdinaryBlockFD{
 	JLabel displayLabel;
@@ -30,6 +32,11 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		
 		// Set the location of BlockStartLOOP
 		this.setLocation(5, 5);
+		
+		// Add a listener that change the border of it's parent when mouse enter.
+		MouseEnterListener mouseEnter = new MouseEnterListener(this);
+		mouseEnter.setSouldChangeParentBlock(true);
+		this.addMouseListener(mouseEnter);
 		
 		// Temporary
 		this.displayLabel = new JLabel("StartLoop");

@@ -27,6 +27,13 @@ public class LineFD{
 	private double endPositionRatioY; // Keep these variable so we don't have to call getOut/Inport() methods from Source
 									// and terminal.
 	
+	// Various variables that control the appearance of the line. 
+	private Color color = Color.RED;
+	private Color borderColor = new Color(153,217,234);
+	private boolean hasBorder = false;
+	private double triggerRadius = 5;
+	
+	
 	// any object interested in the line will register with propertyChangeSupport.
 	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	
@@ -128,6 +135,31 @@ public class LineFD{
 		return this.lineSegments;
 	}
 	
+	public Color getLineColor() {
+		return this.color;
+	}
+	public void setLineColor(Color c) {
+		this.color = c;
+	}
+	public Color getLineBorderColor() {
+		return this.borderColor;
+	}
+	public void setLineBorderColor(Color c) {
+		this.borderColor = c;
+	}
+	public boolean getHasBorder() {
+		return this.hasBorder;
+	}
+	public void setHasBorder(boolean b) {
+		this.hasBorder = b;
+	}
+	public double getTriggerRagius() {
+		return this.triggerRadius;
+	}
+	public void setTriggerRadius(double r) {
+		this.triggerRadius = r;
+	}
+	
 	/** Setters **/
 	
 	/** Utility functions **/
@@ -174,10 +206,9 @@ public class LineFD{
 	// this function is used to determine whether a mouse click point should trigger mouse event
 	public boolean isInRange(Point p) {
 		Point2D.Double p2 = new Point2D.Double(p.getX(), p.getY());
-		double triggerRadius = 2;
 		
 		for(int i = 0; i < lineSegments.size(); i++) {
-			if(lineSegments.get(i).ptSegDist(p2) <= triggerRadius) {
+			if(lineSegments.get(i).ptSegDist(p2) <= this.triggerRadius) {
 				return true;
 			}
 		}

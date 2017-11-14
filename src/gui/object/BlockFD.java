@@ -10,6 +10,7 @@ import javax.swing.*;
 import org.json.JSONObject;
 
 import gui.BlockEditDialog;
+import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.mouselistener.BlockDragListener;
 import gui.mouselistener.EndLoopDragListener;
@@ -23,6 +24,7 @@ public abstract class BlockFD extends JPanel{
 	
 	private JSONObject model;
 	protected UndoManager undoManager;
+	protected NameCounterManager nameManager;
 	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
@@ -47,6 +49,7 @@ public abstract class BlockFD extends JPanel{
 	public void setLocation(int x, int y) {
 		Point oldValue = this.getLocation();
 		super.setLocation(x, y);
+		this.firePropertyChange("Location", oldValue, new Point(x,y));
 	}
 	public void setLocation(Point p) {
 		Point oldValue = this.getLocation();
@@ -70,7 +73,12 @@ public abstract class BlockFD extends JPanel{
 	}
 	
 	public abstract void setUndoManager(UndoManager undoManager);
-
+	
+	public NameCounterManager getNameCounterManager() {
+		return this.nameManager;
+	}
+	
+	public abstract void setNameCounterManager(NameCounterManager nameManager);
 	
 	/** Event handling functions **/
 	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
@@ -151,20 +159,19 @@ public abstract class BlockFD extends JPanel{
 		Point tempPoint = this.getLocation();
 		x = (int)tempPoint.getX() + x_min;
 		y = (int)tempPoint.getY() + y_min;
-		this.setCustomBounds(x, y, width, height);
+		this.setBounds(x, y, width, height);
 		
 		if(this.getParent() instanceof BlockFD) {
 			((BlockFD)this.getParent()).setAppropriateBounds();
 		}
-		
-		
 		//Testing
 		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
 		
+		// Repaint the everyThing?
+		this.repaint();
+		
 	}
-	// Some obstract methods that change how each blocks deal with setAppropriateBounds() method
-	protected abstract void setCustomBounds(int x, int y, int width, int height);
-
+	
 	/** Move the block by displacement **/
 	public void translateLocation(int dx, int dy) {
 		int x = (int)this.getLocation().getX();
@@ -208,6 +215,8 @@ public abstract class BlockFD extends JPanel{
 			this.addMouseMotionListener(lis);
 			this.addMouseListener(lis);
 		}
+		
+		
 		
 		// Testing
 		//System.out.println("end by : " + this.getClass());
