@@ -75,5 +75,16 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	protected boolean shouldAddBlockRightClick() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 
 }

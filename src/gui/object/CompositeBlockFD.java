@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -24,8 +26,8 @@ public abstract class CompositeBlockFD extends BlockFD{
 	protected PropertyChangeListener repaintListener = 
 			e -> {generateLineSegmentsForAllLines();
 				// Testing
-				//System.out.println("line changes detected by parent bock");
-																
+				//System.out.println("line changes detected by parent block");
+														
 				repaint(); // repaint the lines
 			};
 	
@@ -53,10 +55,13 @@ public abstract class CompositeBlockFD extends BlockFD{
 	public void removeLineFD(LineFD line) {
 		line.removePropertyChangeListener(repaintListener);
 		this.lineList.remove(line);
+		this.repaint();
 	}
 	public void addLineFD(LineFD line) {
 		line.addPropertyChangeListener(repaintListener);
 		this.lineList.add(line);
+		this.generateLineSegments(line);
+		this.repaint();
 	}
 	
 	/** Paint Component function**/
@@ -89,10 +94,38 @@ public abstract class CompositeBlockFD extends BlockFD{
 	}
 	
 	/** Generate Line segments for one LineFD **/
-	public void generateLineSegments(LineFD lineFD) {
-		ArrayList<Line2D> segments = lineFD.getLineSegments();
-		segments.clear();
+	public static String findWhichSide(BlockFD block, Point p) {
+		/*				  top
+		 * 			-----------------
+		 * 			|				|
+		 * 	left 	|				| right 
+		 * 			|				|
+		 * 			-----------------
+		 * 				 bottom
+		*/ 
+		Rectangle rec = block.getBounds();
+		double left = rec.getMinX();
+		double right = rec.getMaxX();
+		double top = rec.getMinY();
+		double bottom = rec.getMaxY();
+
+		double x = p.getX();
+		double y = p.getY();
 		
+		if(left == x)  return "left";
+		else if(right == x) return "right";
+		else if(bottom == y) return "bottom";
+		else if(top == y) return "top";
+		else return null;
+	}
+	 
+	public void generateLineSegments(LineFD line) {
+		ArrayList<Line2D> segments = line.getLineSegments();
+		segments.clear();
+		BlockFD source = line.getSource();
+		BlockFD terminal = line.getTerminal();
+		Point startPoint = line.getStartPoint();
+		Point endPoint = line.getEndPoint();
 		// Testing
 		//System.out.println("In generateLineSegments(LineFD lineFD) : ");
 		//System.out.println("lineFD : \n Source = " + lineFD.getSource().toString());
@@ -101,7 +134,11 @@ public abstract class CompositeBlockFD extends BlockFD{
 		//System.out.println(" endPoint = " + lineFD.getEndPoint().toString());
 		
 		// We use straight line for the moment
-		segments.add(new Line2D.Double(lineFD.getStartPoint(),lineFD.getEndPoint()));
+		segments.add(new Line2D.Double(line.getStartPoint(),line.getEndPoint()));
+		
+		
+		
+		
 	}
 	public void generateLineSegmentsForAllLines() {
 		for(LineFD line :lineList) {
@@ -147,6 +184,21 @@ public abstract class CompositeBlockFD extends BlockFD{
 	}
 	@Override
 	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	protected boolean shouldAddBlockRightClick() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public boolean representCompositeBlock() {
 		// TODO Auto-generated method stub
 		return false;
 	}

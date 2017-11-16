@@ -24,9 +24,17 @@ public class BlockINPUT extends OrdinaryBlockFD {
 
 	}
 	
-	/** getters **/
+	/** Override the abstract methods **/
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
-	
-	/** Setters **/
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

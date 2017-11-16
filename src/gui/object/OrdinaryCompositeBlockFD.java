@@ -14,8 +14,8 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	protected Point outport; // with respect to Block's coordinate.
 	
 	protected PropertyChangeListener listener = e -> {resetInOutPorts();
-														this.firePropertyChange("Ports", null, null);
-														};
+													  this.firePropertyChange("Ports", null, null);
+													 };
 	
 	public OrdinaryCompositeBlockFD(JSONObject model) {
 		super(model);

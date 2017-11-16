@@ -83,4 +83,28 @@ public class BlockStartTrueIF extends BlockFD implements WithOutport{
 		return false;
 	}
 
+	@Override
+	protected boolean shouldAddBlockRightClick() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

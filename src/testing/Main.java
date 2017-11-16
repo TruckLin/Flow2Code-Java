@@ -6,6 +6,7 @@ import java.net.URL;
 import javax.swing.*;
 
 import gui.object.BlockEndLOOP;
+import gui.object.CompositeBlockFD;
 
 public class Main extends JFrame implements MouseListener, ActionListener{
 
@@ -34,7 +35,25 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	    cp.add(endLoop);
 	    endLoop.repaint();    
 	    // Content-pane adds components
-
+	    
+	    //Testing findWichSideFunction of CompositeBlockFD
+	    String boundString = "[ left = " + endLoop.getBounds().getMinX();
+	    boundString = boundString + ", right = " + endLoop.getBounds().getMaxX();
+	    boundString = boundString + ", top = " + endLoop.getBounds().getMinY();
+	    boundString = boundString + ", bottom = " + endLoop.getBounds().getMaxY() + "]";
+	    
+	    System.out.println("endLoop's bounds = " + boundString);
+	    Point p = new Point(50,51); // left
+	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
+	    p = new Point(70,50); // top
+	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
+	    p = new Point(75,60); // right
+	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
+	    p = new Point(60,75); // bottom
+	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
+	    
+	    
+	    
 	    // Source object adds listener
 	    // .....
 	 

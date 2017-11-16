@@ -63,7 +63,9 @@ public class ModelGenerator{
 				JSONObject model = new JSONObject();
 				model.put("Type", "For");
 				model.put("Name",nameCounterManager.getAvailableName());
-				model.put("Expression","");
+				model.put("Initialisation","");
+				model.put("Condition", "");
+				model.put("Step", "");
 		
 				JSONObject startLoop = modelGenerator.generate("StartLoop");
 		

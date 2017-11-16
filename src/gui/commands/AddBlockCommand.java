@@ -16,7 +16,6 @@ import gui.object.BlockIF;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
 import gui.object.OrdinaryBlockFD;
-import saveload.SaveAndLoadManagerFD;
 import strategy.BlockGenerator;
 import strategy.ModelGenerator;
 import gui.mouselistener.BlockDragListener;

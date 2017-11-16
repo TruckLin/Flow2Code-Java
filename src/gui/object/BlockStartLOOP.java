@@ -73,5 +73,17 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 	protected boolean shouldAddLoopDrag() {
 		return true;
 	}
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		// do nothing
+	}
 
 }

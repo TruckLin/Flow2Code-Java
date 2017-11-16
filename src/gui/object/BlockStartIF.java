@@ -15,6 +15,8 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockStartIF extends BlockFD implements WithInport{
+	private JLabel displayLabel;
+	
 	private Point inport;
 	
 	private BlockStartTrueIF blockStartTrueIF;
@@ -56,7 +58,9 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		
 		// set the Outport panels
 		blockStartTrueIF = new BlockStartTrueIF(null);
+		blockStartTrueIF.setBlockStartIF(this);
 		blockStartFalseIF = new BlockStartFalseIF(null);
+		blockStartFalseIF.setBlockStartIF(this);
 		Point trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
 		trueOutport = BlockStartIF.this.toContainerCoordinate(trueOutport);
 		blockStartTrueIF.setLocation( trueOutport );
@@ -80,13 +84,13 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		this.addPropertyChangeListener(StartIFPropertyListener);
 		
 		// Temporary
-		JLabel temp = new JLabel("StartIF");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
+		this.displayLabel = new JLabel("StartIF");
+		this.add(this.displayLabel);
+		this.displayLabel.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
-	/** Getters and Setters **/
+	/** Getters and Setters for ports**/
 	public Point getTrueOutport(){
 		Point p = blockStartTrueIF.toContainerCoordinate(blockStartTrueIF.getOutport());
 		p = new Point( (int)(p.getX()-this.getLocation().getX()), (int)(p.getY()-this.getLocation().getY()));
@@ -122,6 +126,18 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		this.inport = p;
 	}
 	
+	/**    Getters and Setter for label    **/
+	
+	public JLabel getDisplayLabel() {
+		return this.displayLabel;
+	}
+	public void setDiaplyLabel(JLabel temp) {
+		if(temp != null) {
+			this.remove(this.displayLabel);
+			this.displayLabel = temp;
+			this.add(temp);
+		}
+	}
 	/** override abstract methods**/
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
@@ -152,6 +168,30 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	protected boolean shouldAddEndLoopDrag() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	protected boolean shouldAddBlockRightClick() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		// do nothing.
 	}
 	
 	

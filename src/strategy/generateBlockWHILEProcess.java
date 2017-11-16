@@ -31,10 +31,9 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 		myPanel.add(myEndLoop);
 		myPanel.setBlockStartLOOP(myStartLoop);
 		myPanel.setBlockEndLOOP(myEndLoop);
-		myPanel.addLineFD(new LineFD(myStartLoop, myEndLoop,
+		myPanel.setExitLine(new LineFD(myStartLoop, myEndLoop,
 									myStartLoop.toContainerCoordinate(myStartLoop.getLoopOutport()),
 									myEndLoop.toContainerCoordinate(myEndLoop.getInport())) );
-		
 		
 		ArrayList<BlockFD> BlockList = new ArrayList<BlockFD>(); // keeping the list to add lines.
 		JSONArray myMembers = model.getJSONArray("Members");

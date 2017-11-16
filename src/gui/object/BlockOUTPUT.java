@@ -23,6 +23,17 @@ public class BlockOUTPUT extends OrdinaryBlockFD{
 		//System.out.println("Constructor 1 of BlockDECLARE is called and N = " + N);
 
 	}
+	/** Override the abstract methods **/
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	/** getters **/
 	

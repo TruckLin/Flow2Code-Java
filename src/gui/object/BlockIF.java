@@ -77,7 +77,9 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		if (this.blockStartIF != null) {
 			// connect to new model
 			this.blockStartIF.addPropertyChangeListener(listener);
-
+			
+			updateBlockContent();
+			
 			// initialize fields in the UI
 			resetInport();
 		}
@@ -98,6 +100,9 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 			// initialize fields in the UI
 			resetOutport();
 		}
+	}
+	public String getExpression() {
+		return this.getModel().getString("Expression");
 	}
 	
 	/** Utilities **/
@@ -121,5 +126,16 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport());
 		this.setOutport(p);
 	//	this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
+	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		String displayString = ("If( " + this.getExpression() + " )");
+		this.blockStartIF.getDisplayLabel().setText(displayString);
+		
+		
+		// blockStartLOOP may need to change size and location
+		// this.blockStartLOOP.setAppropriateBounds();
 	}
 }

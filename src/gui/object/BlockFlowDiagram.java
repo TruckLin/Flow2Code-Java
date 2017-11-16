@@ -15,6 +15,12 @@ public class BlockFlowDiagram extends CompositeBlockFD{
 	public BlockFlowDiagram(JSONObject model) {
 		super(model);
 	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		// do nothing
+	}
 	
 	/** Getters and Setters **/
 	

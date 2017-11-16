@@ -13,6 +13,7 @@ import gui.BlockEditDialog;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.mouselistener.BlockDragListener;
+import gui.mouselistener.BlockRightClickListener;
 import gui.mouselistener.EndLoopDragListener;
 import gui.mouselistener.LoopDragListener;
 
@@ -87,9 +88,7 @@ public abstract class BlockFD extends JPanel{
 	}
 	
 	/** Utility functions **/
-	public void updateBlockContent() {
-		// this function should be implemented by various block like BlockIF, BlockWHILE and many more.
-	}
+	public abstract void updateBlockContent() ;
 	
 	
 	public Point toContainerCoordinate(Point coordWRTblock) {
@@ -204,6 +203,11 @@ public abstract class BlockFD extends JPanel{
 			this.addMouseListener(lis);
 		}
 		
+		if(this.shouldAddBlockRightClick()) {
+			BlockRightClickListener lis = new BlockRightClickListener(this.undoManager,this);
+			this.addMouseListener(lis);
+		}
+		
 		if(this.shouldAddLoopDrag()) {
 			LoopDragListener lis = new LoopDragListener(this.undoManager, this);
 			this.addMouseMotionListener(lis);
@@ -223,8 +227,12 @@ public abstract class BlockFD extends JPanel{
 	}
 	protected abstract boolean isCompositeBlockFD();
 	protected abstract boolean shouldAddBlockDrag();
+	protected abstract boolean shouldAddBlockRightClick();
 	protected abstract boolean shouldAddLoopDrag();
 	protected abstract boolean shouldAddEndLoopDrag();
 	
+	public abstract boolean isEditable();
+	public abstract boolean representCompositeBlock(); // indicate whether a block represents a larger, composite blocks.
+													   // BlockStartLOOP and BlockStartIF are the only two block that returns true.	
 	
 }

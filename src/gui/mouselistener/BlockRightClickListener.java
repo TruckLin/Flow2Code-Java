@@ -7,13 +7,18 @@ import javax.swing.SwingUtilities;
 
 import gui.BlockPopup;
 import gui.LinePopup;
+import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.LineFD;
 
 public class BlockRightClickListener implements MouseListener{
-	BlockPopup blockPopup;
-	public BlockRightClickListener(BlockPopup blockPopup) {
-		this.blockPopup = blockPopup;
+	private UndoManager undoManager;
+	private BlockFD block;
+	private BlockPopup blockPopup;
+	
+	public BlockRightClickListener(UndoManager undoManager,BlockFD block) {
+		this.undoManager = undoManager;
+		this.block = block;
 	}
 	
 	/** Getter and Setters **/
@@ -26,7 +31,7 @@ public class BlockRightClickListener implements MouseListener{
 		// TODO Auto-generated method stub
 		if(SwingUtilities.isRightMouseButton(e)) {
 			// Do some thing
-			blockPopup.setBlockFD((BlockFD)e.getComponent());
+			blockPopup = new BlockPopup(undoManager, block);
 			blockPopup.show(e.getComponent(),e.getX(), e.getY());
 		}
 	}

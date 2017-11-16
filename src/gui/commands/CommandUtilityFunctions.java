@@ -38,7 +38,7 @@ public class CommandUtilityFunctions {
 		}else if(parentModel.getString("Type").equals("If")) {
 			// the parent block is BlockIF.
 			
-			// A test to check if wither source or terminal is in trueMembers. 
+			// A test to check if whether source or terminal is in trueMembers.
 			boolean inTrueMembers = false;
 			JSONArray trueModelList = parentModel.getJSONArray("TrueMembers");
 			for(int i = 0; i < trueModelList.length(); i++) {
@@ -63,7 +63,7 @@ public class CommandUtilityFunctions {
 				sourceModel.put("Child", currentModel.getString("Name"));
 				currentModel.put("Child",terminalModel.getString("Name"));
 			}else if(inFalseMembers){
-				parentModel.append("TrueMembers", currentModel);
+				parentModel.append("FalseMembers", currentModel);
 				sourceModel.put("Child", currentModel.getString("Name"));
 				currentModel.put("Child",terminalModel.getString("Name"));
 			}else {
@@ -120,7 +120,7 @@ public class CommandUtilityFunctions {
 				for(int i = 0; i < falseModelList.length(); i++) {
 				String tempName = falseModelList.getJSONObject(i).getString("Name");
 					if( tempName.equals(currentModel.getString("Name")) ) {
-						trueModelList.remove(i);
+						falseModelList.remove(i);
 						break;
 					}
 				}

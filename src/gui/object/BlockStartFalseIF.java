@@ -85,4 +85,28 @@ public class BlockStartFalseIF extends BlockFD implements WithOutport{
 		// TODO Auto-generated method stub
 		this.nameManager = nameManager;
 	}
+
+	@Override
+	protected boolean shouldAddBlockRightClick() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		
+	}
 }

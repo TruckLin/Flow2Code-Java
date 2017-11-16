@@ -32,7 +32,7 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 		myPanel.add(myEndLoop);
 		myPanel.setBlockStartLOOP(myStartLoop);
 		myPanel.setBlockEndLOOP(myEndLoop);
-		myPanel.addLineFD(new LineFD(myStartLoop, myEndLoop,
+		myPanel.setExitLine(new LineFD(myStartLoop, myEndLoop,
 				myStartLoop.toContainerCoordinate(myStartLoop.getLoopOutport()),
 				myEndLoop.toContainerCoordinate(myEndLoop.getInport())) );
 		
