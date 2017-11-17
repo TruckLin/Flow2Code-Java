@@ -169,6 +169,9 @@ public class LineFD{
 		//System.out.println("Line between " + Source.getModel().getString("Name") + " and " + Terminal.getModel().getString("Name"));
 		//System.out.println("reDrawLine() is called.");
 		
+		
+	//	if(this.Source instanceof)
+		
 		boolean sourceIsLoop = this.Source instanceof BlockIF || this.Source instanceof BlockWHILE || this.Source instanceof BlockFOR;
 		boolean terminalIsLoop	= this.Terminal instanceof BlockIF || this.Terminal instanceof BlockWHILE || this.Terminal instanceof BlockFOR;
 		

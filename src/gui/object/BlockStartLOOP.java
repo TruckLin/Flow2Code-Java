@@ -22,13 +22,13 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		this.setLayout(new FlowLayout());
 		
 		// set the specific outport for BlockStartLOOP
-		this.setOutport(new Point( this.getWidth(), (int)this.getHeight()/2 ) );
+		this.setOutport(new Point( this.getWidth() - 1, (int)this.getHeight()/2 ) );
 		
 		// set the specific inport for BlockStartLOOP
 		this.setInport(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() ));
 		
-		// tset default loopOutport
-		this.setLoopOutport(new Point( Math.round(this.getWidth()/4), this.getHeight() ));
+		// set default loopOutport
+		this.setLoopOutport(new Point( Math.round(this.getWidth()/4), this.getHeight() - 1 ));
 		
 		// Set the location of BlockStartLOOP
 		this.setLocation(5, 5);

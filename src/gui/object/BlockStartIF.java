@@ -23,7 +23,7 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	private BlockStartFalseIF blockStartFalseIF;
 	
 	private PropertyChangeListener StartIFPropertyListener = 
-			e -> {Point trueOutport = new Point(BlockStartIF.this.getWidth(),
+			e -> {Point trueOutport = new Point(BlockStartIF.this.getWidth() - 1,
 												Math.round(BlockStartIF.this.getHeight()/2));
 				  trueOutport = BlockStartIF.this.toContainerCoordinate(trueOutport);
 				  blockStartTrueIF.setLocation( trueOutport );
@@ -61,7 +61,7 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		blockStartTrueIF.setBlockStartIF(this);
 		blockStartFalseIF = new BlockStartFalseIF(null);
 		blockStartFalseIF.setBlockStartIF(this);
-		Point trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
+		Point trueOutport = new Point(this.getWidth() - 1, Math.round(this.getHeight()/2));
 		trueOutport = BlockStartIF.this.toContainerCoordinate(trueOutport);
 		blockStartTrueIF.setLocation( trueOutport );
 		Point falseOutport = new Point( 0 , Math.round(this.getHeight()/2));

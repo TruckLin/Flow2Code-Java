@@ -33,7 +33,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 						}
 					}
 					if(blockEndLOOP.getBounds().getMaxY() < parentMaxY) {
-						int h = BlockLOOPFD.this.getHeight() - blockEndLOOP.getHeight();
+						int h = BlockLOOPFD.this.getHeight() - blockEndLOOP.getHeight() - 1;
 						blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
 					}
 					

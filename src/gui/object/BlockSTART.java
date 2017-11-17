@@ -19,7 +19,7 @@ public class BlockSTART extends BlockFD implements WithOutport{
 		super(model);
 		
 		// Initialise outport
-		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight());
+		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight() - 1);
 				
 		// Temporary
 		JLabel temp = new JLabel("Start");

@@ -30,7 +30,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 						}
 					}
 					if(blockEndIF.getBounds().getMaxY() < parentMaxY) {
-						int h = BlockIF.this.getHeight() - blockEndIF.getHeight();
+						int h = BlockIF.this.getHeight() - blockEndIF.getHeight() - 1;
 						blockEndIF.setLocation((int)blockEndIF.getLocation().getX(),h);
 					}
 						
