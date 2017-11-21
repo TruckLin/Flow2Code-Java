@@ -19,17 +19,15 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	
 	private Point inport;
 	
-	private BlockStartTrueIF blockStartTrueIF;
-	private BlockStartFalseIF blockStartFalseIF;
+	private Point trueOutport;
+	private Point falseOutport;
 	
 	private PropertyChangeListener StartIFPropertyListener = 
-			e -> {Point trueOutport = new Point(BlockStartIF.this.getWidth(),
+			e -> {this.trueOutport = new Point(BlockStartIF.this.getWidth() - 1,
 												Math.round(BlockStartIF.this.getHeight()/2));
-				  trueOutport = BlockStartIF.this.toContainerCoordinate(trueOutport);
-				  blockStartTrueIF.setLocation( trueOutport );
-				  Point falseOutport = new Point( 0 , Math.round(BlockStartIF.this.getHeight()/2));
-				  falseOutport = BlockStartIF.this.toContainerCoordinate(falseOutport);
-				  blockStartFalseIF.setLocation(falseOutport);
+				 
+				  this.falseOutport = new Point( 0 , Math.round(BlockStartIF.this.getHeight()/2));
+
 				  
 				  //Testing
 			/*	  System.out.println("");
@@ -57,16 +55,8 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		this.setBounds(0,0,100,25);
 		
 		// set the Outport panels
-		blockStartTrueIF = new BlockStartTrueIF(null);
-		blockStartTrueIF.setBlockStartIF(this);
-		blockStartFalseIF = new BlockStartFalseIF(null);
-		blockStartFalseIF.setBlockStartIF(this);
-		Point trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
-		trueOutport = BlockStartIF.this.toContainerCoordinate(trueOutport);
-		blockStartTrueIF.setLocation( trueOutport );
+		Point trueOutport = new Point(this.getWidth() - 1, Math.round(this.getHeight()/2));
 		Point falseOutport = new Point( 0 , Math.round(this.getHeight()/2));
-		falseOutport = BlockStartIF.this.toContainerCoordinate(falseOutport);
-		blockStartFalseIF.setLocation(falseOutport);
 		
 		// Add a listener that change the border of it's parent when mouse enter.
 		MouseEnterListener mouseEnter = new MouseEnterListener(this);
@@ -92,27 +82,16 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	
 	/** Getters and Setters for ports**/
 	public Point getTrueOutport(){
-		Point p = blockStartTrueIF.toContainerCoordinate(blockStartTrueIF.getOutport());
-		p = new Point( (int)(p.getX()-this.getLocation().getX()), (int)(p.getY()-this.getLocation().getY()));
-		return p;
+		return this.trueOutport;
 	}
 	public void setTrueOutport(Point p){
-		blockStartTrueIF.setLocation(p);
+		this.trueOutport = p;
 	}
 	public Point getFalseOutport(){
-		Point p = blockStartFalseIF.toContainerCoordinate(blockStartFalseIF.getOutport());
-		p = new Point( (int)(p.getX()-this.getLocation().getX()), (int)(p.getY()-this.getLocation().getY()));
-		return p;
+		return this.falseOutport;
 	}
 	public void setFalseOutport(Point p){
-		blockStartFalseIF.setLocation(p);
-	}
-	
-	public BlockStartTrueIF getBlockStartTrueIF() {
-		return this.blockStartTrueIF;
-	}
-	public BlockStartFalseIF getBlockStartFalseIF() {
-		return this.blockStartFalseIF;
+		this.falseOutport = p;
 	}
 	
 	@Override

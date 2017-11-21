@@ -20,10 +20,8 @@ import gui.object.BlockIF;
 import gui.object.BlockINPUT;
 import gui.object.BlockOUTPUT;
 import gui.object.BlockSTART;
-import gui.object.BlockStartFalseIF;
 import gui.object.BlockStartIF;
 import gui.object.BlockStartLOOP;
-import gui.object.BlockStartTrueIF;
 import gui.object.BlockWHILE;
 import gui.object.LineFD;
 

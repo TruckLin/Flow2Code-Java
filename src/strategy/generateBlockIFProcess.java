@@ -65,7 +65,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 			// If there is no true members
 			Point p1 = startIf.toContainerCoordinate(startIf.getTrueOutport());
 			Point p2 = endIf.toContainerCoordinate(endIf.getTrueInport());
-			LineFD line = new LineFD(startIf.getBlockStartTrueIF(),endIf,p1,p2);
+			LineFD line = new LineFD(startIf,endIf,p1,p2);
 			
 			//Testing
 			//System.out.println("\nBefore we pass points into line : ");
@@ -94,7 +94,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 				if( childName.equals(block_i.getModel().getString("Name")) ) {
 					Point p1 = startIf.toContainerCoordinate(startIf.getTrueOutport());
 					Point p2 = block_i.toContainerCoordinate(((WithInport)block_i).getInport());
-					LineFD line = new LineFD(startIf.getBlockStartTrueIF(),block_i,p1,p2);
+					LineFD line = new LineFD(startIf,block_i,p1,p2);
 					
 					myPanel.addLineFD(line);
 					
@@ -152,7 +152,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 		if(falseBlockList.size() == 0) {
 			Point p1 = startIf.toContainerCoordinate(startIf.getFalseOutport());
 			Point p2 = endIf.toContainerCoordinate(endIf.getFalseInport());
-			LineFD line = new LineFD(startIf.getBlockStartFalseIF(),endIf,p1,p2);
+			LineFD line = new LineFD(startIf,endIf,p1,p2);
 			
 			myPanel.addLineFD(line);
 		}else {
@@ -174,7 +174,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 				if( childName.equals(block_i.getModel().getString("Name")) ) {
 					Point p1 = startIf.toContainerCoordinate(startIf.getFalseOutport());
 					Point p2 = block_i.toContainerCoordinate(((WithInport)block_i).getInport());
-					LineFD line = new LineFD(startIf.getBlockStartFalseIF(),block_i,p1,p2);
+					LineFD line = new LineFD(startIf,block_i,p1,p2);
 					
 					myPanel.addLineFD(line);
 					
