@@ -15,7 +15,7 @@ import gui.manager.UndoManager;
 
 public class BlockEndLOOP extends BlockFD implements WithInport{
 	
-	Point Inport;
+	PortFD Inport;
 	
 	public BlockEndLOOP() {
 		super(null);
@@ -26,7 +26,7 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 		this.setOpaque(false);
 		
 		// set default inport
-		this.setInport(new Point(Math.round(this.getWidth()/2),0));
+		this.Inport = new PortFD(new Point(Math.round(this.getWidth()/2),0),"top");
 		
 	}
 	
@@ -46,12 +46,12 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 	
 	/** interface functions **/
 	@Override
-	public Point getInport() {
+	public PortFD getInport() {
 		return this.Inport ;
 	}
 
 	@Override
-	public void setInport(Point p) {
+	public void setInport(PortFD p) {
 		this.Inport = p;
 	}
 	

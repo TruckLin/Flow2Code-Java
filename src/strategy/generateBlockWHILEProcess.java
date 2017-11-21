@@ -13,6 +13,7 @@ import gui.object.BlockFD;
 import gui.object.BlockStartLOOP;
 import gui.object.BlockWHILE;
 import gui.object.LineFD;
+import gui.object.PortFD;
 
 public class generateBlockWHILEProcess implements BlockGenerationProcess {
 	
@@ -32,8 +33,9 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 		myPanel.setBlockStartLOOP(myStartLoop);
 		myPanel.setBlockEndLOOP(myEndLoop);
 		myPanel.setExitLine(new LineFD(myStartLoop, myEndLoop,
-									myStartLoop.toContainerCoordinate(myStartLoop.getLoopOutport()),
-									myEndLoop.toContainerCoordinate(myEndLoop.getInport())) );
+									myStartLoop.getLoopOutport(),
+									myEndLoop.getInport()) 
+							);
 		
 		ArrayList<BlockFD> BlockList = new ArrayList<BlockFD>(); // keeping the list to add lines.
 		JSONArray myMembers = model.getJSONArray("Members");
@@ -63,8 +65,8 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 						
 						BlockFD b1 = BlockList.get(i);
 						BlockFD b2 = BlockList.get(j);
-						Point p1 = b1.toContainerCoordinate(((WithOutport)b1).getOutport());
-						Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
+						PortFD p1 = ((WithOutport)b1).getOutport();
+						PortFD p2 = ((WithInport)b2).getInport();
 						LineFD line = new LineFD(b1,b2,p1,p2);
 						
 						myPanel.addLineFD(line);

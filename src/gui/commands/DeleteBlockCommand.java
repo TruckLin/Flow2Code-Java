@@ -62,7 +62,7 @@ public class DeleteBlockCommand implements Command{
 		CommandUtilityFunctions.removeJSONObjectFromParentModel(parentBlock.getModel(), currentBlock.getModel(),
 																	sourceBlock.getModel(), terminalBlock.getModel());
 		// create a newLine
-		this.newLine = new LineFD(sourceBlock, terminalBlock, line1.getStartPoint(), line2.getEndPoint());
+		this.newLine = new LineFD(sourceBlock, terminalBlock, line1.getStartPort(), line2.getEndPort());
 
 		// remove currentBlock, line1 and line2.
 		parentBlock.remove(currentBlock);

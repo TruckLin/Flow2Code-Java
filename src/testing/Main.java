@@ -42,15 +42,7 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	    boundString = boundString + ", top = " + endLoop.getBounds().getMinY();
 	    boundString = boundString + ", bottom = " + endLoop.getBounds().getMaxY() + "]";
 	    
-	    System.out.println("endLoop's bounds = " + boundString);
-	    Point p = new Point(50,51); // left
-	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
-	    p = new Point(70,50); // top
-	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
-	    p = new Point(75,60); // right
-	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
-	    p = new Point(60,75); // bottom
-	    System.out.println("Point " + p.toString() + " is on " + CompositeBlockFD.findWhichSide(endLoop, p) );
+
 	    
 	    
 	    

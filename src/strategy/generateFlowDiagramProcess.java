@@ -11,6 +11,7 @@ import gui.interfaces.WithOutport;
 import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
 import gui.object.LineFD;
+import gui.object.PortFD;
 
 public class generateFlowDiagramProcess implements BlockGenerationProcess{
 
@@ -51,8 +52,8 @@ public class generateFlowDiagramProcess implements BlockGenerationProcess{
 					if( childName.equals(BlockList.get(j).getModel().getString("Name")) ) {
 						BlockFD b1 = BlockList.get(i);
 						BlockFD b2 = BlockList.get(j);
-						Point p1 = b1.toContainerCoordinate(((WithOutport)b1).getOutport());
-						Point p2 = b2.toContainerCoordinate(((WithInport)b2).getInport());
+						PortFD p1 = ((WithOutport)b1).getOutport();
+						PortFD p2 = ((WithInport)b2).getInport();
 						LineFD line = new LineFD(b1,b2,p1,p2);
 						
 						myPanel.addLineFD(line);

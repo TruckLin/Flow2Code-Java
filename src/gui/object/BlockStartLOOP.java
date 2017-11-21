@@ -15,23 +15,23 @@ import gui.mouselistener.MouseEnterListener;
 public class BlockStartLOOP extends OrdinaryBlockFD{
 	JLabel displayLabel;
 	
-	Point loopOutport;
+	PortFD loopOutport;
 	
 	public BlockStartLOOP(JSONObject model) {
 		super(model);
 		this.setLayout(new FlowLayout());
 		
 		// set the specific outport for BlockStartLOOP
-		this.setOutport(new Point( this.getWidth(), (int)this.getHeight()/2 ) );
+		this.outport = new PortFD(new Point( this.getWidth(), (int)this.getHeight()/2 ) , "right");
 		
 		// set the specific inport for BlockStartLOOP
-		this.setInport(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() ));
+		this.inport = new PortFD(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() ), "bottom");
 		
-		// tset default loopOutport
-		this.setLoopOutport(new Point( Math.round(this.getWidth()/4), this.getHeight() ));
+		// set default loopOutport
+		this.loopOutport = new PortFD(new Point( Math.round(this.getWidth()/4), this.getHeight() ), "bottom");
 		
 		// Set the location of BlockStartLOOP
-		this.setLocation(5, 5);
+		//this.setLocation(5, 5);
 		
 		// Add a listener that change the border of it's parent when mouse enter.
 		MouseEnterListener mouseEnter = new MouseEnterListener(this);
@@ -57,10 +57,10 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 			this.add(temp);
 		}
 	}
-	public Point getLoopOutport() {
+	public PortFD getLoopOutport() {
 		return this.loopOutport;
 	}
-	public void setLoopOutport(Point p) {
+	public void setLoopOutport(PortFD p) {
 		this.loopOutport = p;
 	}
 

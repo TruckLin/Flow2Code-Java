@@ -12,14 +12,14 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockSTART extends BlockFD implements WithOutport{
-	private Point outport;
+	private PortFD outport;
 	
 	/** Constructors **/
 	public BlockSTART(JSONObject model){
 		super(model);
 		
 		// Initialise outport
-		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight());
+		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
 				
 		// Temporary
 		JLabel temp = new JLabel("Start");
@@ -31,12 +31,12 @@ public class BlockSTART extends BlockFD implements WithOutport{
 	/** Getters and Setters **/
 
 	@Override
-	public Point getOutport() {
+	public PortFD getOutport() {
 		// TODO Auto-generated method stub
 		return this.outport;
 	}
 	@Override
-	public void setOutport(Point p) {
+	public void setOutport(PortFD p) {
 		// TODO Auto-generated method stub
 		this.outport = p;
 	}

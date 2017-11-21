@@ -3,10 +3,12 @@ package gui.interfaces;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 
+import gui.object.PortFD;
+
 public interface WithInport {
 	
-	public Point getInport();
-	public void setInport(Point p);
+	public PortFD getInport();
+	public void setInport(PortFD p);
 
 	//public PropertyChangeListener InportUpdateListener = e -> resetInport();
 	

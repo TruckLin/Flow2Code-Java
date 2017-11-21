@@ -15,10 +15,10 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockEndIF extends BlockFD implements WithOutport{
-	private Point outport;
+	private PortFD outport;
 	
-	private Point trueInport;
-	private Point falseInport;
+	private PortFD trueInport;
+	private PortFD falseInport;
 	
 	public BlockEndIF(JSONObject model){
 		super(model);
@@ -30,11 +30,11 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 		this.setOpaque(false);
 		
 		// Initialise outport
-		this.setOutport(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()));
+		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
 		
 		// Initialise inports
-		this.trueInport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
-		this.falseInport = new Point(0, Math.round(this.getHeight()/2));
+		this.trueInport = new PortFD(new Point(this.getWidth(), Math.round(this.getHeight()/2)), "right");
+		this.falseInport = new PortFD(new Point(0, Math.round(this.getHeight()/2) ), "left") ;
 	}
 	
 	/** Graphics setting **/
@@ -52,25 +52,25 @@ public class BlockEndIF extends BlockFD implements WithOutport{
     }
 	
 	/** Getters and Setters **/
-	public Point getTrueInport(){
+	public PortFD getTrueInport(){
 		return this.trueInport;
 	}
-	public void setTrueInport(Point p){
+	public void setTrueInport(PortFD p){
 		this.trueInport = p;
 	}
-	public Point getFalseInport(){
+	public PortFD getFalseInport(){
 		return this.falseInport;
 	}
-	public void setFalseInport(Point p){
+	public void setFalseInport(PortFD p){
 		this.falseInport = p;
 	}
 	@Override
-	public Point getOutport() {
+	public PortFD getOutport() {
 		// TODO Auto-generated method stub
 		return this.outport;
 	}
 	@Override
-	public void setOutport(Point p) {
+	public void setOutport(PortFD p) {
 		// TODO Auto-generated method stub
 		this.outport = p;
 	}

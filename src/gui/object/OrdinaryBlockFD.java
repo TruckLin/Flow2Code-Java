@@ -10,39 +10,39 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, WithOutport{
-	private Point inport;
-	private Point outport; // with respect to Block's coordinate.
+	protected PortFD inport;
+	protected PortFD outport; // with respect to Block's coordinate.
 	
 	
 	public OrdinaryBlockFD(JSONObject model) {
 		super(model);
 		
 		// Initialise inport
-		this.inport = new Point( Math.round(this.getWidth()/2), 0);
+		this.inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
 		// Initialise outport
-		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight());
+		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom" );
 	}
 
 	@Override
-	public Point getOutport() {
+	public PortFD getOutport() {
 		return this.outport;
 	}
 
 
 	@Override
-	public void setOutport(Point p) {
+	public void setOutport(PortFD p) {
 		this.outport = p;
 	}
 
 
 	@Override
-	public Point getInport() {
+	public PortFD getInport() {
 		return this.inport;
 	}
 
 
 	@Override
-	public void setInport(Point p) {
+	public void setInport(PortFD p) {
 		this.inport = p;	
 	}
 	

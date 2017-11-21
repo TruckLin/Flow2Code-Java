@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
-import gui.LinePopup;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.mouselistener.LineRightClickListener;
@@ -87,45 +85,22 @@ public abstract class CompositeBlockFD extends BlockFD{
 				g2.setColor(currentLine.getLineColor());
 				g2.setStroke(new BasicStroke());
 				g2.draw(segment);
-				
-				
 			}
 		}
 	}
 	
 	/** Generate Line segments for one LineFD **/
-	public static String findWhichSide(BlockFD block, Point p) {
-		/*				  top
-		 * 			-----------------
-		 * 			|				|
-		 * 	left 	|				| right 
-		 * 			|				|
-		 * 			-----------------
-		 * 				 bottom
-		*/ 
-		Rectangle rec = block.getBounds();
-		double left = rec.getMinX();
-		double right = rec.getMaxX();
-		double top = rec.getMinY();
-		double bottom = rec.getMaxY();
-
-		double x = p.getX();
-		double y = p.getY();
-		
-		if(left == x)  return "left";
-		else if(right == x) return "right";
-		else if(bottom == y) return "bottom";
-		else if(top == y) return "top";
-		else return null;
-	}
-	 
 	public void generateLineSegments(LineFD line) {
 		ArrayList<Line2D> segments = line.getLineSegments();
 		segments.clear();
 		BlockFD source = line.getSource();
 		BlockFD terminal = line.getTerminal();
-		Point startPoint = line.getStartPoint();
-		Point endPoint = line.getEndPoint();
+		PortFD startPort = line.getStartPort();
+		PortFD endPort = line.getEndPort();
+		Point startPoint = startPort.getPortLocation();
+		startPoint = source.toContainerCoordinate(startPoint);
+		Point endPoint = endPort.getPortLocation();
+		endPoint = terminal.toContainerCoordinate(endPoint);
 		// Testing
 		//System.out.println("In generateLineSegments(LineFD lineFD) : ");
 		//System.out.println("lineFD : \n Source = " + lineFD.getSource().toString());
@@ -134,11 +109,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 		//System.out.println(" endPoint = " + lineFD.getEndPoint().toString());
 		
 		// We use straight line for the moment
-		segments.add(new Line2D.Double(line.getStartPoint(),line.getEndPoint()));
-		
-		
-		
-		
+		segments.add( new Line2D.Double(startPoint,endPoint) );
 	}
 	public void generateLineSegmentsForAllLines() {
 		for(LineFD line :lineList) {

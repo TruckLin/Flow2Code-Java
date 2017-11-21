@@ -151,14 +151,15 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 		Rectangle rec = blockStartLOOP.getBounds();
 		Point inport = new Point( (int)Math.round(rec.getWidth())/2,0);
 		inport = new Point(blockStartLOOP.toContainerCoordinate(inport));
-		this.setInport(inport);
+		this.inport.setPortLocation(inport);
+		
 	}
 	@Override
 	public void resetOutport() {
 		Rectangle rec = blockEndLOOP.getBounds();
-		Point outport = new Point( (int)Math.round(rec.getWidth())/2,(int)rec.getHeight());
+		Point outport = new Point( (int)Math.round(rec.getWidth())/2, (int)rec.getHeight());
 		outport = new Point(blockEndLOOP.toContainerCoordinate(outport));
-		this.setOutport(outport);
+		this.outport.setPortLocation(outport);
 	}
 
 }

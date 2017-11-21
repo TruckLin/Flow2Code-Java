@@ -1,5 +1,6 @@
 package gui.commands;
 
+import java.awt.Point;
 import java.awt.event.MouseListener;
 
 import org.json.JSONArray;
@@ -73,12 +74,14 @@ public class AddBlockCommand implements Command {
 		
 		// Add the actual block.
 		parentBlock.add(emptyBlock);
-		emptyBlock.setLocation(line.getCentrePoint());
+		Point p = line.getCentrePoint();
+		p.setLocation(p.getX() - (emptyBlock.getWidth()/2), p.getY() - (emptyBlock.getHeight()/2));
+		emptyBlock.setLocation(p);
 		sourceBlock.removePropertyChangeListener(line.getBlockChangeListener());
 		terminalBlock.removePropertyChangeListener(line.getBlockChangeListener());
 		
-		this.line1 = new LineFD(sourceBlock, emptyBlock, line.getStartPoint(), emptyBlock.toContainerCoordinate(((WithInport)emptyBlock).getInport()));
-		this.line2 = new LineFD(emptyBlock, terminalBlock,  emptyBlock.toContainerCoordinate(((WithOutport)emptyBlock).getOutport()), line.getEndPoint());
+		this.line1 = new LineFD(sourceBlock, emptyBlock, line.getStartPort(), ((WithInport)emptyBlock).getInport());
+		this.line2 = new LineFD(emptyBlock, terminalBlock,  ((WithOutport)emptyBlock).getOutport(), line.getEndPort());
 		
 		((CompositeBlockFD)parentBlock).addLineFD(line1);
 		((CompositeBlockFD)parentBlock).addLineFD(line2);

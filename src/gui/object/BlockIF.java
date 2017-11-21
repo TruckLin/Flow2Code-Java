@@ -53,8 +53,9 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		//this.addMouseMotionListener(myListener);
 		//this.addMouseListener(myListener);
 
-		//Finally set the location of ports.
-		//this.setPorts();
+		// Initialise ports
+		this.inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
+		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom" );
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,
 		// it needs to be put after setBounds or any setters of the component.
@@ -114,17 +115,17 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	
 	@Override
 	public void resetInport() {
-		Point oldPoint = this.getInport();
-		Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport());
-		this.setInport(p);
+	//	Point oldPoint = this.getInport();
+		Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport().getPortLocation());
+		this.getInport().setPortLocation(p);
 	//	this.getPropertyChangeSupport().firePropertyChange("Inport", oldPoint, this.getInport());
 	}
 
 	@Override
 	public void resetOutport() {
-		Point oldPoint = this.getOutport();
-		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport());
-		this.setOutport(p);
+	//	Point oldPoint = this.getOutport();
+		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport().getPortLocation());
+		this.getOutport().setPortLocation(p);
 	//	this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
 	}
 

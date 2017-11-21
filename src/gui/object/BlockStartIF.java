@@ -17,16 +17,16 @@ import gui.manager.UndoManager;
 public class BlockStartIF extends BlockFD implements WithInport{
 	private JLabel displayLabel;
 	
-	private Point inport;
+	private PortFD inport;
 	
-	private Point trueOutport;
-	private Point falseOutport;
+	private PortFD trueOutport;
+	private PortFD falseOutport;
 	
 	private PropertyChangeListener StartIFPropertyListener = 
-			e -> {this.trueOutport = new Point(BlockStartIF.this.getWidth() - 1,
-												Math.round(BlockStartIF.this.getHeight()/2));
+			e -> {this.trueOutport.setPortLocation(new Point(BlockStartIF.this.getWidth() - 1,
+												Math.round(BlockStartIF.this.getHeight()/2)) );
 				 
-				  this.falseOutport = new Point( 0 , Math.round(BlockStartIF.this.getHeight()/2));
+				  this.falseOutport.setPortLocation( new Point( 0 , Math.round(BlockStartIF.this.getHeight()/2)) );
 
 				  
 				  //Testing
@@ -49,14 +49,14 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		this.setLayout(null);
 		
 		// Initialise inport
-		this.inport = new Point( Math.round(this.getWidth()/2), 0);
+		this.inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
 		
 		// Set Default bounds
 		this.setBounds(0,0,100,25);
 		
 		// set the Outport panels
-		Point trueOutport = new Point(this.getWidth() - 1, Math.round(this.getHeight()/2));
-		Point falseOutport = new Point( 0 , Math.round(this.getHeight()/2));
+		this.trueOutport = new PortFD(new Point(this.getWidth() - 1, Math.round(this.getHeight()/2)), "right");
+		this.falseOutport = new PortFD(new Point( 0 , Math.round(this.getHeight()/2)), "left");
 		
 		// Add a listener that change the border of it's parent when mouse enter.
 		MouseEnterListener mouseEnter = new MouseEnterListener(this);
@@ -81,26 +81,26 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	}
 	
 	/** Getters and Setters for ports**/
-	public Point getTrueOutport(){
+	public PortFD getTrueOutport(){
 		return this.trueOutport;
 	}
-	public void setTrueOutport(Point p){
+	public void setTrueOutport(PortFD p){
 		this.trueOutport = p;
 	}
-	public Point getFalseOutport(){
+	public PortFD getFalseOutport(){
 		return this.falseOutport;
 	}
-	public void setFalseOutport(Point p){
+	public void setFalseOutport(PortFD p){
 		this.falseOutport = p;
 	}
 	
 	@Override
-	public Point getInport() {
+	public PortFD getInport() {
 		// TODO Auto-generated method stub
 		return this.inport;
 	}
 	@Override
-	public void setInport(Point p) {
+	public void setInport(PortFD p) {
 		// TODO Auto-generated method stub
 		this.inport = p;
 	}

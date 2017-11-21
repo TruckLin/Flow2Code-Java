@@ -11,14 +11,14 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockEND extends BlockFD implements WithInport{
-	private Point Inport;
+	private PortFD Inport;
 	
 	/** Constructors **/
 	public BlockEND(JSONObject model) {
 		super(model);
 		
 		// Initialise inport
-		this.Inport = new Point( Math.round(this.getWidth()/2), 0);
+		this.Inport =new PortFD( new Point( Math.round(this.getWidth()/2), 0), "top");
 		
 		// Temporary
 		JLabel temp = new JLabel("End");
@@ -30,12 +30,12 @@ public class BlockEND extends BlockFD implements WithInport{
 	/** Getters and Setters **/
 
 	@Override
-	public Point getInport() {
+	public PortFD getInport() {
 		// TODO Auto-generated method stub
 		return this.Inport;
 	}
 	@Override
-	public void setInport(Point p) {
+	public void setInport(PortFD p) {
 		// TODO Auto-generated method stub
 		this.Inport = p;
 	}

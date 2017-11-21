@@ -18,14 +18,8 @@ public class LineFD{
 	private BlockFD Source;
 	private BlockFD Terminal;
 	
-	private Point startPt;
-	private Point endPt;// These two coordinate are with respect to container.
-	
-	private double startPositionRatioX;
-	private double startPositionRatioY;
-	private double endPositionRatioX;
-	private double endPositionRatioY; // Keep these variable so we don't have to call getOut/Inport() methods from Source
-									// and terminal.
+	private PortFD startPort;
+	private PortFD endPort;// These two coordinate are with respect to container.
 	
 	// Various variables that control the appearance of the line. 
 	private Color color = Color.RED;
@@ -64,7 +58,6 @@ public class LineFD{
 			// Testing
 			//System.out.println("Property of Blocks changed and detected by line.");
 			
-			updateLine();
 			/** tell parent panel to repaint **/
 			propertyChangeSupport.firePropertyChange("EndPoints",null, this); // we don't really care about old value.
 		}
@@ -76,7 +69,7 @@ public class LineFD{
 	
 	/** Constructors **/
 	// Constructor from two BlockFD object and specified points.
-	public LineFD(BlockFD b1, BlockFD b2, Point startpt, Point endpt) {
+	public LineFD(BlockFD b1, BlockFD b2, PortFD startPort, PortFD endPort) {
 		
 		// note that these startpt, endpt are with respect to container's coordinate.
 		
@@ -85,33 +78,23 @@ public class LineFD{
 		//System.out.println("b1 = " + b1.toString());
 		//System.out.println("b1.getLocation() = " + b1.getLocation().toString());
 		
-		double x1 = (startpt.getX() - b1.getLocation().getX())/b1.getWidth();
-		double y1 = (startpt.getY() - b1.getLocation().getY())/b1.getHeight();
-		double x2 = (endpt.getX() - b2.getLocation().getX())/b2.getWidth();
-		double y2 = (endpt.getY() - b2.getLocation().getY())/b2.getHeight();
-		this.startPositionRatioX = x1;
-		this.startPositionRatioY = y1;
-		this.endPositionRatioX = x2;
-		this.endPositionRatioY = y2;
-		
 		this.Source = b1;
 		this.Terminal = b2;
 		
-		this.startPt = startpt;
-		this.endPt = endpt;
+		this.startPort = startPort;
+		this.endPort = endPort;
 		
 		Source.addPropertyChangeListener(blocklistener);
 		Terminal.addPropertyChangeListener(blocklistener);
-		
 	}
 	
 	/** Getters **/
-	public Point getStartPoint() {
-		return this.startPt;
+	public PortFD getStartPort() {
+		return this.startPort;
 	}
 	
-	public Point getEndPoint() {
-		return this.endPt;
+	public PortFD getEndPort() {
+		return this.endPort;
 	}
 	public BlockFD getSource() {
 		return this.Source;
@@ -120,12 +103,22 @@ public class LineFD{
 		return this.Terminal;
 	}
 	public Point getCentrePoint() {
-		double x1 = this.startPt.getX();
-		double y1 = this.startPt.getY();
-		double x2 = this.endPt.getX();
-		double y2 = this.endPt.getY();
+		Point startPt = this.getStartPort().getPortLocation();
+		startPt = this.Source.toContainerCoordinate(startPt);
+		Point endPt = this.getEndPort().getPortLocation();
+		endPt = this.Terminal.toContainerCoordinate(endPt);
+		double x1 = startPt.getX();
+		double y1 = startPt.getY();
+		double x2 = endPt.getX();
+		double y2 = endPt.getY();
 		int x = (int)Math.round((x1 + x2)/2);
 		int y = (int)Math.round((y1 + y2)/2);
+		
+		//Testing
+		//System.out.println("startPt = " + startPt);
+		//System.out.println("endPt = " + endPt);
+		//System.out.println("center - " + new Point(x,y));
+		
 		return new Point(x,y);
 	}
 	public BlockChangeListener getBlockChangeListener() {
@@ -163,37 +156,6 @@ public class LineFD{
 	/** Setters **/
 	
 	/** Utility functions **/
-	// update startPt and endPt.
-	public void updateLine(){
-		// Testing
-		//System.out.println("Line between " + Source.getModel().getString("Name") + " and " + Terminal.getModel().getString("Name"));
-		//System.out.println("reDrawLine() is called.");
-		
-		boolean sourceIsLoop = this.Source instanceof BlockIF || this.Source instanceof BlockWHILE || this.Source instanceof BlockFOR;
-		boolean terminalIsLoop	= this.Terminal instanceof BlockIF || this.Terminal instanceof BlockWHILE || this.Terminal instanceof BlockFOR;
-		
-		int x1 = (int)Math.round(this.Source.getWidth() * this.startPositionRatioX);
-		int y1 = (int)Math.round(this.Source.getHeight() * this.startPositionRatioY);
-		int x2 = (int)Math.round(this.Terminal.getWidth() * this.endPositionRatioX);
-		int y2 = (int)Math.round(this.Terminal.getHeight() * this.endPositionRatioY);
-		Point p1 = new Point(x1, y1);
-		Point p2 = new Point(x2, y2);
-		if(sourceIsLoop) {
-			p1 = ((WithOutport)this.Source).getOutport();
-		}
-		if(terminalIsLoop) {
-			p2 = ((WithInport)this.Terminal).getInport();
-		}
-		
-		p1 = Source.toContainerCoordinate(p1);
-		p2 = Terminal.toContainerCoordinate(p2);
-		
-		this.startPt = p1;
-		this.endPt = p2;
-		
-		//Testing
-		//System.out.println("LineFD.reDrawLine() has been called.");
-	}
 	
 	// "is" functions
 	public boolean isSource(BlockFD b) {

@@ -65,11 +65,11 @@ public class CommandUtilityFunctions {
 				sourceModel.put("Child", currentModel.getString("Name"));
 				currentModel.put("Child",terminalModel.getString("Name"));
 			}else {
-				if( sourceLine.getSource() instanceof BlockStartTrueIF ) {
+				if( sourceLine.getStartPort().getSide().equals("right") ) {
 					parentModel.append("TrueMembers", currentModel);
 					sourceModel.put("Child", currentModel.getString("Name"));
 					currentModel.put("Child",terminalModel.getString("Name"));
-				}else if( sourceLine.getSource() instanceof BlockStartFalseIF ) {
+				}else if( sourceLine.getEndPort().getSide().equals("left") ) {
 					parentModel.append("FalseMembers", currentModel);
 					sourceModel.put("Child", currentModel.getString("Name"));
 					currentModel.put("Child",terminalModel.getString("Name"));

@@ -10,8 +10,8 @@ import gui.interfaces.WithOutport;
 
 public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implements WithInport, WithOutport{
 	
-	protected Point inport;
-	protected Point outport; // with respect to Block's coordinate.
+	protected PortFD inport;
+	protected PortFD outport; // with respect to Block's coordinate.
 	
 	protected PropertyChangeListener listener = e -> {resetInOutPorts();
 													  this.firePropertyChange("Ports", null, null);
@@ -19,6 +19,11 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	
 	public OrdinaryCompositeBlockFD(JSONObject model) {
 		super(model);
+		
+		// Initialise inport
+		this.inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
+		// Initialise outport
+		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom" );
 	}
 	
 	/** All composite should write a function resetInOutPorts()
@@ -39,25 +44,25 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	}
 	
 	@Override
-	public Point getOutport() {
+	public PortFD getOutport() {
 		return this.outport;
 	}
 
 
 	@Override
-	public void setOutport(Point p) {
+	public void setOutport(PortFD p) {
 		this.outport = p;
 	}
 
 
 	@Override
-	public Point getInport() {
+	public PortFD getInport() {
 		return this.inport;
 	}
 
 
 	@Override
-	public void setInport(Point p) {
+	public void setInport(PortFD p) {
 		this.inport = p;	
 	}
 }
