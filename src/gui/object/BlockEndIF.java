@@ -30,10 +30,10 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 		this.setOpaque(false);
 		
 		// Initialise outport
-		this.setOutport(new Point( Math.round(this.getWidth()/2), (int)this.getHeight() - 1));
+		this.setOutport(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()));
 		
 		// Initialise inports
-		this.trueInport = new Point(this.getWidth() - 1, Math.round(this.getHeight()/2));
+		this.trueInport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
 		this.falseInport = new Point(0, Math.round(this.getHeight()/2));
 	}
 	

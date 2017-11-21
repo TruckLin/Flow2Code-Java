@@ -20,7 +20,7 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 		// Initialise inport
 		this.inport = new Point( Math.round(this.getWidth()/2), 0);
 		// Initialise outport
-		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight() - 1);
+		this.outport = new Point( Math.round(this.getWidth()/2), (int)this.getHeight());
 	}
 
 	@Override
