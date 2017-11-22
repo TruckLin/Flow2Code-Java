@@ -1,27 +1,20 @@
 package gui.commands;
 
 import java.awt.Point;
-import java.awt.event.MouseListener;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import gui.BlockPopup;
-import gui.LinePopup;
 import gui.interfaces.Command;
 import gui.interfaces.WithOutport;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
-import gui.object.BlockIF;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
-import gui.object.OrdinaryBlockFD;
 import strategy.BlockGenerator;
 import strategy.ModelGenerator;
-import gui.mouselistener.BlockDragListener;
-import gui.mouselistener.LineRightClickListener;
 import gui.interfaces.*;
+
 public class AddBlockCommand implements Command {
 	private UndoManager undoManager;
 	private NameCounterManager nameManager;
@@ -62,8 +55,6 @@ public class AddBlockCommand implements Command {
 		
 		this.sourceBlock = line.getSource();
 		this.terminalBlock = line.getTerminal();
-		JSONObject sourceModel = line.getSource().getModel();
-		JSONObject terminalModel = line.getTerminal().getModel();
 		
 		/** ================================= put emptyModel at the right place. =====================================**/
 		CommandUtilityFunctions.addJSONObjectToParentModel(parentModel, emptyBlock.getModel(),
@@ -167,6 +158,7 @@ public class AddBlockCommand implements Command {
 
 		// allow parent block to update.
 		parentBlock.setAppropriateBounds();
+		parentBlock.repaint();
 	}
 
 	@Override

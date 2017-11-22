@@ -1,28 +1,9 @@
 package gui.commands;
 
-import java.awt.Point;
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import gui.interfaces.WithInport;
-import gui.interfaces.WithOutport;
-import gui.manager.NameCounterManager;
-import gui.object.BlockASSIGN;
-import gui.object.BlockDECLARE;
-import gui.object.BlockEND;
-import gui.object.BlockEndIF;
 import gui.object.BlockFD;
-import gui.object.BlockFOR;
-import gui.object.BlockFlowDiagram;
-import gui.object.BlockIF;
-import gui.object.BlockINPUT;
-import gui.object.BlockOUTPUT;
-import gui.object.BlockSTART;
-import gui.object.BlockStartIF;
-import gui.object.BlockStartLOOP;
-import gui.object.BlockWHILE;
 import gui.object.LineFD;
 
 public class CommandUtilityFunctions {

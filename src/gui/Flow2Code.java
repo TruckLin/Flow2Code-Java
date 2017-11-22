@@ -1,7 +1,6 @@
 package gui;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -11,7 +10,6 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
-import gui.object.LineFD;
 import gui.manager.SaveAndLoadManagerFD;
 import strategy.BlockGenerator;
 
@@ -19,7 +17,6 @@ public class Flow2Code extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	// Private instance variables
-	// ......
 	
 	public Flow2Code() {
 		// Retrieve the top-level content-pane from JFrame
@@ -54,14 +51,14 @@ public class Flow2Code extends JFrame{
 	    NameCounterManager nameManager = new NameCounterManager();
 	    
 	    /** Demo FlowDiagram construction **/
-//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
-//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Empty.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Empty-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Empty.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Empty-info.json");
 
 	    
 	    BlockGenerator blockGenerator = new BlockGenerator();

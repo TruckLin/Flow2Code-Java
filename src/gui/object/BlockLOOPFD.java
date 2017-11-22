@@ -15,6 +15,8 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
+import simple.geometry.GeometryTools;
+
 public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 	protected BlockStartLOOP blockStartLOOP;
 	protected BlockEndLOOP blockEndLOOP;
@@ -136,7 +138,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 	public void generateLineSegmentsForAllLines() {
 		super.generateLineSegmentsForAllLines();
 		
-		this.generateLineSegments(exitLine);
+		GeometryTools.generateLineSegments(exitLine);
 	}
 	
 	/** Override abstract methods from OrdinaryCompositeBlockFD**/

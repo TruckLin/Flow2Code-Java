@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.mouselistener.LineRightClickListener;
+import simple.geometry.GeometryTools;
 
 public abstract class CompositeBlockFD extends BlockFD{
 
@@ -58,7 +59,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 	public void addLineFD(LineFD line) {
 		line.addPropertyChangeListener(repaintListener);
 		this.lineList.add(line);
-		this.generateLineSegments(line);
+		GeometryTools.generateLineSegments(line);
 		this.repaint();
 	}
 	
@@ -90,30 +91,10 @@ public abstract class CompositeBlockFD extends BlockFD{
 	}
 	
 	/** Generate Line segments for one LineFD **/
-	public void generateLineSegments(LineFD line) {
-		ArrayList<Line2D> segments = line.getLineSegments();
-		segments.clear();
-		BlockFD source = line.getSource();
-		BlockFD terminal = line.getTerminal();
-		PortFD startPort = line.getStartPort();
-		PortFD endPort = line.getEndPort();
-		Point startPoint = startPort.getPortLocation();
-		startPoint = source.toContainerCoordinate(startPoint);
-		Point endPoint = endPort.getPortLocation();
-		endPoint = terminal.toContainerCoordinate(endPoint);
-		// Testing
-		//System.out.println("In generateLineSegments(LineFD lineFD) : ");
-		//System.out.println("lineFD : \n Source = " + lineFD.getSource().toString());
-		//System.out.println(" startPoint = " + lineFD.getStartPoint().toString());
-		//System.out.println(" Terminal = " + lineFD.getTerminal().toString());
-		//System.out.println(" endPoint = " + lineFD.getEndPoint().toString());
-		
-		// We use straight line for the moment
-		segments.add( new Line2D.Double(startPoint,endPoint) );
-	}
 	public void generateLineSegmentsForAllLines() {
 		for(LineFD line :lineList) {
-			generateLineSegments(line);
+			GeometryTools.generateLineSegments(line);
+			//generateLineSegments(line);
 		}
 	}
 	

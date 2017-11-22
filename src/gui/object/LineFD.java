@@ -2,17 +2,11 @@ package gui.object;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-
-import javax.swing.*;
-
-import gui.interfaces.WithInport;
-import gui.interfaces.WithOutport;
 
 public class LineFD{
 	private BlockFD Source;

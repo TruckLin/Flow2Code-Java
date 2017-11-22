@@ -134,6 +134,7 @@ public class DeleteBlockCommand implements Command{
 		terminalBlock.addPropertyChangeListener(newLine.getBlockChangeListener());
 				
 		parentBlock.setAppropriateBounds();
+		parentBlock.repaint();
 		
 	}
 
