@@ -97,7 +97,7 @@ public class AddBlockCommand implements Command {
 		((CompositeBlockFD)parentBlock).generateLineSegmentsForAllLines();
 		
 		// allow parent block to update.
-		parentBlock.setAppropriateBounds();
+		((CompositeBlockFD)parentBlock).setAppropriateBounds();
 		parentBlock.repaint();
 	}
 
@@ -126,7 +126,7 @@ public class AddBlockCommand implements Command {
 		terminalBlock.addPropertyChangeListener(line.getBlockChangeListener());
 				
 		// allow parent block to update.
-		parentBlock.setAppropriateBounds();
+		((CompositeBlockFD)parentBlock).setAppropriateBounds();
 		parentBlock.repaint();
 	}
 
@@ -157,7 +157,7 @@ public class AddBlockCommand implements Command {
 		((CompositeBlockFD)parentBlock).removeLineFD(line);
 
 		// allow parent block to update.
-		parentBlock.setAppropriateBounds();
+		((CompositeBlockFD)parentBlock).setAppropriateBounds();
 		parentBlock.repaint();
 	}
 

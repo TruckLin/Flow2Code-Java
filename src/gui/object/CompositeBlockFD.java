@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -90,6 +91,127 @@ public abstract class CompositeBlockFD extends BlockFD{
 		}
 	}
 	
+	/** Set appropriateBounds **/
+	public void setAppropriateBounds() {
+		// This function set appropriate size according to it's children.
+		// Size that is just big enough to contain all the children.
+		
+		//Testing
+		//System.out.println("setAppropriateBounds() is called :");
+		//System.out.println("Initial parameters : ");
+		//System.out.println("Type of the Block = " + this.getModel().getString("Type"));
+		//System.out.println("Name of the Block = " + this.getModel().getString("Name"));
+		
+		int x_min = Integer.MAX_VALUE;
+		int y_min = Integer.MAX_VALUE;
+		int x_max = Integer.MIN_VALUE;
+		int y_max = Integer.MIN_VALUE;
+		// Find min and max of x-coordinate and y-coordinate of Blocks.
+		int len = this.getComponents().length;
+		for(int i = 0; i < len; i++) {
+			Rectangle tempBounds = this.getComponent(i).getBounds();
+
+			//Testing
+			//System.out.println(i + "th component's name : " + this.getComponent(i).getClass());
+			//System.out.println(i + "th component's bounds : " + tempBounds.toString());
+			
+			
+			if(tempBounds.getMinX() < x_min) {
+				x_min = (int)tempBounds.getMinX();
+			}
+			if(tempBounds.getMaxX() > x_max) {
+				x_max = (int)tempBounds.getMaxX();
+			}
+			if(tempBounds.getMinY() < y_min) {
+				y_min = (int)tempBounds.getMinY();
+			}
+			if(tempBounds.getMaxY() > y_max) {
+				y_max = (int)tempBounds.getMaxY();
+			}
+		}
+		
+		// Find min and max of x-coordinate and y-coordinate of lines.
+		int numOfLines = this.lineList.size();
+		for(int i = 0; i < numOfLines; i++) {
+			ArrayList<Line2D> currentLineSegments = lineList.get(i).getLineSegments();
+			int numOfSegments = currentLineSegments.size();
+			for(int j = 0; j < numOfSegments; j++) {
+				Line2D currentSegment = currentLineSegments.get(j);
+				double x1 = currentSegment.getX1();
+				double y1 = currentSegment.getY1();
+				double x2 = currentSegment.getX2();
+				double y2 = currentSegment.getY2();
+				
+				double tempXmin = (int)Math.min(x1, x2);
+				double tempXmax = Math.max(x1, x2);
+				double tempYmin = Math.min(y1, y2);
+				double tempYmax = Math.max(y1, y2);
+				
+				if(tempXmin < x_min) {
+					x_min = (int)tempXmin;
+				}
+				if(tempXmax > x_max) {
+					x_max = (int)tempXmax;
+				}
+				if(tempYmin < y_min) {
+					y_min = (int)tempYmin;
+				}
+				if(tempYmax > y_max) {
+					y_max = (int)tempYmax;
+				}
+			}
+		}
+		
+		
+		//Testing
+		//System.out.println("\nEnd parameters : ");
+		
+		// some Extra width if required. extraWidth represents the minimum horizontal 
+		// distance from CompositeBlock's boundary to the components it contains.
+		int extraWidth = 5;
+		int extraHeight = 0;		
+		
+		// Shift children components according to minimums.
+		int x;
+		int y;
+		for(int i = 0; i < len; i++) {
+			
+			Point tempPoint = this.getComponent(i).getLocation();
+			x = (int)tempPoint.getX() - x_min + extraWidth;
+			y = (int)tempPoint.getY() - y_min + extraHeight;
+		//	x = (int)tempPoint.getX() - x_min;
+		//	y = (int)tempPoint.getY() - y_min;
+			this.getComponent(i).setLocation(new Point(x,y));
+			
+			//Testing
+			//System.out.println(i + "th component's bounds : " + 
+			//					this.getComponent(i).getBounds().toString());
+		}
+		
+		// Set the bounds for CompositeBlockFD.
+		
+		int width = x_max - x_min + 2*extraWidth;
+		int height = y_max - y_min + 2*extraHeight; // just big enough to contain all of them.
+	//	int width = x_max - x_min;
+	//	int height = y_max - y_min; // just big enough to contain all of them.
+		
+		Point tempPoint = this.getLocation();
+		x = (int)tempPoint.getX() + x_min - extraWidth;
+		y = (int)tempPoint.getY() + y_min - extraHeight;
+	//	x = (int)tempPoint.getX() + x_min;
+	//	y = (int)tempPoint.getY() + y_min;
+		this.setBounds(x, y, width, height);
+		
+		if(this.getParent() instanceof BlockFD) {
+			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
+		}
+		//Testing
+		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
+		
+		// Repaint the everyThing?
+		this.repaint();
+		
+	}
 	/** Generate Line segments for one LineFD **/
 	public void generateLineSegmentsForAllLines() {
 		for(LineFD line :lineList) {

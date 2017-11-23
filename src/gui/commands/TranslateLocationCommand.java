@@ -2,6 +2,7 @@ package gui.commands;
 
 import gui.interfaces.Command;
 import gui.object.BlockFD;
+import gui.object.CompositeBlockFD;
 
 public class TranslateLocationCommand implements Command {
 	private BlockFD block;
@@ -32,7 +33,7 @@ public class TranslateLocationCommand implements Command {
 		
 		block.translateLocation(dx, dy);
 		
-		((BlockFD)block.getParent()).setAppropriateBounds();
+		((CompositeBlockFD)block.getParent()).setAppropriateBounds();
 		
 		//Testing
 		//System.out.println("this print line is executed after getParent(). ");
@@ -43,7 +44,7 @@ public class TranslateLocationCommand implements Command {
 	public void undo() {
 		// TODO Auto-generated method stub
 		block.translateLocation(-dx, -dy);
-		((BlockFD)block.getParent()).setAppropriateBounds();
+		((CompositeBlockFD)block.getParent()).setAppropriateBounds();
 	}
 
 	@Override
