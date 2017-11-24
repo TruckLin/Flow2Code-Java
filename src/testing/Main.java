@@ -18,6 +18,7 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	JPopupMenu popup;
 	JMenuItem menuItem;
 	JLabel label;
+	JLabel label2;
 	
 	JDialog dialog;
 	public Main() {
