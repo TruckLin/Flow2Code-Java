@@ -13,7 +13,9 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 		super(model);
 		
 		this.blockLabel.setText("Declare");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary

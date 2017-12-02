@@ -16,7 +16,9 @@ public class BlockINPUT extends OrdinaryBlockFD {
 		super(model);
 		
 		this.blockLabel.setText("Input");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary

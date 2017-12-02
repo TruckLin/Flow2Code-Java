@@ -169,8 +169,8 @@ public abstract class CompositeBlockFD extends BlockFD{
 		
 		// some Extra width if required. extraWidth represents the minimum horizontal 
 		// distance from CompositeBlock's boundary to the components it contains.
-		int extraWidth = 5;
-		int extraHeight = 0;		
+		int extraWidth = (int)Math.round( 5 * this.getCurrentZoomRatio());
+		int extraHeight = (int)Math.round( 0 * this.getCurrentZoomRatio());	
 		
 		// Shift children components according to minimums.
 		int x;

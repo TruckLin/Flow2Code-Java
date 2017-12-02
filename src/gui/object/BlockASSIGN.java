@@ -17,7 +17,9 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 		super(model);
 		
 		this.blockLabel.setText("Assign");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary

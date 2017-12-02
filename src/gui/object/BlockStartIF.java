@@ -46,7 +46,9 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		System.out.println("blockStartFalseIF.getFalseOutport = " + this.getFalseOutport()); */
 		
 		this.blockLabel.setText("StartIF");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		// Temporary
@@ -82,13 +84,6 @@ public class BlockStartIF extends BlockFD implements WithInport{
 
 	
 	/** override abstract methods**/
-	@Override
-	public void zoomLabel(double newRatio) {
-		// TODO Auto-generated method stub
-		Font myFont = this.blockLabel.getFont();
-		this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
-									(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio))); 
-	}
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;

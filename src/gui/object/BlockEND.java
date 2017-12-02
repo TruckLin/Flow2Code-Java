@@ -20,7 +20,8 @@ public class BlockEND extends BlockFD implements WithInport{
 		this.setBounds(0, 0, 100, 25);
 		
 		this.blockLabel.setText("End");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		// Temporary

@@ -39,6 +39,10 @@ public class BlockFOR extends BlockLOOPFD{
 		displayString = displayString + this.getInitialisation() + ", " + this.getCondition() + ", " + this.getStep() + " )";
 		this.blockStartLOOP.getBlockLabel().setText(displayString);
 		
+		this.blockStartLOOP.adjustLabelSize();
+		this.blockStartLOOP.adjustBlockSizeByLabel();
+		this.blockStartLOOP.adjustLabelLocation();
+		
 		//Testing
 		//System.out.println("blockStartLOOP's label's preferrable size = : " + 
 		//						this.blockStartLOOP.getDisplayLabel().getPreferredSize());

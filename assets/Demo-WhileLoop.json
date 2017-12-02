@@ -6,7 +6,7 @@
 				},
 				{"Type" : "While",
 				"Name" : "While1",
-				"Expression" : "i < 10",
+				"Expression" : "charles < 1234567",
 				"StartLoop" : {"Type" : "StartLoop",
 								"Name" : "StartLoop1",
 								"Child" : "StartLoop1"

@@ -29,7 +29,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 								parentMaxY = comp.getBounds().getMaxY();
 						}
 					}
-					if(blockEndIF.getBounds().getMaxY() < parentMaxY) {
+					if( blockEndIF != null && blockEndIF.getBounds().getMaxY() < parentMaxY) {
 						int h = BlockIF.this.getHeight() - blockEndIF.getHeight();
 						blockEndIF.setLocation((int)blockEndIF.getLocation().getX(),h);
 					}
@@ -130,6 +130,9 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		String displayString = ("If( " + this.getExpression() + " )");
 		this.blockStartIF.getBlockLabel().setText(displayString);
 		
+		this.blockStartIF.adjustLabelSize();
+		this.blockStartIF.adjustBlockSizeByLabel();
+		this.blockStartIF.adjustLabelLocation();
 		
 		// blockStartLOOP may need to change size and location
 		// this.blockStartLOOP.setAppropriateBounds();

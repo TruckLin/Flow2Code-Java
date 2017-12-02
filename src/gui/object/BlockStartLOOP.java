@@ -37,7 +37,9 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		this.addMouseListener(mouseEnter);
 
 		this.blockLabel.setText("StartLoop");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		// Temporary

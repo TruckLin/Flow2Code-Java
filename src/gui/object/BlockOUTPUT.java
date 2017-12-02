@@ -16,7 +16,9 @@ public class BlockOUTPUT extends OrdinaryBlockFD{
 		super(model);
 
 		this.blockLabel.setText("Output");
-		this.adjustLabelBounds();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary

@@ -199,9 +199,7 @@ public abstract class BlockFD extends JPanel{
 		int height = (int) Math.round(oldRec.getHeight()*newRatio/currentZoomRatio);
 		Rectangle newRec = new Rectangle(x,y,width,height);
 		this.setBounds(newRec);
-		
-		
-		
+
 		if(this.isCompositeBlockFD()) {
 			Component[] comps = this.getComponents();
 			for(Component comp : comps) {
@@ -219,20 +217,63 @@ public abstract class BlockFD extends JPanel{
 			Font myFont = this.blockLabel.getFont();
 			this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
 										(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio)));
-			this.adjustLabelBounds();
+			this.adjustLabelSize();
+			this.adjustLabelLocation();
 		}
 		
 	}
 	
-	public void adjustLabelBounds() {
+	public void adjustLabelSize() {
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		this.blockLabel.setSize(labelDimension);
+	}
+	
+	// adjustLabelLocation() should always be called after adjustLabelSize() and adjestBlockSize()
+	public void adjustLabelLocation() {
+		
 		int width = this.getWidth();
 		int height = this.getHeight();
-		
 		Dimension labelDimension = this.blockLabel.getPreferredSize();
 		Point newLocation = new Point( (int)Math.round(width/2 - labelDimension.getWidth()/2), 
-										(int)Math.round(height/2 - labelDimension.getHeight()/2));
-		this.blockLabel.setSize(labelDimension);
+									   (int)Math.round(height/2 - labelDimension.getHeight()/2));
+		
+		//Testing
+	//	if(this.blockLabel.getText().startsWith("I")) {
+	//		System.out.println(this.blockLabel.getText());
+	//	}
+		
 		this.blockLabel.setLocation(newLocation);
+	}
+	
+	public void adjustBlockSizeByLabel() {
+		int minWidth = (int)Math.round(100*this.currentZoomRatio);
+		int minHeight = (int)Math.round(25*this.currentZoomRatio);
+		
+		boolean sizeShouldChange = false;
+		
+		int newWidth = minWidth;
+		int newHeight = minHeight;
+		
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		if(labelDimension.getWidth() > minWidth) {
+			newWidth = (int)labelDimension.getWidth();
+			sizeShouldChange = true;
+		}
+		if(labelDimension.getHeight() > minHeight){
+			newHeight = (int)labelDimension.getHeight();
+			sizeShouldChange = true;
+		}
+		
+		//Testing
+		//System.out.println("sizeShouldChange = " + sizeShouldChange);
+		
+		if(sizeShouldChange) {
+			int x = (int)this.getLocation().getX();
+			int y = (int)this.getLocation().getY();
+			this.setBounds(x,y,
+					newWidth + (int)Math.round(10*this.currentZoomRatio),
+					newHeight + (int)Math.round(5*this.currentZoomRatio));
+		}
 	}
 	
 
