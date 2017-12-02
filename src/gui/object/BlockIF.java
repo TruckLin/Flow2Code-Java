@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -10,25 +11,39 @@ import javax.swing.BorderFactory;
 import org.json.JSONObject;
 
 import gui.manager.UndoManager;
-import gui.mouselistener.DemoMouseListener;
 import gui.mouselistener.MouseEnterListener;
 
-public class BlockIF extends OrdinaryBlockFD{
+public class BlockIF extends OrdinaryCompositeBlockFD{
 	private BlockStartIF blockStartIF;
 	private BlockEndIF blockEndIF;
 	
-	private LineFD trueLine;
-	private LineFD falseLine; 
-	// This is a stupid check that I need when adding blocks inside BlockIF, trueLine is the line on the right,
-	// falseLine is the line one the left.
-	
-	private PropertyChangeListener listener = e -> resetOutInPorts();
-	
+	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
+	private PropertyChangeListener MoveBlockEndLoopListener = 
+			e -> {  // Find out the maximum Y coordinate without BlockEndLOOP.
+					Component[] compList = BlockIF.this.getComponents();
+					double parentMaxY = Double.MIN_VALUE;
+					for(Component comp : compList) {
+						if(comp == blockEndIF) continue;
+						else {
+							if(parentMaxY < comp.getBounds().getMaxY())
+								parentMaxY = comp.getBounds().getMaxY();
+						}
+					}
+					if(blockEndIF.getBounds().getMaxY() < parentMaxY) {
+						int h = BlockIF.this.getHeight() - blockEndIF.getHeight();
+						blockEndIF.setLocation((int)blockEndIF.getLocation().getX(),h);
+					}
+						
+					//Testing
+					//System.out.println("MoveBlockEndLoopListener triggered.");
+					//System.out.println("height = " + h);
+				};
+
 	public BlockIF(JSONObject model) {
 		super(model);
 
 		this.setOpaque(false); // we should always see through this while panel.
-		
+
 		//Set various default property
 		this.setSize(110,110);
 		this.setLayout(null);
@@ -37,31 +52,14 @@ public class BlockIF extends OrdinaryBlockFD{
 		//DemoMouseListener myListener = new DemoMouseListener(undoManager,this);
 		//this.addMouseMotionListener(myListener);
 		//this.addMouseListener(myListener);
+
 		
-		//Finally set the location of ports.
-		//this.setPorts();
+		// Add listener that change the position of BlockEndLOOP, order is important,
+		// it needs to be put after setBounds or any setters of the component.
+		this.addPropertyChangeListener(MoveBlockEndLoopListener);
 	}
 	
-	/** Utility Functions **/
-	public void resetOutInPorts() {
-		Point oldPoint = this.getOutport();
-		resetOutport();
-		resetInport();
-		
-		// Testing
-		//System.out.println("resetOutInPorts() is called.");
-		
-		this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
-		
-	}
-	public void resetOutport() {
-		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport());
-		this.setOutport(p);
-	}
-	public void resetInport() {
-		Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport());
-		this.setInport(p);
-	}
+
 	
 	
 	/** Getters and Setters **/
@@ -77,9 +75,11 @@ public class BlockIF extends OrdinaryBlockFD{
 		if (this.blockStartIF != null) {
 			// connect to new model
 			this.blockStartIF.addPropertyChangeListener(listener);
-
+			
+			updateBlockContent();
+			
 			// initialize fields in the UI
-			resetInport();
+			updateInport();
 		}
 	}
 	public BlockEndIF getBlockEndIF() {
@@ -96,28 +96,42 @@ public class BlockIF extends OrdinaryBlockFD{
 			this.blockEndIF.addPropertyChangeListener(listener);
 
 			// initialize fields in the UI
-			resetOutport();
+			updateOutport();
 		}
 	}
-	public LineFD getTrueLine() {
-		return this.trueLine;
+	public String getExpression() {
+		return this.getModel().getString("Expression");
 	}
-	public void setTrueLine(LineFD line) {
-		this.trueLine = line;
-	}
-	public LineFD getFalseLine() {
-		return this.falseLine;
-	}
-	public void setFalseLine(LineFD line) {
-		this.falseLine = line;
-	}
-	
 	
 	/** Utilities **/
-	public void setAppropriateBounds() {
-		// This function set approriate size according to it's children.
-		// Size that is just big enough to contain all the children.
-		super.setAppropriateBounds();
-		resetOutInPorts();
+	@Override
+	public void updateInport() {
+	//	Point oldPoint = this.getInport();
+		if(this.getBlockStartIF() != null) {
+			Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport().getPortLocation());
+			this.getInport().setPortLocation(p);
+		//	this.getPropertyChangeSupport().firePropertyChange("Inport", oldPoint, this.getInport());
+		}
+	}
+
+	@Override
+	public void updateOutport() {
+	//	Point oldPoint = this.getOutport();
+		if(this.getBlockEndIF() != null) {
+			Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport().getPortLocation());
+			this.getOutport().setPortLocation(p);
+	//		this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
+		}
+	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		String displayString = ("If( " + this.getExpression() + " )");
+		this.blockStartIF.getBlockLabel().setText(displayString);
+		
+		
+		// blockStartLOOP may need to change size and location
+		// this.blockStartLOOP.setAppropriateBounds();
 	}
 }

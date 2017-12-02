@@ -9,15 +9,7 @@ import gui.commands.AddBlockCommand;
 import gui.commands.DeleteBlockCommand;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
-import gui.object.BlockASSIGN;
-import gui.object.BlockDECLARE;
-import gui.object.BlockFD;
-import gui.object.BlockIF;
-import gui.object.BlockINPUT;
-import gui.object.BlockOUTPUT;
-import gui.object.BlockStartIF;
-import gui.object.BlockStartLOOP;
-import gui.object.LineFD;
+import gui.object.*;
 
 public class BlockPopup extends JPopupMenu{
 	private UndoManager undoManager;
@@ -25,9 +17,10 @@ public class BlockPopup extends JPopupMenu{
 	private JMenuItem deleteItem = new JMenuItem("Delete");
 	private JMenuItem editItem = new JMenuItem("Edit");
 	
-	public BlockPopup (UndoManager undoManager) {
+	public BlockPopup (UndoManager undoManager, BlockFD block) {
 		super();
 		this.undoManager = undoManager;
+		this.setBlockFD(block);
 		
 		// Add all the menu items
 		this.add(this.deleteItem);
@@ -52,23 +45,18 @@ public class BlockPopup extends JPopupMenu{
 			this.editItem.removeActionListener(listener);
 		}
 		
-		// enable chack for editItem
-		if(isEditable(this.block)) {
-			editItem.setEnabled(true);
-		}else {
-			editItem.setEnabled(false);
-		}
+		// enable check for editItem
+		editItem.setEnabled(this.block.isEditable());
 		
 		// Add new action listener to menu items
 		this.deleteItem.addActionListener(e -> deleteBlockAction(this.block));
 		this.editItem.addActionListener(e -> {
-										if(isLoop(this.block)) {
+										if(this.block.representCompositeBlock()) {
 											showEditDialog(undoManager,(BlockFD)this.block.getParent());
 										}else {
 											showEditDialog(undoManager,this.block);
 										}
 										});
-		
 	}
 	
 	public void showEditDialog(UndoManager undoManager,BlockFD block) {
@@ -84,15 +72,9 @@ public class BlockPopup extends JPopupMenu{
 	}
 	
 	/** the checking and popup the dialog **/
-	private boolean isEditable(BlockFD block) {
-		if(block instanceof BlockStartLOOP || block instanceof BlockStartIF || block instanceof BlockOUTPUT
-		|| block instanceof BlockINPUT || block instanceof BlockASSIGN || block instanceof BlockDECLARE) {
-			return true;
-		}
-		return false;
-	}
+
 	private boolean isLoop(BlockFD block) {
-		if(block instanceof BlockStartLOOP || block instanceof BlockIF) {
+		if(block instanceof BlockStartIF || block instanceof BlockStartLOOP) {
 			return true;
 		}
 		return false;

@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -9,51 +10,44 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
-public class BlockFOR extends OrdinaryBlockFD {
-	private BlockStartLOOP blockStartLOOP;
-	
-	private PropertyChangeListener listener = e -> resetOutInPorts();
+import gui.BlockEditDialog;
+import gui.interfaces.WithInport;
+import gui.interfaces.WithOutport;
+import gui.manager.UndoManager;
+
+public class BlockFOR extends BlockLOOPFD{
 	
 	public BlockFOR(JSONObject model){
 		super(model);
-		
-		this.setOpaque(false); // we should always see through this while panel.
-		
-		//Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
 	}
 	
-	/** Getters and Setters **/
-	public BlockStartLOOP getBlockStartLOOP() {
-		return this.blockStartLOOP;
+	/** Getters and Setters **/	
+	public String getInitialisation() {
+		return this.getModel().getString("Initialisation");
 	}
-	public void setBlockStartLOOP(BlockStartLOOP comp) {
-		if (this.blockStartLOOP != null) {
-			// disconnect from previous model
-			this.blockStartLOOP.removePropertyChangeListener(listener);
-		}
-		this.blockStartLOOP = comp;
-		if (this.blockStartLOOP != null) {
-			// connect to new model
-			this.blockStartLOOP.addPropertyChangeListener(listener);
-
-			// initialize fields in the UI
-			resetOutInPorts();
-		}
+	public String getCondition() {
+		return this.getModel().getString("Condition");
+	}
+	public String getStep() {
+		return this.getModel().getString("Step");
+	}
+	
+	/** EventHandling functions **/
+	@Override
+	public void updateBlockContent() {
+		String displayString = "For( ";
+		displayString = displayString + this.getInitialisation() + ", " + this.getCondition() + ", " + this.getStep() + " )";
+		this.blockStartLOOP.getBlockLabel().setText(displayString);
+		
+		//Testing
+		//System.out.println("blockStartLOOP's label's preferrable size = : " + 
+		//						this.blockStartLOOP.getDisplayLabel().getPreferredSize());
+		
+		// blockStartLOOP may need to change size and location
+		// this.blockStartLOOP.setAppropriateBounds();
 	}
 	
 	
 	/** Utility Functions **/
-	public void resetOutInPorts() {
-		Rectangle rec = this.getBlockStartLOOP().getBounds();
-		Point outport = new Point( (int)Math.round(rec.getWidth())/4,(int)rec.getHeight());
-		outport = new Point(blockStartLOOP.toContainerCoordinate(outport));
-		this.setOutport(outport);
-
-		Point inport = new Point( (int)Math.round(rec.getWidth())/2,0);
-		inport = new Point(blockStartLOOP.toContainerCoordinate(inport));
-		this.setInport(inport);
-	}
 	
 }

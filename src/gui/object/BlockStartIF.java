@@ -1,7 +1,10 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Point;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -10,60 +13,152 @@ import org.json.JSONObject;
 
 import gui.mouselistener.MouseEnterListener;
 import gui.interfaces.WithInport;
+import gui.manager.NameCounterManager;
+import gui.manager.UndoManager;
 
 public class BlockStartIF extends BlockFD implements WithInport{
-	private Point inport;
 	
-	private Point trueOutport;
-	private Point falseOutport;
+	private PortFD inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
 	
+	private PortFD trueOutport = new PortFD(new Point(this.getWidth() - 1, Math.round(this.getHeight()/2)), "right");
+	private PortFD falseOutport = new PortFD(new Point( 0 , Math.round(this.getHeight()/2)), "left");
 	
 	public BlockStartIF(JSONObject model){
 		super(model);
+		
+		//Testing
+		//System.out.println("\nStart of the constructor of BlockStartIF : ");
+		
 		this.removeAll();
 		this.setLayout(null);
 		
-		// Initialise inport
-		this.inport = new Point( Math.round(this.getWidth()/2), 0);
-		// set the Outports
-		this.trueOutport = new Point(this.getWidth(), Math.round(this.getHeight()/2));
-		this.falseOutport = new Point(0, Math.round(this.getHeight()/2));
-		
 		// Set Default bounds
-		this.setBounds(5,5,100,25);
+		this.setBounds(0,0,100,25);
+		
+		// Add a listener that change the border of it's parent when mouse enter.
+		MouseEnterListener mouseEnter = new MouseEnterListener(this);
+		mouseEnter.setSouldChangeParentBlock(true);
+		this.addMouseListener(mouseEnter);
+		
+		//Testing
+/*		System.out.println("startIF.getBounds = " + this.getBounds().toString());
+		System.out.println("blockStartTrueIF.getTrueOutport = " + this.getTrueOutport());
+		System.out.println("blockStartFalseIF.getFalseOutport = " + this.getFalseOutport()); */
+		
+		this.blockLabel.setText("StartIF");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
 		
 		// Temporary
-		JLabel temp = new JLabel("StartIF");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		
 	}
 	
-	/** Getters and Setters **/
-	public Point getTrueOutport(){
+	/** Getters and Setters for ports**/
+	public PortFD getTrueOutport(){
 		return this.trueOutport;
 	}
-	public void setTrueOutport(Point p){
+	public void setTrueOutport(PortFD p){
 		this.trueOutport = p;
 	}
-	public Point getFalseOutport(){
+	public PortFD getFalseOutport(){
 		return this.falseOutport;
 	}
-	public void setFalseOutport(Point p){
+	public void setFalseOutport(PortFD p){
 		this.falseOutport = p;
 	}
 	
 	@Override
-	public Point getInport() {
+	public PortFD getInport() {
 		// TODO Auto-generated method stub
 		return this.inport;
 	}
 	@Override
-	public void setInport(Point p) {
+	public void setInport(PortFD p) {
 		// TODO Auto-generated method stub
 		this.inport = p;
 	}
+	
+	/**    Getters and Setter for label    **/
+
+	
+	/** override abstract methods**/
+	@Override
+	public void zoomLabel(double newRatio) {
+		// TODO Auto-generated method stub
+		Font myFont = this.blockLabel.getFont();
+		this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
+									(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio))); 
+	}
+	@Override
+	public void setUndoManager(UndoManager undoManager) {
+		this.undoManager = undoManager;
+	}
+	@Override
+	public void setNameCounterManager(NameCounterManager nameManager) {
+		// TODO Auto-generated method stub
+		this.nameManager = nameManager;
+	}
+	
+	@Override
+	protected void updatePorts() {
+		// reset inport
+		this.inport.setPortLocation(new Point( Math.round(this.getWidth()/2), 0) );
+				
+		// reset Outport panels
+		this.trueOutport.setPortLocation( new Point(this.getWidth() - 1, Math.round(this.getHeight()/2) ) );
+		this.falseOutport.setPortLocation(new Point( 0 , Math.round(this.getHeight()/2) ) );
+	}
+	
+	
+	@Override
+	protected boolean isCompositeBlockFD() {
+		return false;
+	}
+	
+	@Override
+	protected boolean shouldAddBlockDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	protected boolean shouldAddLoopDrag() {
+		return true;
+	}
+	@Override
+	protected boolean shouldAddEndLoopDrag() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean shouldAddBlockRightClick() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEditable() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean representCompositeBlock() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public void updateBlockContent() {
+		// TODO Auto-generated method stub
+		// do nothing.
+	}
+
+	
+	
+	
+	
 	
 	
 }

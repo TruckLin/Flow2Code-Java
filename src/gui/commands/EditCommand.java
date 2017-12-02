@@ -43,13 +43,13 @@ public class EditCommand implements Command{
 	@Override
 	public void execute() {
 		this.replaceInputDetailOfModel(this.model, this.newInputDetail);
-		this.block.updateBlock();
+		this.block.updateBlockContent();
 	}
 
 	@Override
 	public void undo() {
 		this.replaceInputDetailOfModel(this.model, this.oldInputDetail);
-		this.block.updateBlock();
+		this.block.updateBlockContent();
 	}
 
 	@Override

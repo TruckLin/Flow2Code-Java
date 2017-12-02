@@ -10,7 +10,12 @@ import javax.swing.*;
 import org.json.JSONObject;
 
 import gui.BlockEditDialog;
+import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
+import gui.mouselistener.BlockDragListener;
+import gui.mouselistener.BlockRightClickListener;
+import gui.mouselistener.EndLoopDragListener;
+import gui.mouselistener.LoopDragListener;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -19,20 +24,14 @@ import java.beans.PropertyChangeSupport;
 public abstract class BlockFD extends JPanel{
 	
 	private JSONObject model;
-	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	protected UndoManager undoManager;
+	protected NameCounterManager nameManager;
 	
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		propertyChangeSupport.addPropertyChangeListener(listener);
-	}
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		propertyChangeSupport.removePropertyChangeListener(listener);
-	}
-	public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) {
-		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
-	}
-	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		propertyChangeSupport.removePropertyChangeListener(propertyName,listener);
-	}
+	protected double currentZoomRatio = 1;
+	
+	protected JLabel blockLabel = new JLabel("");
+	
+	protected PropertyChangeListener updatePortsListener = e -> updatePorts();
 	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
@@ -40,9 +39,9 @@ public abstract class BlockFD extends JPanel{
 		this.model = model;
 		this.setLayout(null);
 		
-		// Temporary
-		this.setSize(100,25);
 		this.setOpaque(false);
+		
+		this.addPropertyChangeListener(updatePortsListener);
 		
 	}
 	
@@ -57,30 +56,57 @@ public abstract class BlockFD extends JPanel{
 	public void setLocation(int x, int y) {
 		Point oldValue = this.getLocation();
 		super.setLocation(x, y);
-		propertyChangeSupport.firePropertyChange("Location", oldValue, this.getLocation());
+		this.firePropertyChange("Location", oldValue, new Point(x,y));
 	}
 	public void setLocation(Point p) {
 		Point oldValue = this.getLocation();
 		super.setLocation(p);
-		propertyChangeSupport.firePropertyChange("Location", oldValue, p);
+		this.firePropertyChange("Location", oldValue, p);
 	}
 	
 	public void setBounds(int x, int y, int width, int height) {
 		Rectangle oldValue = this.getBounds();
 		super.setBounds(x, y, width, height);
-		propertyChangeSupport.firePropertyChange("Bounds", oldValue, this.getBounds());
+		this.firePropertyChange("Bounds", oldValue, this.getBounds());
 	}
 	public void setBounds(Rectangle rec) {
 		Rectangle oldValue = this.getBounds();
 		super.setBounds(rec);
-		propertyChangeSupport.firePropertyChange("Bounds", oldValue, rec);
+		this.firePropertyChange("Bounds", oldValue, rec);
 	}
 	
-	public PropertyChangeSupport getPropertyChangeSupport() {
-		return this.propertyChangeSupport;
+	public UndoManager getUndoManager() {
+		return this.undoManager;
 	}
-
-
+	
+	public JLabel getBlockLabel() {
+		return this.blockLabel;
+	}
+	public void setBlockLabel(JLabel temp) {
+		if(temp != null) {
+			this.remove(this.blockLabel);
+			this.blockLabel = temp;
+			this.add(temp);
+		}
+	}
+	/* Abstract method : updatePorts()
+	 * This should be implemented by all BlockFD, either do nothing, or update port location.
+	 */
+	protected abstract void updatePorts();
+	
+	public abstract void setUndoManager(UndoManager undoManager);
+	
+	public NameCounterManager getNameCounterManager() {
+		return this.nameManager;
+	}
+	public abstract void setNameCounterManager(NameCounterManager nameManager);
+	
+	public double getCurrentZoomRatio() {
+		return this.currentZoomRatio;
+	}
+	protected void setCurrentZoomRatio(double zr) {
+		this.currentZoomRatio = zr;
+	}
 	
 	/** Event handling functions **/
 	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
@@ -89,9 +115,7 @@ public abstract class BlockFD extends JPanel{
 	}
 	
 	/** Utility functions **/
-	public void updateBlock() {
-		// this function should be implemented by various block like BlockIF, BlockWHILE and many more.
-	}
+	public abstract void updateBlockContent() ;
 	
 	
 	public Point toContainerCoordinate(Point coordWRTblock) {
@@ -100,78 +124,8 @@ public abstract class BlockFD extends JPanel{
 		return new Point(x,y);
 	}
 	
-	public void setAppropriateBounds() {
-		// This function set appropriate size according to it's children.
-		// Size that is just big enough to contain all the children.
-		
-		//Testing
-		//System.out.println("setAppropriateBounds() is called :");
-		//System.out.println("Initial parameters : ");
-		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
-		
-		int x_min = Integer.MAX_VALUE;
-		int y_min = Integer.MAX_VALUE;
-		int x_max = Integer.MIN_VALUE;
-		int y_max = Integer.MIN_VALUE;
-		int len = this.getComponents().length;
-		for(int i = 0; i < len; i++) {
-			Rectangle tempBounds = this.getComponent(i).getBounds();
-
-			//Testing
-			//System.out.println(i + "th component's bounds : " + tempBounds.toString());
-			
-			if(tempBounds.getMinX() < x_min) {
-				x_min = (int)tempBounds.getMinX();
-			}
-			if(tempBounds.getMaxX() > x_max) {
-				x_max = (int)tempBounds.getMaxX();
-			}
-			if(tempBounds.getMinY() < y_min) {
-				y_min = (int)tempBounds.getMinY();
-			}
-			if(tempBounds.getMaxY() > y_max) {
-				y_max = (int)tempBounds.getMaxY();
-			}
-		}
-		
-		//Testing
-		//System.out.println("\nEnd parameters : ");
-		
-		// Shift children components according to minimums.
-		int x;
-		int y;
-		for(int i = 0; i < len; i++) {
-			if(! (this.getComponent(i) instanceof LineFD)) {
-			Point tempPoint = this.getComponent(i).getLocation();
-			x = (int)tempPoint.getX() - x_min + 5;
-			y = (int)tempPoint.getY() - y_min + 5;
-			this.getComponent(i).setLocation(new Point(x,y));
-			
-			//Testing
-			//System.out.println(i + "th component's bounds : " + 
-			//					this.getComponent(i).getBounds().toString());
-			}
-		}
-		
-		// Now set the bounds for While panel
-		int width = x_max - x_min + 10;
-		int height = y_max - y_min + 10; // just big enough to contain all of them.
-		Point tempPoint = this.getLocation();
-		x = (int)tempPoint.getX() + x_min - 5;
-		y = (int)tempPoint.getY() + y_min - 5;
-		this.setBounds(x,y,width,height);
-		
-		
-		if(this.getParent() instanceof BlockFD) {
-			((BlockFD)this.getParent()).setAppropriateBounds();
-		}
-		
-		
-		//Testing
-		//System.out.println("BlockWHILE.getBounds = " + this.getBounds().toString());
-		
-	}
-
+	
+	/** Move the block by displacement **/
 	public void translateLocation(int dx, int dy) {
 		int x = (int)this.getLocation().getX();
 		int y = (int)this.getLocation().getY();
@@ -181,4 +135,105 @@ public abstract class BlockFD extends JPanel{
 		
 		this.setLocation(x, y);
 	}
+	
+	
+	/** Methods that attach listeners to Blocks **/
+	public void addVariousMouseListeners() {
+		//Testing
+		//System.out.println("addVariousMouseListeners() is called by : " + this.getClass());
+		
+		if(isCompositeBlockFD()) {
+			Component[] componentList = this.getComponents();
+			for(Component comp:componentList ) {
+				if(comp instanceof BlockFD) {
+					((BlockFD)comp).addVariousMouseListeners();
+				}
+			}
+		}
+		
+		if(this.shouldAddBlockDrag()) {
+			BlockDragListener lis = new BlockDragListener(this.undoManager, this);
+			this.addMouseMotionListener(lis);
+			this.addMouseListener(lis);
+		}
+		
+		if(this.shouldAddBlockRightClick()) {
+			BlockRightClickListener lis = new BlockRightClickListener(this.undoManager,this);
+			this.addMouseListener(lis);
+		}
+		
+		if(this.shouldAddLoopDrag()) {
+			LoopDragListener lis = new LoopDragListener(this.undoManager, this);
+			this.addMouseMotionListener(lis);
+			this.addMouseListener(lis);
+		}
+		
+		if(this.shouldAddEndLoopDrag()) {
+			EndLoopDragListener lis = new EndLoopDragListener(this.undoManager, this);
+			this.addMouseMotionListener(lis);
+			this.addMouseListener(lis);
+		}
+		
+		
+		
+		// Testing
+		//System.out.println("end by : " + this.getClass());
+	}
+	protected abstract boolean isCompositeBlockFD();
+	protected abstract boolean shouldAddBlockDrag();
+	protected abstract boolean shouldAddBlockRightClick();
+	protected abstract boolean shouldAddLoopDrag();
+	protected abstract boolean shouldAddEndLoopDrag();
+	
+	public abstract boolean isEditable();
+	public abstract boolean representCompositeBlock(); // indicate whether a block represents a larger, composite blocks.
+													   // BlockStartLOOP and BlockStartIF are the only two block that returns true.	
+	
+	
+	/** Zoom Function **/
+	public void zoom(double newRatio) {
+		Rectangle oldRec = this.getBounds();
+		int x = (int) Math.round(oldRec.getX()*newRatio/currentZoomRatio);
+		int y = (int) Math.round(oldRec.getY()*newRatio/currentZoomRatio);
+		int width = (int) Math.round(oldRec.getWidth()*newRatio/currentZoomRatio);
+		int height = (int) Math.round(oldRec.getHeight()*newRatio/currentZoomRatio);
+		Rectangle newRec = new Rectangle(x,y,width,height);
+		this.setBounds(newRec);
+		
+		
+		
+		if(this.isCompositeBlockFD()) {
+			Component[] comps = this.getComponents();
+			for(Component comp : comps) {
+				((BlockFD)comp).zoom(newRatio);
+			}
+		}
+		
+		this.zoomLabel(newRatio);
+		// After all the blocks have been zoomed, update currentZoomRatio.
+		this.setCurrentZoomRatio(newRatio);
+	}
+	
+	protected void zoomLabel(double newRatio) {
+		if(!blockLabel.getText().equals("")) {
+			Font myFont = this.blockLabel.getFont();
+			this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
+										(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio)));
+			this.adjustLabelBounds();
+		}
+		
+	}
+	
+	public void adjustLabelBounds() {
+		int width = this.getWidth();
+		int height = this.getHeight();
+		
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		Point newLocation = new Point( (int)Math.round(width/2 - labelDimension.getWidth()/2), 
+										(int)Math.round(height/2 - labelDimension.getHeight()/2));
+		this.blockLabel.setSize(labelDimension);
+		this.blockLabel.setLocation(newLocation);
+	}
+	
+
 }

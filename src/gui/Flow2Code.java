@@ -2,7 +2,6 @@ package gui;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-
 import javax.swing.*;
 
 import org.json.JSONObject;
@@ -11,13 +10,14 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
-import saveload.SaveAndLoadManagerFD;
+import gui.object.CompositeBlockFD;
+import gui.manager.SaveAndLoadManagerFD;
+import strategy.BlockGenerator;
 
 public class Flow2Code extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	// Private instance variables
-	// ......
 	
 	public Flow2Code() {
 		// Retrieve the top-level content-pane from JFrame
@@ -50,32 +50,58 @@ public class Flow2Code extends JFrame{
 	    /** Initialisation of various managers and user interfaces **/
 	    UndoManager undoManager = new UndoManager();
 	    NameCounterManager nameManager = new NameCounterManager();
-	    LinePopup linePopup = new LinePopup(undoManager, nameManager);
-	    BlockPopup blockPopup = new BlockPopup(undoManager);
 	    
 	    /** Demo FlowDiagram construction **/
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
-//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FDDemo1.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info.json");
-//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/info1.json");
-	    BlockFD flowDiagram = SaveAndLoadManagerFD.constructBlockFD(myModel, myInfo);
-		flowDiagram.setAppropriateBounds(); // make sure it's the right size.
-	    /** Attach Listeners to the Blocks **/
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/FlowDiagramDemo-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-WhileLoop.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-WhileLoop-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Empty.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Empty-info.json");
+
 	    
-	    SaveAndLoadManagerFD.attachMouseListenersToBlock(undoManager, flowDiagram, blockPopup);
-	    SaveAndLoadManagerFD.attachMouseListenersToAllLines(flowDiagram, linePopup);
-	    
+	    BlockGenerator blockGenerator = new BlockGenerator();
+	    CompositeBlockFD flowDiagram =  (CompositeBlockFD)blockGenerator.generate(myModel, myInfo);
+	    flowDiagram.setAppropriateBounds();
 	    //Testing
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
+	    //ArrayList<LineFD> linelist = ((BlockFlowDiagram)flowDiagram).getLineList();
+	    //for(LineFD line : linelist) {
+	    // 	System.out.println("LineFD :" );
+	    //	System.out.println("    Source : " + line.getSource().getModel().getString("Type"));
+	    //	System.out.println("    Terminal : " + line.getTerminal().getModel().getString("Type"));
+	    //}
+	    
+	    // Set a common UndoManager for all Blocks.
+	    flowDiagram.setUndoManager(undoManager);
+	    // Set a common NameCounterManager for all Blocks.
+	    flowDiagram.setNameCounterManager(nameManager);
+	    
+	    // Attach various listeners for blocks
+	    flowDiagram.addVariousMouseListeners();
 	    
 		/** JScrollPane Construction **/
 	    ScrollablePanelForFD sp = new ScrollablePanelForFD((BlockFlowDiagram) flowDiagram);
-	    JScrollPane scrollPane = new JScrollPane(sp);
+	    JViewport myViewport = new JViewport();
+	    myViewport.setView(sp);
+	    myViewport.setExtentSize(new Dimension(50,50));
+	    JScrollPane scrollPane = new JScrollPane();
+	    scrollPane.setViewport(myViewport);
 	    
+	    //Testing
+	    myViewport.setBackground(Color.yellow);
+	    
+//	    myViewport.setExtentSize(new Dimension(50,50));
+//		System.out.println(myViewport);
 	    
 	    
 	    /** Left flowDiagram tool bar **/
-	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager);
+	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager, sp);
+	    
 	    
 	    /** Left Panel Construction **/
 	    JPanel leftPanel = new JPanel(new BorderLayout());
@@ -138,6 +164,8 @@ public class Flow2Code extends JFrame{
 	
 	
 	public static void main(String[] args) {
+		
+		
 		// Run the GUI construction in the Event-Dispatching thread for thread-safety
 		SwingUtilities.invokeLater(new Runnable() {
 	         @Override

@@ -1,29 +1,45 @@
 package gui.object;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
-import javax.swing.*;
-
-import gui.interfaces.WithInport;
-import gui.interfaces.WithOutport;
-
-public class LineFD extends JPanel{
+public class LineFD{
 	private BlockFD Source;
-	private BlockFD Terminal;	
+	private BlockFD Terminal;
 	
-	private Point startPt;
-	private Point endPt;// These two coordinate are with respect to container.
+	private PortFD startPort;
+	private PortFD endPort;// These two coordinate are with respect to container.
 	
-	private double startPositionRatioX;
-	private double startPositionRatioY;
-	private double endPositionRatioX;
-	private double endPositionRatioY; // Keep these variable so we don't have to call getOut/Inport() methods from Source
-									// and terminal.
+	// Various variables that control the appearance of the line. 
+	private Color color = Color.RED;
+	private Color borderColor = new Color(153,217,234);
+	private boolean hasBorder = false;
+	private double triggerRadius = 5;
 	
-	private BlockChangeListener listener = new BlockChangeListener();
 	
+	// any object interested in the line will register with propertyChangeSupport.
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(listener);
+	}
+	public void addPropertyChangeListener(String propertyName,PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+	}
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(propertyName,listener);
+	}
+	
+	
+	private BlockChangeListener blocklistener = new BlockChangeListener(); // keep this.
 	// Named inner class which serve as a PropertyChangeListener¡C
 	public class BlockChangeListener implements PropertyChangeListener{	
 		public LineFD getOwnerLine() {
@@ -32,119 +48,48 @@ public class LineFD extends JPanel{
 		
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			reDrawLine();
 			
+			// Testing
+			//System.out.println("Property of Blocks changed and detected by line.");
+			//System.out.println("PropertyName:" + evt.getPropertyName());
+			
+			/** tell parent panel to repaint **/
+			propertyChangeSupport.firePropertyChange("EndPoints",null, this); // we don't really care about old value.
 		}
 	}
-			
-
+	
+	// A LineFD consists of a few shape, which could be line, curve or other.
+	private ArrayList<Line2D> lineSegments = new ArrayList<Line2D>(); // use Line2D just for now.
+	
+	
 	/** Constructors **/
 	// Constructor from two BlockFD object and specified points.
-	public LineFD(BlockFD b1, BlockFD b2, Point startpt, Point endpt) {
-		super();
+	public LineFD(BlockFD b1, BlockFD b2, PortFD startPort, PortFD endPort) {
 		
-		this.setOpaque(false);
 		// note that these startpt, endpt are with respect to container's coordinate.
 		
-		//Testing 
+		//Testing
 		//System.out.println("outPort = " + t1.toString());
 		//System.out.println("b1 = " + b1.toString());
 		//System.out.println("b1.getLocation() = " + b1.getLocation().toString());
 		
-		double x1 = (startpt.getX() - b1.getLocation().getX())/b1.getWidth();
-		double y1 = (startpt.getY() - b1.getLocation().getY())/b1.getHeight();
-		double x2 = (endpt.getX() - b2.getLocation().getX())/b2.getWidth();
-		double y2 = (endpt.getY() - b2.getLocation().getY())/b2.getHeight();
-		this.startPositionRatioX = x1;
-		this.startPositionRatioY = y1;
-		this.endPositionRatioX = x2;
-		this.endPositionRatioY = y2;
-		
 		this.Source = b1;
 		this.Terminal = b2;
 		
-		initialise(startpt, endpt);
+		this.startPort = startPort;
+		this.endPort = endPort;
 		
-		Source.addPropertyChangeListener(listener);
-		Terminal.addPropertyChangeListener(listener);
-		
+		Source.addPropertyChangeListener(blocklistener);
+		Terminal.addPropertyChangeListener(blocklistener);
 	}
-	
-	// Initialisatise, should make the code easier to read, p1, p2 are with respect to container's coordinate.
-	public void initialise(Point p1, Point p2) {
-		
-		// Testing
-		//System.out.println("Initialise() is called.");
-		//System.out.println("Point 1 = " + p1.toString());
-		//System.out.println("Point 2 =  " + p2.toString());
-		
-		this.startPt = p1;
-		this.endPt = p2;
-		
-		// Calculate width and height
-		int width = (int)Math.abs(p2.getX() - p1.getX());
-		int height = (int)Math.abs(p2.getY() - p1.getY());
-		
-		// Determine where to place topLeftCorner
-		int xmin = Math.min((int)p1.getX(), (int)p2.getX());
-		int ymin = Math.min((int)p1.getY(), (int)p2.getY());
-		
-		// testing
-		//System.out.println("startPt = " + this.startPt.toString());
-        //System.out.println("endPt = " + this.endPt.toString());
-        //System.out.println("xmin = " + xmin);
-        //System.out.println("ymin = " + ymin);
-        //System.out.println("getLocation() = " + this.getLocation().toString());
-        //System.out.println("width = " + width);
-		
-		int tolerance = 5;
-		int width2 = width + tolerance;
-		int height2 = height + tolerance;
-		// +2 makes sure that horizontal or vertical line will not have 0 height or width respectively.
-		
-		//this.add(new JLabel("Line"));
-		
-		this.setBounds(new Rectangle(xmin, ymin, width2, height2));
-		this.setOpaque(false);
-		
-		// Temporary
-		//this.setBorder(BorderFactory.createLineBorder(Color.yellow));
-		
-		//this.addMouseListener(new LineMouseClickListener());
-	}
-	
-	/** Graphics setting **/
-	protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        
-        Point topLeft = LineFD.this.getLocation(); // there is a problem here...
-        int x1 = (int)(this.startPt.getX()-topLeft.getX());
-        int y1 = (int)(this.startPt.getY()-topLeft.getY());
-        int x2 = (int)(this.endPt.getX()-topLeft.getX());
-        int y2 = (int)(this.endPt.getY()-topLeft.getY());
-        
-        // testing
-        //System.out.println("topLeft = " + topLeft.toString());
-        //System.out.println("startPt = " + this.startPt.toString());
-        //System.out.println("endPt = " + this.endPt.toString());
-        //System.out.println("x1 = " + x1);
-        //System.out.println("y1 = " + y1);
-        //System.out.println("x2 = " + x2);
-        //System.out.println("y2 = " + y2);
-        //System.out.println("paint component is called.");
-       
-        g.setColor(Color.red);
-        g.drawLine(x1, y1, x2, y2);
-        
-    }
 	
 	/** Getters **/
-	public Point getStartPoint() {
-		return this.startPt;
+	public PortFD getStartPort() {
+		return this.startPort;
 	}
 	
-	public Point getEndPoint() {
-		return this.endPt;
+	public PortFD getEndPort() {
+		return this.endPort;
 	}
 	public BlockFD getSource() {
 		return this.Source;
@@ -152,48 +97,60 @@ public class LineFD extends JPanel{
 	public BlockFD getTerminal() {
 		return this.Terminal;
 	}
-	public Point getCentreOnPanel() {
-		Point topleft = this.getLocation();
-		int x = (int)(topleft.getX() + Math.round(this.getWidth()/2));
-		int y = (int)(topleft.getY() + Math.round(this.getHeight()/2));
+	public Point getCentrePoint() {
+		Point startPt = this.getStartPort().getPortLocation();
+		startPt = this.Source.toContainerCoordinate(startPt);
+		Point endPt = this.getEndPort().getPortLocation();
+		endPt = this.Terminal.toContainerCoordinate(endPt);
+		double x1 = startPt.getX();
+		double y1 = startPt.getY();
+		double x2 = endPt.getX();
+		double y2 = endPt.getY();
+		int x = (int)Math.round((x1 + x2)/2);
+		int y = (int)Math.round((y1 + y2)/2);
+		
+		//Testing
+		//System.out.println("startPt = " + startPt);
+		//System.out.println("endPt = " + endPt);
+		//System.out.println("center - " + new Point(x,y));
+		
 		return new Point(x,y);
 	}
 	public BlockChangeListener getBlockChangeListener() {
-		return this.listener;
+		return this.blocklistener;
+	}
+	public ArrayList<Line2D> getLineSegments(){
+		return this.lineSegments;
+	}
+	
+	public Color getLineColor() {
+		return this.color;
+	}
+	public void setLineColor(Color c) {
+		this.color = c;
+	}
+	public Color getLineBorderColor() {
+		return this.borderColor;
+	}
+	public void setLineBorderColor(Color c) {
+		this.borderColor = c;
+	}
+	public boolean getHasBorder() {
+		return this.hasBorder;
+	}
+	public void setHasBorder(boolean b) {
+		this.hasBorder = b;
+	}
+	public double getTriggerRagius() {
+		return this.triggerRadius;
+	}
+	public void setTriggerRadius(double r) {
+		this.triggerRadius = r;
 	}
 	
 	/** Setters **/
 	
 	/** Utility functions **/
-	// This function re-initialise the line, essentially redraw.
-	public void reDrawLine(){
-		// Testing
-		//System.out.println("Line between " + Source.getModel().getString("Name") + " and " + Terminal.getModel().getString("Name"));
-		//System.out.println("reDrawLine() is called.");
-		
-		boolean sourceIsLoop = this.Source instanceof BlockIF || this.Source instanceof BlockWHILE || this.Source instanceof BlockFOR;
-		boolean terminalIsLoop	= this.Terminal instanceof BlockIF || this.Terminal instanceof BlockWHILE || this.Terminal instanceof BlockFOR;
-		
-		int x1 = (int)Math.round(this.Source.getWidth() * this.startPositionRatioX);
-		int y1 = (int)Math.round(this.Source.getHeight() * this.startPositionRatioY);
-		int x2 = (int)Math.round(this.Terminal.getWidth() * this.endPositionRatioX);
-		int y2 = (int)Math.round(this.Terminal.getHeight() * this.endPositionRatioY);
-		Point p1 = new Point(x1, y1);
-		Point p2 = new Point(x2, y2);
-		if(sourceIsLoop) {
-			p1 = ((WithOutport)this.Source).getOutport();
-		}
-		if(terminalIsLoop) {
-			p2 = ((WithInport)this.Terminal).getInport();
-		}
-		
-		p1 = Source.toContainerCoordinate(p1);
-		p2 = Terminal.toContainerCoordinate(p2);
-		initialise(p1, p2);
-		
-		//Testing
-		//System.out.println("LineFD.reDrawLine() has been called.");
-	}
 	
 	// "is" functions
 	public boolean isSource(BlockFD b) {
@@ -203,23 +160,15 @@ public class LineFD extends JPanel{
 		return this.Terminal.equals(b);
 	}
 	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	// this function is used to determine whether a mouse click point should trigger mouse event
+	public boolean isInRange(Point p) {
+		Point2D.Double p2 = new Point2D.Double(p.getX(), p.getY());
 		
-		Point a = new Point(1,1);
-		Point b = new Point(2,2);
-		Point temp;
-		temp = a;
-		a = b;
-		b = temp;
-		System.out.println("After swap : ");
-		System.out.println(a);
-		System.out.println(b);
-		System.out.println(temp);
-		
+		for(int i = 0; i < lineSegments.size(); i++) {
+			if(lineSegments.get(i).ptSegDist(p2) <= this.triggerRadius) {
+				return true;
+			}
+		}
+		return false;
 	}
-	
-
 }

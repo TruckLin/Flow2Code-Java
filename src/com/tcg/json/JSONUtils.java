@@ -11,6 +11,10 @@ public class JSONUtils {
 	
 	public static String getJSONStringFromFile(String path) {
 		Scanner scanner;
+		
+		//Testing
+		//System.out.println("path = " + path);
+		
 		InputStream in = FileHandle.inputStreamFromFile(path);
 		scanner = new Scanner(in);
 		

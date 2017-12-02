@@ -2,8 +2,9 @@ package gui.interfaces;
 
 import java.awt.Point;
 
+import gui.object.PortFD;
+
 public interface WithOutport {
-	Point getOutport();
-	void setOutport(Point p);
-	
+	public PortFD getOutport();
+	public void setOutport(PortFD p); 
 }

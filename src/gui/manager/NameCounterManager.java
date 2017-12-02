@@ -2,7 +2,7 @@ package gui.manager;
 
 public class NameCounterManager {
 	
-	private int count;
+	private int count = 0;
 	
 	public NameCounterManager() {
 		this.count = 1;

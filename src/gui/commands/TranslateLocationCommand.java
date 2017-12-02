@@ -2,16 +2,21 @@ package gui.commands;
 
 import gui.interfaces.Command;
 import gui.object.BlockFD;
+import gui.object.CompositeBlockFD;
 
 public class TranslateLocationCommand implements Command {
 	private BlockFD block;
 	private int dx;
 	private int dy;
+	
+	private double oldZoomRatio;
 
 	public TranslateLocationCommand(BlockFD block, int dx, int dy) {
 		this.block = block;
 		this.dx = dx;
 		this.dy = dy;
+		
+		this.oldZoomRatio = block.getCurrentZoomRatio();
 	}
 	
 	/** Getters and Setters **/
@@ -27,17 +32,25 @@ public class TranslateLocationCommand implements Command {
 	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		block.translateLocation(dx, dy);
-		((BlockFD)block.getParent()).setAppropriateBounds();
+		// Testing
+		//System.out.println("In execution of TranslateLocationCommand:");
+		
+		block.translateLocation((int)Math.round(dx*this.block.getCurrentZoomRatio()/oldZoomRatio),
+								(int)Math.round(dy*this.block.getCurrentZoomRatio()/oldZoomRatio));
+		
+		((CompositeBlockFD)block.getParent()).setAppropriateBounds();
+		
+		//Testing
+		//System.out.println("this print line is executed after getParent(). ");
 		
 	}
 
 	@Override
 	public void undo() {
 		// TODO Auto-generated method stub
-		block.translateLocation(-dx, -dy);
-		((BlockFD)block.getParent()).setAppropriateBounds();
+		block.translateLocation((int)Math.round(-dx*this.block.getCurrentZoomRatio()/oldZoomRatio),
+								(int)Math.round(-dy*this.block.getCurrentZoomRatio()/oldZoomRatio));
+		((CompositeBlockFD)block.getParent()).setAppropriateBounds();
 	}
 
 	@Override

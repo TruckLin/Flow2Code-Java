@@ -9,9 +9,12 @@ import javax.swing.JPopupMenu;
 import gui.commands.AddBlockCommand;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
+import gui.object.BlockFD;
+import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
 
 public class LinePopup extends JPopupMenu{
+	private CompositeBlockFD compositeBlock;
 	private UndoManager undoManager;
 	private NameCounterManager nameManager;
 	private LineFD line;
@@ -24,11 +27,13 @@ public class LinePopup extends JPopupMenu{
 	private JMenuItem ifItem = new JMenuItem("If");
 	
 	
-	public LinePopup(UndoManager undoManager,NameCounterManager nameManager) {
+	public LinePopup(CompositeBlockFD compositeBlock, LineFD line) {
 		super();
 		this.setLayout(new GridLayout(4,2));
-		this.undoManager = undoManager;
-		this.nameManager = nameManager;
+		this.compositeBlock = compositeBlock;
+		this.undoManager = compositeBlock.getUndoManager();
+		this.nameManager = compositeBlock.getNameCounterManager();
+		this.setLine(line);
 		
 		// Add all the menu items
 		this.add(this.declareItem);
@@ -78,20 +83,20 @@ public class LinePopup extends JPopupMenu{
 		}
 		
 		// Add new action listener to menu items
-		this.declareItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "Declare"));
-		this.assignItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "Assign"));
-		this.inputItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "Input"));
-		this.outputItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "Output"));
-		this.forItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "For"));
-		this.whileItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "While"));
-		this.ifItem.addActionListener(e -> addBlockAction(this.undoManager,this.nameManager, newLine, "If"));
+		this.declareItem.addActionListener(e -> addBlockAction(compositeBlock, newLine, "Declare"));
+		this.assignItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "Assign"));
+		this.inputItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "Input"));
+		this.outputItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "Output"));
+		this.forItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "For"));
+		this.whileItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "While"));
+		this.ifItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "If"));
 		
 	}
 	
 	
 	/** The action that tells undoManager to execute various command **/
-	public void addBlockAction(UndoManager undoManager,NameCounterManager nameManager ,LineFD line, String type) {
-		AddBlockCommand command = new AddBlockCommand(undoManager,nameManager,line, type);
+	public void addBlockAction(CompositeBlockFD compositeBlock,LineFD line, String type) {
+		AddBlockCommand command = new AddBlockCommand(compositeBlock,line, type);
 		
 		undoManager.execute(command);
 	}
