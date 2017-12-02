@@ -1,6 +1,8 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -13,10 +15,11 @@ public class BlockINPUT extends OrdinaryBlockFD {
 	public BlockINPUT(JSONObject model) {
 		super(model);
 		
+		this.blockLabel.setText("Input");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
+		
 		//Temporary
-		JLabel temp = new JLabel("Input");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		//Testing
@@ -36,5 +39,4 @@ public class BlockINPUT extends OrdinaryBlockFD {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }

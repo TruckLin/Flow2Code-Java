@@ -1,6 +1,8 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
 
@@ -14,10 +16,11 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 	public BlockASSIGN(JSONObject model) {
 		super(model);
 		
+		this.blockLabel.setText("Assign");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
+		
 		//Temporary
-		JLabel temp = new JLabel("Assign");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		//Testing

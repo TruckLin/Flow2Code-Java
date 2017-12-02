@@ -1,6 +1,8 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 
@@ -15,28 +17,11 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockStartIF extends BlockFD implements WithInport{
-	private JLabel displayLabel;
 	
-	private PortFD inport;
+	private PortFD inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
 	
-	private PortFD trueOutport;
-	private PortFD falseOutport;
-	
-	private PropertyChangeListener StartIFPropertyListener = 
-			e -> {this.trueOutport.setPortLocation(new Point(BlockStartIF.this.getWidth() - 1,
-												Math.round(BlockStartIF.this.getHeight()/2)) );
-				 
-				  this.falseOutport.setPortLocation( new Point( 0 , Math.round(BlockStartIF.this.getHeight()/2)) );
-
-				  
-				  //Testing
-			/*	  System.out.println("");
-				  System.out.println("blockStartIF change detected.");
-				  System.out.println("    PropertyName = " + e.getPropertyName());
-				 // System.out.println("    Old value = " + e.getOldValue().toString());
-				  System.out.println("    New value = " + e.getNewValue().toString());
-				  System.out.println(""); */
-				 };
+	private PortFD trueOutport = new PortFD(new Point(this.getWidth() - 1, Math.round(this.getHeight()/2)), "right");
+	private PortFD falseOutport = new PortFD(new Point( 0 , Math.round(this.getHeight()/2)), "left");
 	
 	public BlockStartIF(JSONObject model){
 		super(model);
@@ -44,19 +29,11 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		//Testing
 		//System.out.println("\nStart of the constructor of BlockStartIF : ");
 		
-		
 		this.removeAll();
 		this.setLayout(null);
 		
-		// Initialise inport
-		this.inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
-		
 		// Set Default bounds
 		this.setBounds(0,0,100,25);
-		
-		// set the Outport panels
-		this.trueOutport = new PortFD(new Point(this.getWidth() - 1, Math.round(this.getHeight()/2)), "right");
-		this.falseOutport = new PortFD(new Point( 0 , Math.round(this.getHeight()/2)), "left");
 		
 		// Add a listener that change the border of it's parent when mouse enter.
 		MouseEnterListener mouseEnter = new MouseEnterListener(this);
@@ -68,15 +45,11 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		System.out.println("blockStartTrueIF.getTrueOutport = " + this.getTrueOutport());
 		System.out.println("blockStartFalseIF.getFalseOutport = " + this.getFalseOutport()); */
 		
-		
-		
-		// Make sure we change outport panels' position when BlockStartIF's propertyChanged.
-		this.addPropertyChangeListener(StartIFPropertyListener);
+		this.blockLabel.setText("StartIF");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
 		
 		// Temporary
-		this.displayLabel = new JLabel("StartIF");
-		this.add(this.displayLabel);
-		this.displayLabel.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
@@ -106,18 +79,16 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	}
 	
 	/**    Getters and Setter for label    **/
+
 	
-	public JLabel getDisplayLabel() {
-		return this.displayLabel;
-	}
-	public void setDiaplyLabel(JLabel temp) {
-		if(temp != null) {
-			this.remove(this.displayLabel);
-			this.displayLabel = temp;
-			this.add(temp);
-		}
-	}
 	/** override abstract methods**/
+	@Override
+	public void zoomLabel(double newRatio) {
+		// TODO Auto-generated method stub
+		Font myFont = this.blockLabel.getFont();
+		this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
+									(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio))); 
+	}
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
@@ -127,6 +98,17 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		// TODO Auto-generated method stub
 		this.nameManager = nameManager;
 	}
+	
+	@Override
+	protected void updatePorts() {
+		// reset inport
+		this.inport.setPortLocation(new Point( Math.round(this.getWidth()/2), 0) );
+				
+		// reset Outport panels
+		this.trueOutport.setPortLocation( new Point(this.getWidth() - 1, Math.round(this.getHeight()/2) ) );
+		this.falseOutport.setPortLocation(new Point( 0 , Math.round(this.getHeight()/2) ) );
+	}
+	
 	
 	@Override
 	protected boolean isCompositeBlockFD() {
@@ -172,6 +154,8 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		// TODO Auto-generated method stub
 		// do nothing.
 	}
+
+	
 	
 	
 	

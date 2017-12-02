@@ -15,10 +15,10 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockEndIF extends BlockFD implements WithOutport{
-	private PortFD outport;
+	private PortFD outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
 	
-	private PortFD trueInport;
-	private PortFD falseInport;
+	private PortFD trueInport = new PortFD(new Point(this.getWidth(), Math.round(this.getHeight()/2)), "right");
+	private PortFD falseInport = new PortFD(new Point(0, Math.round(this.getHeight()/2) ), "left") ;
 	
 	public BlockEndIF(JSONObject model){
 		super(model);
@@ -28,13 +28,6 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 		this.setBounds(43,80,25,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.setOpaque(false);
-		
-		// Initialise outport
-		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
-		
-		// Initialise inports
-		this.trueInport = new PortFD(new Point(this.getWidth(), Math.round(this.getHeight()/2)), "right");
-		this.falseInport = new PortFD(new Point(0, Math.round(this.getHeight()/2) ), "left") ;
 	}
 	
 	/** Graphics setting **/
@@ -80,6 +73,16 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
 		
+	}
+	
+	@Override
+	protected void updatePorts() {
+		// reset outport
+		this.outport.setPortLocation( new Point(Math.round(this.getWidth()/2),this.getHeight()-1) );
+		
+		// reset inports
+		this.trueInport.setPortLocation( new Point(this.getWidth() - 1, Math.round(this.getHeight()/2) ) );
+		this.falseInport.setPortLocation(new Point( 0 , Math.round(this.getHeight()/2) ) );
 	}
 	
 	@Override
@@ -131,5 +134,4 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 		// TODO Auto-generated method stub
 		
 	}
-
 }

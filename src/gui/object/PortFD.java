@@ -1,6 +1,8 @@
 package gui.object;
 
 import java.awt.Point;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class PortFD {
 	private Point portLocation;
@@ -14,6 +16,7 @@ public class PortFD {
 	 * 			-----------------
 	 * 				 bottom
 	*/
+	
 	public PortFD(Point p, String side) {
 		this.portLocation = p;
 		this.side = side;

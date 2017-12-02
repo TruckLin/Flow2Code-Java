@@ -11,19 +11,19 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockEND extends BlockFD implements WithInport{
-	private PortFD Inport;
+	private PortFD Inport = new PortFD( new Point( Math.round(this.getWidth()/2), 0), "top");
 	
 	/** Constructors **/
 	public BlockEND(JSONObject model) {
 		super(model);
 		
-		// Initialise inport
-		this.Inport =new PortFD( new Point( Math.round(this.getWidth()/2), 0), "top");
+		this.setBounds(0, 0, 100, 25);
+		
+		this.blockLabel.setText("End");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
 		
 		// Temporary
-		JLabel temp = new JLabel("End");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
@@ -45,6 +45,12 @@ public class BlockEND extends BlockFD implements WithInport{
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
 		
+	}
+	
+	@Override
+	protected void updatePorts() {
+		// update inport
+		this.Inport.setPortLocation( new Point(Math.round(this.getWidth()/2),0) );
 	}
 
 	@Override

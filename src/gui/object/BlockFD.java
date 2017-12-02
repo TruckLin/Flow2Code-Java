@@ -27,15 +27,21 @@ public abstract class BlockFD extends JPanel{
 	protected UndoManager undoManager;
 	protected NameCounterManager nameManager;
 	
+	protected double currentZoomRatio = 1;
+	
+	protected JLabel blockLabel = new JLabel("");
+	
+	protected PropertyChangeListener updatePortsListener = e -> updatePorts();
+	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
 		super();
 		this.model = model;
 		this.setLayout(null);
 		
-		// Temporary
-		this.setSize(100,25);
 		this.setOpaque(false);
+		
+		this.addPropertyChangeListener(updatePortsListener);
 		
 	}
 	
@@ -73,13 +79,34 @@ public abstract class BlockFD extends JPanel{
 		return this.undoManager;
 	}
 	
+	public JLabel getBlockLabel() {
+		return this.blockLabel;
+	}
+	public void setBlockLabel(JLabel temp) {
+		if(temp != null) {
+			this.remove(this.blockLabel);
+			this.blockLabel = temp;
+			this.add(temp);
+		}
+	}
+	/* Abstract method : updatePorts()
+	 * This should be implemented by all BlockFD, either do nothing, or update port location.
+	 */
+	protected abstract void updatePorts();
+	
 	public abstract void setUndoManager(UndoManager undoManager);
 	
 	public NameCounterManager getNameCounterManager() {
 		return this.nameManager;
 	}
-	
 	public abstract void setNameCounterManager(NameCounterManager nameManager);
+	
+	public double getCurrentZoomRatio() {
+		return this.currentZoomRatio;
+	}
+	protected void setCurrentZoomRatio(double zr) {
+		this.currentZoomRatio = zr;
+	}
 	
 	/** Event handling functions **/
 	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
@@ -162,4 +189,51 @@ public abstract class BlockFD extends JPanel{
 	public abstract boolean representCompositeBlock(); // indicate whether a block represents a larger, composite blocks.
 													   // BlockStartLOOP and BlockStartIF are the only two block that returns true.	
 	
+	
+	/** Zoom Function **/
+	public void zoom(double newRatio) {
+		Rectangle oldRec = this.getBounds();
+		int x = (int) Math.round(oldRec.getX()*newRatio/currentZoomRatio);
+		int y = (int) Math.round(oldRec.getY()*newRatio/currentZoomRatio);
+		int width = (int) Math.round(oldRec.getWidth()*newRatio/currentZoomRatio);
+		int height = (int) Math.round(oldRec.getHeight()*newRatio/currentZoomRatio);
+		Rectangle newRec = new Rectangle(x,y,width,height);
+		this.setBounds(newRec);
+		
+		
+		
+		if(this.isCompositeBlockFD()) {
+			Component[] comps = this.getComponents();
+			for(Component comp : comps) {
+				((BlockFD)comp).zoom(newRatio);
+			}
+		}
+		
+		this.zoomLabel(newRatio);
+		// After all the blocks have been zoomed, update currentZoomRatio.
+		this.setCurrentZoomRatio(newRatio);
+	}
+	
+	protected void zoomLabel(double newRatio) {
+		if(!blockLabel.getText().equals("")) {
+			Font myFont = this.blockLabel.getFont();
+			this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
+										(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio)));
+			this.adjustLabelBounds();
+		}
+		
+	}
+	
+	public void adjustLabelBounds() {
+		int width = this.getWidth();
+		int height = this.getHeight();
+		
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		Point newLocation = new Point( (int)Math.round(width/2 - labelDimension.getWidth()/2), 
+										(int)Math.round(height/2 - labelDimension.getHeight()/2));
+		this.blockLabel.setSize(labelDimension);
+		this.blockLabel.setLocation(newLocation);
+	}
+	
+
 }

@@ -2,6 +2,7 @@ package gui.object;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
@@ -13,22 +14,19 @@ import gui.mouselistener.MouseEnterListener;
 
 
 public class BlockStartLOOP extends OrdinaryBlockFD{
-	JLabel displayLabel;
 	
-	PortFD loopOutport;
+	private PortFD loopOutport = new PortFD(new Point( Math.round(this.getWidth()/4), this.getHeight() ), "bottom");
 	
 	public BlockStartLOOP(JSONObject model) {
 		super(model);
-		this.setLayout(new FlowLayout());
 		
 		// set the specific outport for BlockStartLOOP
-		this.outport = new PortFD(new Point( this.getWidth(), (int)this.getHeight()/2 ) , "right");
+		this.outport.setPortLocation(new Point( this.getWidth() - 1, (int)this.getHeight()/2 ));
+		this.outport.setSide("right");
 		
 		// set the specific inport for BlockStartLOOP
-		this.inport = new PortFD(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() ), "bottom");
-		
-		// set default loopOutport
-		this.loopOutport = new PortFD(new Point( Math.round(this.getWidth()/4), this.getHeight() ), "bottom");
+		this.inport.setPortLocation(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() - 1 ));
+		this.inport.setSide("bottom");
 		
 		// Set the location of BlockStartLOOP
 		//this.setLocation(5, 5);
@@ -37,26 +35,18 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		MouseEnterListener mouseEnter = new MouseEnterListener(this);
 		mouseEnter.setSouldChangeParentBlock(true);
 		this.addMouseListener(mouseEnter);
+
+		this.blockLabel.setText("StartLoop");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
 		
 		// Temporary
-		this.displayLabel = new JLabel("StartLoop");
-		this.add(this.displayLabel);
-		this.displayLabel.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	
 	/** Getters and Setters **/
-	public JLabel getDisplayLabel() {
-		return this.displayLabel;
-	}
-	public void setDiaplyLabel(JLabel temp) {
-		if(temp != null) {
-			this.remove(this.displayLabel);
-			this.displayLabel = temp;
-			this.add(temp);
-		}
-	}
+
 	public PortFD getLoopOutport() {
 		return this.loopOutport;
 	}
@@ -65,6 +55,23 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 	}
 
 	/** override abstract method **/
+	@Override
+	protected void updatePorts() {
+		// update inport
+		if(this.outport != null) {
+			this.outport.setPortLocation(new Point( this.getWidth() - 1, (int)this.getHeight()/2 ));
+			this.outport.setSide("right");
+		}
+		// update outport
+		if(this.inport != null) {
+			this.inport.setPortLocation(new Point( Math.round(this.getWidth() - this.getHeight()/2), this.getHeight() - 1 ));
+			this.inport.setSide("bottom");
+		}
+		// update loopPort
+		if(this.loopOutport != null) {
+			this.loopOutport.setPortLocation(new Point( Math.round(this.getWidth()/4), this.getHeight() ));
+		}
+	}
 	@Override
 	protected boolean shouldAddBlockDrag() {
 		return false;

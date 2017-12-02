@@ -39,6 +39,12 @@ public class generateFlowDiagramProcess implements BlockGenerationProcess{
 			BlockList.add(tempBlock); // add to the collection of Blocks.
 			myPanel.add(tempBlock);
 			
+			//Testing
+		//	if(i == 1) {
+			//	System.out.println("First Block : " + tempBlock.getModel().getString("Name"));
+			//	System.out.println("Bounds = " + tempBlock.getBounds());
+		//	}
+			
 		}
 		
 		/* Connecting Lines */

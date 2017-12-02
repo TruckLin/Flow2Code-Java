@@ -37,7 +37,7 @@ public class BlockFOR extends BlockLOOPFD{
 	public void updateBlockContent() {
 		String displayString = "For( ";
 		displayString = displayString + this.getInitialisation() + ", " + this.getCondition() + ", " + this.getStep() + " )";
-		this.blockStartLOOP.getDisplayLabel().setText(displayString);
+		this.blockStartLOOP.getBlockLabel().setText(displayString);
 		
 		//Testing
 		//System.out.println("blockStartLOOP's label's preferrable size = : " + 

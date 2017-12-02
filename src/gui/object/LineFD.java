@@ -51,6 +51,7 @@ public class LineFD{
 			
 			// Testing
 			//System.out.println("Property of Blocks changed and detected by line.");
+			//System.out.println("PropertyName:" + evt.getPropertyName());
 			
 			/** tell parent panel to repaint **/
 			propertyChangeSupport.firePropertyChange("EndPoints",null, this); // we don't really care about old value.

@@ -8,11 +8,15 @@ public class TranslateLocationCommand implements Command {
 	private BlockFD block;
 	private int dx;
 	private int dy;
+	
+	private double oldZoomRatio;
 
 	public TranslateLocationCommand(BlockFD block, int dx, int dy) {
 		this.block = block;
 		this.dx = dx;
 		this.dy = dy;
+		
+		this.oldZoomRatio = block.getCurrentZoomRatio();
 	}
 	
 	/** Getters and Setters **/
@@ -31,7 +35,8 @@ public class TranslateLocationCommand implements Command {
 		// Testing
 		//System.out.println("In execution of TranslateLocationCommand:");
 		
-		block.translateLocation(dx, dy);
+		block.translateLocation((int)Math.round(dx*this.block.getCurrentZoomRatio()/oldZoomRatio),
+								(int)Math.round(dy*this.block.getCurrentZoomRatio()/oldZoomRatio));
 		
 		((CompositeBlockFD)block.getParent()).setAppropriateBounds();
 		
@@ -43,7 +48,8 @@ public class TranslateLocationCommand implements Command {
 	@Override
 	public void undo() {
 		// TODO Auto-generated method stub
-		block.translateLocation(-dx, -dy);
+		block.translateLocation((int)Math.round(-dx*this.block.getCurrentZoomRatio()/oldZoomRatio),
+								(int)Math.round(-dy*this.block.getCurrentZoomRatio()/oldZoomRatio));
 		((CompositeBlockFD)block.getParent()).setAppropriateBounds();
 	}
 

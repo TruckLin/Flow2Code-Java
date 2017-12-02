@@ -35,7 +35,9 @@ public class BlockWHILE extends BlockLOOPFD{
 	@Override
 	public void updateBlockContent() {
 		String displayString = ("While( " + this.getExpression() + " )");
-		this.blockStartLOOP.getDisplayLabel().setText(displayString);
+		this.blockStartLOOP.getBlockLabel().setText(displayString);
+		
+		this.blockStartLOOP.adjustLabelBounds();
 		
 		//Testing
 		//System.out.println("blockStartLOOP's label's preferrable size = : " + 

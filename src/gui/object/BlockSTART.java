@@ -12,20 +12,29 @@ import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 
 public class BlockSTART extends BlockFD implements WithOutport{
-	private PortFD outport;
+	private PortFD outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
 	
 	/** Constructors **/
 	public BlockSTART(JSONObject model){
 		super(model);
 		
-		// Initialise outport
-		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
-				
+		this.setBounds(0, 0, 100, 25);
+		
+		this.blockLabel.setText("Start");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
+		
 		// Temporary
-		JLabel temp = new JLabel("Start");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		//Testing
+/*		Font myFont = blockLabel.getFont();
+		System.out.println("Font Name : " + myFont.getFontName());
+		System.out.println("myFont.getName()= " + myFont.getName() );
+		System.out.println("Style : " + myFont.getStyle());
+		System.out.println("Size : " + myFont.getSize());
+		//blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, myFont.getSize())); 
+		System.out.println("Label preferred size : " + blockLabel.getPreferredSize());*/
 	}
 	
 	/** Getters and Setters **/
@@ -45,6 +54,12 @@ public class BlockSTART extends BlockFD implements WithOutport{
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
+	}
+	
+	@Override
+	protected void updatePorts() {
+		// reset outport
+		this.outport.setPortLocation(new Point( Math.round(this.getWidth()/2), this.getHeight()-1) );
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import gui.manager.UndoManager;
 
 public class BlockEndLOOP extends BlockFD implements WithInport{
 	
-	PortFD Inport;
+	PortFD Inport = new PortFD(new Point(Math.round(this.getWidth()/2),0),"top");
 	
 	public BlockEndLOOP() {
 		super(null);
@@ -24,10 +24,6 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 		this.setBounds(0,80,25,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.setOpaque(false);
-		
-		// set default inport
-		this.Inport = new PortFD(new Point(Math.round(this.getWidth()/2),0),"top");
-		
 	}
 	
 	/** Graphics setting **/
@@ -59,6 +55,12 @@ public class BlockEndLOOP extends BlockFD implements WithInport{
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;
+	}
+	
+	@Override
+	protected void updatePorts() {
+		// reset inport
+		this.Inport.setPortLocation( new Point(Math.round(this.getWidth()/2),0) );
 	}
 	
 	@Override

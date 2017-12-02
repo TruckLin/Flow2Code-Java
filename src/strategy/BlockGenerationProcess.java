@@ -12,7 +12,11 @@ public interface BlockGenerationProcess{
 			String myKey = tempBlock.getModel().get("Name").toString();
 
 			//Testing
-			//System.out.println("Within setGraphicalDetail() : myKey = " + myKey);
+		/*	if(myKey.equals("While1")) {
+				System.out.println("Within setGraphicalDetail() : myKey = " + myKey);
+				System.out.println("Bounds before : " + tempBlock.getBounds());
+			}*/
+			
 			if(graphicalInfo!= null && graphicalInfo.has(myKey) ) {
 				JSONObject info = graphicalInfo.getJSONObject(myKey);
 				int x = info.getInt("x");
@@ -20,6 +24,11 @@ public interface BlockGenerationProcess{
 		
 				tempBlock.setLocation(x,y);
 			}
+			
+		/*	if(myKey.equals("While1")) {
+				System.out.println("Within setGraphicalDetail() : myKey = " + myKey);
+				System.out.println("Bounds after : " + tempBlock.getBounds());
+			}*/
 		}
 	}
 }

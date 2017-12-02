@@ -94,7 +94,7 @@ public class generateBlockFORProcess implements BlockGenerationProcess {
 			
 		
 		myPanel.setAppropriateBounds();
-
+		myPanel.repaint();
 		
 		//Testing
 		//System.out.println("after setAppropriateBounds(), \nEndLoop's bounds = " + myEndLoop.getBounds().toString());

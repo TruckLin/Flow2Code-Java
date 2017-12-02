@@ -53,9 +53,6 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		//this.addMouseMotionListener(myListener);
 		//this.addMouseListener(myListener);
 
-		// Initialise ports
-		this.inport = new PortFD(new Point( Math.round(this.getWidth()/2), 0), "top");
-		this.outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom" );
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,
 		// it needs to be put after setBounds or any setters of the component.
@@ -82,7 +79,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 			updateBlockContent();
 			
 			// initialize fields in the UI
-			resetInport();
+			updateInport();
 		}
 	}
 	public BlockEndIF getBlockEndIF() {
@@ -99,7 +96,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 			this.blockEndIF.addPropertyChangeListener(listener);
 
 			// initialize fields in the UI
-			resetOutport();
+			updateOutport();
 		}
 	}
 	public String getExpression() {
@@ -108,32 +105,30 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	
 	/** Utilities **/
 	@Override
-	public void resetInOutPorts() {
-		resetInport();
-		resetOutport();
-	}
-	
-	@Override
-	public void resetInport() {
+	public void updateInport() {
 	//	Point oldPoint = this.getInport();
-		Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport().getPortLocation());
-		this.getInport().setPortLocation(p);
-	//	this.getPropertyChangeSupport().firePropertyChange("Inport", oldPoint, this.getInport());
+		if(this.getBlockStartIF() != null) {
+			Point p = this.getBlockStartIF().toContainerCoordinate(this.getBlockStartIF().getInport().getPortLocation());
+			this.getInport().setPortLocation(p);
+		//	this.getPropertyChangeSupport().firePropertyChange("Inport", oldPoint, this.getInport());
+		}
 	}
 
 	@Override
-	public void resetOutport() {
+	public void updateOutport() {
 	//	Point oldPoint = this.getOutport();
-		Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport().getPortLocation());
-		this.getOutport().setPortLocation(p);
-	//	this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
+		if(this.getBlockEndIF() != null) {
+			Point p = this.getBlockEndIF().toContainerCoordinate(this.getBlockEndIF().getOutport().getPortLocation());
+			this.getOutport().setPortLocation(p);
+	//		this.getPropertyChangeSupport().firePropertyChange("Outport", oldPoint, this.getOutport());
+		}
 	}
 
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
 		String displayString = ("If( " + this.getExpression() + " )");
-		this.blockStartIF.getDisplayLabel().setText(displayString);
+		this.blockStartIF.getBlockLabel().setText(displayString);
 		
 		
 		// blockStartLOOP may need to change size and location

@@ -52,7 +52,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 		
 		//Temporary
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
-		this.setBounds(0,0,100,80); // initial bounds
+		this.setBounds(0,0,100,100);
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,
 		// it needs to be put after setBounds or any setters of the component.
@@ -76,7 +76,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 			updateBlockContent();
 			
 			// initialize inports and outports in the UI
-			resetInport();
+			updateInport();
 		}
 	}
 	
@@ -95,7 +95,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 			this.blockEndLOOP.addPropertyChangeListener(listener);
 
 			// initialize fields in the UI
-			resetOutport();
+			updateOutport();
 		}
 	}
 	public LineFD getExitLine() {
@@ -143,25 +143,22 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 	
 	/** Override abstract methods from OrdinaryCompositeBlockFD**/
 	@Override
-	public void resetInOutPorts() {
-		resetInport();
-		resetOutport();
-	}
-
-	@Override
-	public void resetInport() {
-		Rectangle rec = blockStartLOOP.getBounds();
-		Point inport = new Point( (int)Math.round(rec.getWidth())/2,0);
-		inport = new Point(blockStartLOOP.toContainerCoordinate(inport));
-		this.inport.setPortLocation(inport);
-		
+	public void updateInport() {
+		if(this.getBlockStartLOOP() != null) {
+			Rectangle rec = blockStartLOOP.getBounds();
+			Point inport = new Point( (int)Math.round(rec.getWidth())/2,0);
+			inport = new Point(blockStartLOOP.toContainerCoordinate(inport));
+			this.inport.setPortLocation(inport);
+		}
 	}
 	@Override
-	public void resetOutport() {
-		Rectangle rec = blockEndLOOP.getBounds();
-		Point outport = new Point( (int)Math.round(rec.getWidth())/2, (int)rec.getHeight());
-		outport = new Point(blockEndLOOP.toContainerCoordinate(outport));
-		this.outport.setPortLocation(outport);
+	public void updateOutport() {
+		if(this.getBlockEndLOOP() != null) {
+			Rectangle rec = blockEndLOOP.getBounds();
+			Point outport = new Point( (int)Math.round(rec.getWidth())/2, (int)rec.getHeight());
+			outport = new Point(blockEndLOOP.toContainerCoordinate(outport));
+			this.outport.setPortLocation(outport);
+		}
 	}
 
 }

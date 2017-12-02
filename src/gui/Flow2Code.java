@@ -58,8 +58,10 @@ public class Flow2Code extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-If-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-ForLoop.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Empty.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Empty-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-WhileLoop.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-WhileLoop-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Empty.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Empty-info.json");
 
 	    
 	    BlockGenerator blockGenerator = new BlockGenerator();
@@ -98,7 +100,8 @@ public class Flow2Code extends JFrame{
 	    
 	    
 	    /** Left flowDiagram tool bar **/
-	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager);
+	    FlowDiagramToolBar fdToolBar = new FlowDiagramToolBar(undoManager, sp);
+	    
 	    
 	    /** Left Panel Construction **/
 	    JPanel leftPanel = new JPanel(new BorderLayout());

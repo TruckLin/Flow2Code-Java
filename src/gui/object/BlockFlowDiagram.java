@@ -25,5 +25,12 @@ public class BlockFlowDiagram extends CompositeBlockFD{
 	/** Getters and Setters **/
 	
 	/** Utility Functions **/
+	
+	/** Abstract functions needed override **/
+	@Override
+	protected void updatePorts() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

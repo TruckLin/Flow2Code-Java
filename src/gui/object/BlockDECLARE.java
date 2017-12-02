@@ -12,10 +12,11 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 	public BlockDECLARE(JSONObject model) {
 		super(model);
 		
+		this.blockLabel.setText("Declare");
+		this.adjustLabelBounds();
+		this.add(blockLabel);
+		
 		//Temporary
-		JLabel temp = new JLabel("Declare");
-		this.add(temp);
-		temp.setBounds(0,0,100,25);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		//Testing
@@ -33,7 +34,6 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 		// TODO Auto-generated method stub
 		
 	}
-	
 	/** getters **/
 	
 	

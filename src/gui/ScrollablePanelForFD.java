@@ -12,19 +12,19 @@ import javax.swing.Scrollable;
 import gui.object.BlockFlowDiagram;
 
 public class ScrollablePanelForFD extends JPanel implements Scrollable {
-	BlockFlowDiagram flowDiagram;
+	private BlockFlowDiagram flowDiagram;
 	
-	PropertyChangeListener listener = e -> {updateSize(); 
+	private PropertyChangeListener listener = e -> {updateSize(); 
 											//Testing
 											//System.out.println("FlowDiagram update detected.");
 											};
-	
 	
 	public ScrollablePanelForFD(BlockFlowDiagram flowDiagram) {
 		super();
 		this.setLayout(null);
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(500,400));
+		
 		
 		this.flowDiagram = flowDiagram;
 		this.flowDiagram.addPropertyChangeListener(listener);
@@ -50,6 +50,17 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 		this.setPreferredSize(new Dimension(x2 + 5,y2 + 5));
 		
 		this.revalidate();
+	}
+	
+	// Zoom function
+	public void zoom( double newRatio) {
+		this.flowDiagram.zoom(newRatio);
+		this.updateSize();
+	}
+	
+	/** Getters and Setter **/
+	public double getCurrentZoomRatio() {
+		return this.flowDiagram.getCurrentZoomRatio();
 	}
 	
 	@Override

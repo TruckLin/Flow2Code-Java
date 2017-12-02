@@ -3,6 +3,7 @@ package gui.object;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -242,6 +243,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 			}
 		}
 	}
+	
 	@Override
 	protected boolean shouldAddBlockDrag() {
 		return false;

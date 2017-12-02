@@ -237,6 +237,7 @@ public class generateBlockIFProcess implements BlockGenerationProcess {
 		System.out.println("blockStartIF.getFalseOutport = " + startIf.getFalseOutport()); */
 		
 		myPanel.setAppropriateBounds();
+		myPanel.repaint();
 		
 		//Testing
 	/*	System.out.println("\nAfter setAppropriateBounds() : ");
