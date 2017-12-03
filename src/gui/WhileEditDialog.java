@@ -16,81 +16,91 @@ import org.json.JSONObject;
 
 import gui.commands.EditCommand;
 import gui.manager.UndoManager;
+import gui.object.BlockFD;
 import gui.object.BlockWHILE;
+import gui.object.CompositeBlockFD;
 
 public class WhileEditDialog extends BlockEditDialog{
-	UndoManager undoManager;
+	private BlockWHILE blockWHILE;
 	
-	BlockWHILE blockWHILE;
+	// Components for editingPanel
+	private JLabel expressionLabel = new JLabel("Expression : ");
+	private JTextField expressionTextField = new JTextField();
 	
-	// Components in the dialog.
-	// north
-	JPanel headerPanel = new JPanel(new FlowLayout());
-	JLabel whileStatement;
-	//center
-	JTextField expressionTextArea;
-	// south
-	JPanel bottomPanel = new JPanel(new BorderLayout());
-	JButton btnConfirm;
-	JButton btnCancel;
-	JLabel warningMessage;
+	private String preview = "Preview : \n";
+	private String whileStatement;
+	private JLabel previewLabel = new JLabel();
 	
 	// CaretListener that dynamically change whileStatement
-	CaretListener listener = e -> updateStatement();
+	private CaretListener listener = e -> updateStatement();
 	
 	public WhileEditDialog(UndoManager undoManager ,BlockWHILE blockWHILE) {
-		super();
-		this.undoManager = undoManager;
+		super(undoManager);
 		this.blockWHILE = blockWHILE;
-		
-		// Set title
-		this.setTitle("While editor");
-		
-		// Set up the panel.
-		JPanel myContentPanel = new JPanel(new BorderLayout());
-		
-		// north
-		whileStatement = new JLabel("while( " + this.blockWHILE.getExpression() + " )");
-		headerPanel.add(whileStatement);
-		
-		// center
-		JPanel centerPanel = new JPanel(new BorderLayout());
-		expressionTextArea = new JTextField();
-		expressionTextArea.setText(this.blockWHILE.getExpression());
-		expressionTextArea.addCaretListener(listener);
-
-		centerPanel.add(new JLabel("Expression : "), BorderLayout.WEST);
-		centerPanel.add(expressionTextArea, BorderLayout.CENTER);
-		
-		// south
-		btnConfirm = new JButton("Confirm");
-		btnCancel = new JButton("Cancel");
-		btnConfirm.addActionListener(e -> {// tell undoManager to perform EditComand
-									JSONObject inputDetail = new JSONObject();
-									inputDetail.put("Expression", expressionTextArea.getText());
-									this.undoManager.execute(new EditCommand(blockWHILE, inputDetail));
-									this.dispose(); // careful with this
-									});
-		
-		btnCancel.addActionListener(e -> this.dispose());
-		warningMessage = new JLabel("This should be warning message.");
-		bottomPanel.add(warningMessage, FlowLayout.LEFT);
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(btnConfirm);
-		buttonPanel.add(btnCancel);
-		bottomPanel.add(buttonPanel, BorderLayout.EAST);
-		
-		// Now add all the component onto myContentPanel.
-		myContentPanel.add(headerPanel, BorderLayout.NORTH);
-		myContentPanel.add(centerPanel, BorderLayout.CENTER);
-		myContentPanel.add(bottomPanel, BorderLayout.SOUTH);
-		
-		// Finally set the content panel
-		this.setContentPane(myContentPanel);
-		this.pack();
+		this.buildEditDialog();
 	}
 	
 	public void updateStatement() {
-		whileStatement.setText("while( " + expressionTextArea.getText() + " )");
+		whileStatement = "while( " + expressionTextField.getText() + " )";
+		previewLabel.setText(preview + whileStatement);
+	}
+
+	@Override
+	protected void setDialogTitle() {
+		// TODO Auto-generated method stub
+		this.setTitle("While editor");
+	}
+
+	@Override
+	protected void drawIcon() {
+		// TODO Auto-generated method stub
+		this.icon.setText("WhileIcon");
+	}
+
+	@Override
+	protected void writeHelpDialog() {
+		// TODO Auto-generated method stub
+		this.helpDialog.setText("while help dialog");
+	}
+
+	@Override
+	protected void constructEditingPanel() {
+		// TODO Auto-generated method stub
+		this.editingPanel.setLayout(new BorderLayout());
+		
+		JPanel northPanel = new JPanel(new FlowLayout());
+		
+		expressionTextField.setText(this.blockWHILE.getExpression());
+		expressionTextField.addCaretListener(listener);
+		
+		northPanel.add(expressionLabel);
+		northPanel.add(expressionTextField);
+		
+		this.editingPanel.add(northPanel, BorderLayout.NORTH);
+	
+		whileStatement = "while( " + this.blockWHILE.getExpression() + " )";
+		previewLabel.setText(preview + whileStatement);
+		this.editingPanel.add(previewLabel, BorderLayout.SOUTH);
+	}
+
+	@Override
+	protected void writeAdvanceDialog() {
+		// TODO Auto-generated method stub
+		this.advancedDialog.setText("While advancedDialog");
+		
+	}
+
+	@Override
+	protected void EditAction() {
+		// TODO Auto-generated method stub
+		JSONObject inputDetail = new JSONObject();
+		inputDetail.put("Expression", expressionTextField.getText());
+		this.undoManager.execute(new EditCommand(blockWHILE, inputDetail));
+		
+		// Set AppropriateBounds for BlockWHILE, in case the size of 
+		// the block has changed.
+		this.blockWHILE.setAppropriateBounds();
+		
+		this.dispose(); // careful with this
 	}
 }

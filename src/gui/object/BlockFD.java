@@ -254,7 +254,14 @@ public abstract class BlockFD extends JPanel{
 		int newWidth = minWidth;
 		int newHeight = minHeight;
 		
+		
 		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		
+		// We need to also deal with the case when text label got shorter. BlockSize needs to shrink.
+		int x = (int)this.getLocation().getX();
+		int y = (int)this.getLocation().getY();
+		this.setBounds(x,y, minWidth , minHeight);
+		
 		if(labelDimension.getWidth() > minWidth) {
 			newWidth = (int)labelDimension.getWidth();
 			sizeShouldChange = true;
@@ -268,8 +275,6 @@ public abstract class BlockFD extends JPanel{
 		//System.out.println("sizeShouldChange = " + sizeShouldChange);
 		
 		if(sizeShouldChange) {
-			int x = (int)this.getLocation().getX();
-			int y = (int)this.getLocation().getY();
 			this.setBounds(x,y,
 					newWidth + (int)Math.round(10*this.currentZoomRatio),
 					newHeight + (int)Math.round(5*this.currentZoomRatio));
