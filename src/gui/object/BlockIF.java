@@ -10,12 +10,17 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
+import gui.BlockEditDialog;
+import gui.ForEditDialog;
+import gui.IfEditDialog;
 import gui.manager.UndoManager;
 import gui.mouselistener.MouseEnterListener;
 
 public class BlockIF extends OrdinaryCompositeBlockFD{
 	private BlockStartIF blockStartIF;
 	private BlockEndIF blockEndIF;
+	
+	private IfEditDialog editDialog;
 	
 	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
 	private PropertyChangeListener MoveBlockEndLoopListener = 
@@ -133,8 +138,13 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		this.blockStartIF.adjustLabelSize();
 		this.blockStartIF.adjustBlockSizeByLabel();
 		this.blockStartIF.adjustLabelLocation();
-		
-		// blockStartLOOP may need to change size and location
-		// this.blockStartLOOP.setAppropriateBounds();
+
+		this.setAppropriateBounds();
+	}
+	
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new IfEditDialog(undoManager, this);
+		return this.editDialog;
 	}
 }

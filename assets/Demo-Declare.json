@@ -1,0 +1,19 @@
+{"Type" : "FlowDiagram",
+"Name" : "myFlowDiagram",
+"Members" : [	{"Type" : "Start",
+				"Name" : "Start1",
+				"Child" : "Declare1"
+				},
+				{"Type" : "Declare",
+				"Name" : "Declare1",
+				"Variables" : [{"DataType" : "int",
+								"VariableName" : "x",
+								"IsArray" : false,
+								"Size" : 1}],
+				"Child" : "End1"
+				},
+				{"Type" : "End",
+				"Name" : "End1"
+				}
+			]
+}
