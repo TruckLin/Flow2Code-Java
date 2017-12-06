@@ -60,8 +60,10 @@ public class Flow2Code extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-ForLoop-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-WhileLoop.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-WhileLoop-info.json");
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Declare.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Declare-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Declare.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Declare-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Assign.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Assign-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Empty.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON("/Demo-Empty-info.json");
 

@@ -6,8 +6,12 @@
 				},
 				{"Type" : "Declare",
 				"Name" : "Declare1",
-				"Variables" : [{"DataType" : "int",
+				"Variables" : [{"DataType" : "Integer",
 								"VariableName" : "x",
+								"IsArray" : false,
+								"Size" : 1},
+								{"DataType" : "Real",
+								"VariableName" : "y",
 								"IsArray" : false,
 								"Size" : 1}],
 				"Child" : "End1"

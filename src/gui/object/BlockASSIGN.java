@@ -11,12 +11,19 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
+import gui.AssignEditDialog;
+import gui.BlockEditDialog;
+import gui.DeclareEditDialog;
+import gui.manager.UndoManager;
+
 public class BlockASSIGN extends OrdinaryBlockFD{
+	
+	private AssignEditDialog editDialog;
 	
 	public BlockASSIGN(JSONObject model) {
 		super(model);
-		
-		this.blockLabel.setText("Assign");
+
+		this.updateBlockContent();
 		this.adjustLabelSize();
 		this.adjustBlockSizeByLabel();
 		this.adjustLabelLocation();
@@ -40,7 +47,21 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
+		String var = this.getModel().getString("Variable");
+		String exp = this.getModel().getString("Expression");
+		this.blockLabel.setText("<html>Assign : <br>  " + var + " = " + exp);
 		
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
+		if(this.getParent() instanceof CompositeBlockFD) {
+			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
+		}
+	}
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new AssignEditDialog(undoManager, this);
+		return this.editDialog;
 	}
 	
 	/** getters **/

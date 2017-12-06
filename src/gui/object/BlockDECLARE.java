@@ -14,12 +14,13 @@ import gui.IfEditDialog;
 import gui.manager.UndoManager;
 
 public class BlockDECLARE extends OrdinaryBlockFD {
+	
 	private DeclareEditDialog editDialog;
 	
 	public BlockDECLARE(JSONObject model) {
 		super(model);
 		
-		this.blockLabel.setText("Declare");
+		this.updateBlockContent();
 		this.adjustLabelSize();
 		this.adjustBlockSizeByLabel();
 		this.adjustLabelLocation();
@@ -46,7 +47,28 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
+		JSONArray variables = this.getModel().getJSONArray("Variables");
+		String temp = "<html>Declare : <br>";
+		for(int i = 0 ; i < variables.length(); i++) {
+			JSONObject currentVariable = variables.getJSONObject(i);
+			temp = temp + currentVariable.getString("DataType") + "  ";
+			temp = temp + currentVariable.getString("VariableName") + "  ";
+			if(currentVariable.getBoolean("IsArray")) {
+				temp = temp + "is an array of size " + currentVariable.getString("Size");
+			}
+			if(i < variables.length() - 1) {
+				temp = temp + "<br>";
+			}
+		}
 		
+		this.blockLabel.setText(temp);
+		
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
+		if(this.getParent() instanceof CompositeBlockFD) {
+			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
+		}
 	}
 	
 	@Override

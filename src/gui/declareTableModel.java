@@ -122,12 +122,21 @@ public class declareTableModel extends AbstractTableModel{
      * */
      public void addNewVariable() {
     	 ArrayList<Object> tempVar = new ArrayList<Object>();
-    	 tempVar.add("int");
+    	 tempVar.add("Integer");
     	 tempVar.add("NewVariable");
     	 tempVar.add(Boolean.FALSE);
     	 tempVar.add(new Integer(1));
     	 this.variableData.add(tempVar);
     	 this.fireTableDataChanged();
      }
-
+     /*
+      * Function that remove rows
+      * */
+     public void removeVariables(int[] selectedRows) {
+    	 for(int i = 0; i < selectedRows.length; i++) {
+    		 this.variableData.remove(selectedRows[i] - i);
+    	 }
+    	 this.fireTableDataChanged();
+     }
+     
 }
