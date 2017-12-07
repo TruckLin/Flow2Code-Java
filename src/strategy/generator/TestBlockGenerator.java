@@ -1,4 +1,4 @@
-package strategy;
+package strategy.generator;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;

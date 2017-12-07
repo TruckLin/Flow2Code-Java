@@ -1,4 +1,4 @@
-package strategy;
+package strategy.generator;
 
 import java.awt.Point;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package strategy;
+package strategy.generator;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -10,32 +10,36 @@ import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
 import gui.object.BlockEndLOOP;
 import gui.object.BlockFD;
+import gui.object.BlockFOR;
 import gui.object.BlockStartLOOP;
-import gui.object.BlockWHILE;
 import gui.object.LineFD;
 import gui.object.PortFD;
 
-public class generateBlockWHILEProcess implements BlockGenerationProcess {
-	
+public class generateBlockFORProcess implements BlockGenerationProcess {
+
 	BlockGenerator processor;
 	
-	public generateBlockWHILEProcess(BlockGenerator processor) {
+	public generateBlockFORProcess(BlockGenerator processor) {
 		this.processor = processor;
 	}
 	
+	
 	@Override
 	public BlockFD generateBlock(JSONObject model, JSONObject graphicalInfo) {
-		BlockWHILE myPanel = new BlockWHILE(model);
+		BlockFOR myPanel = new BlockFOR(model);
 		BlockStartLOOP myStartLoop = (BlockStartLOOP) processor.generate(model.getJSONObject("StartLoop"), graphicalInfo);
 		BlockEndLOOP myEndLoop = new BlockEndLOOP();
 		myPanel.add(myStartLoop);
 		myPanel.add(myEndLoop);
 		myPanel.setBlockStartLOOP(myStartLoop);
 		myPanel.setBlockEndLOOP(myEndLoop);
+		
 		myPanel.setExitLine(new LineFD(myStartLoop, myEndLoop,
-									myStartLoop.getLoopOutport(),
-									myEndLoop.getInport()) 
+										myStartLoop.getLoopOutport(),myEndLoop.getInport() ) 
 							);
+		
+		//Testing
+		//System.out.println("step1,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 		
 		ArrayList<BlockFD> BlockList = new ArrayList<BlockFD>(); // keeping the list to add lines.
 		JSONArray myMembers = model.getJSONArray("Members");
@@ -46,6 +50,9 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 			BlockList.add(tempBlock); // add to the collection of Blocks.
 			myPanel.add(tempBlock);
 		}
+		
+		//Testing
+		//System.out.println("step2,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 		
 		BlockList.add(myStartLoop); // also add BlockStartLoop into the list.
 		
@@ -78,11 +85,19 @@ public class generateBlockWHILEProcess implements BlockGenerationProcess {
 				}
 			}
 		}
+		//Testing
+		//System.out.println("Before setGraphicalDetail,\nEndLoop's bounds = " + myEndLoop.getBounds().toString());
+
 		BlockGenerationProcess.setGraphicalDetail(myPanel,graphicalInfo);
+		//Testing
+		//System.out.println("After setGraphicalDetail, \nEndLoop's bounds = " + myEndLoop.getBounds().toString());
+			
+		
 		myPanel.setAppropriateBounds();
 		myPanel.repaint();
 		
+		//Testing
+		//System.out.println("after setAppropriateBounds(), \nEndLoop's bounds = " + myEndLoop.getBounds().toString());
 		return myPanel;
 	}
-
 }
