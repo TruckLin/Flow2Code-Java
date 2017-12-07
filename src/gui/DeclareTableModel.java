@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class declareTableModel extends AbstractTableModel{
+public class DeclareTableModel extends AbstractTableModel{
 	 private String[] columnNames = {"Type",
              						"Variable Name",
              						"isArray?",
@@ -18,7 +18,7 @@ public class declareTableModel extends AbstractTableModel{
 	 private JSONArray variables;
 	 private ArrayList<ArrayList<Object>> variableData = new ArrayList<ArrayList<Object>>();
 	 
-	 public declareTableModel(JSONObject model) {
+	 public DeclareTableModel(JSONObject model) {
 		 this.model = model;
 		 this.variables = this.model.getJSONArray("Variables");
 		 int numOfVariables = this.variables.length();

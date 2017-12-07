@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import gui.AssignEditDialog;
@@ -47,9 +48,18 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
-		String var = this.getModel().getString("Variable");
-		String exp = this.getModel().getString("Expression");
-		this.blockLabel.setText("<html>Assign : <br>  " + var + " = " + exp);
+		JSONArray assignments = this.getModel().getJSONArray("Assignments");
+		String temp = "<html>Assign : <br>";
+		for(int i = 0 ; i < assignments.length(); i++) {
+			JSONObject currentAssignment = assignments.getJSONObject(i);
+			temp = temp + currentAssignment.getString("TargetVariable") + " = ";
+			temp = temp + currentAssignment.getString("Expression");
+			if(i < assignments.length() - 1) {
+				temp = temp + "<br>";
+			}
+		}
+		
+		this.blockLabel.setText(temp);
 		
 		this.adjustLabelSize();
 		this.adjustBlockSizeByLabel();

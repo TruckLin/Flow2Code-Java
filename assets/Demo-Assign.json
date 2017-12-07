@@ -6,8 +6,8 @@
 				},
 				{"Type" : "Assign",
 				"Name" : "Assign1",
-				"Variable" : "x",
-				"Expression" : "5 - 6",
+				"Assignments" : [{"TargetVariable" : "x", "Expression" : "20"},
+								{"TargetVariable" : "y", "Expression" : "3.1415926"}],
 				"Child" : "End1"
 				},
 				{"Type" : "End",

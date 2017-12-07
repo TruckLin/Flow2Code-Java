@@ -63,9 +63,14 @@ public class ModelGenerator{
 				JSONObject model = new JSONObject();
 				model.put("Type", "For");
 				model.put("Name",nameCounterManager.getAvailableName());
+				model.put("Variable", "");
+				model.put("StartValue", "");
+				model.put("EndValue", "");
+				model.put("Direction", "Increasing"); // default
+				model.put("StepBy", "");
 				model.put("Initialisation","");
 				model.put("Condition", "");
-				model.put("Step", "");
+				model.put("PostProcess", "");
 		
 				JSONObject startLoop = modelGenerator.generate("StartLoop");
 		
@@ -155,8 +160,7 @@ public class ModelGenerator{
 				JSONObject model = new JSONObject();
 				model.put("Type", "Input");
 				model.put("Name", nameCounterManager.getAvailableName());
-				model.put("Variable",new JSONArray());
-				model.put("InputExpression", "");
+				model.put("TargetVariable","");
 				model.put("Child", "");
 				return model;	
 		});

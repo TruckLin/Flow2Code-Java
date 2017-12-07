@@ -3,11 +3,20 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumn;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import gui.commands.EditCommand;
@@ -19,12 +28,14 @@ public class AssignEditDialog extends BlockEditDialog{
 	
 	private BlockASSIGN blockASSIGN;
 	
-	private JLabel variableLabel = new JLabel("Variable : ");
-	private JTextField variableTF = new JTextField();
-	private JLabel expressionLabel = new JLabel("Expression : ");
-	private JTextField expressionTF = new JTextField();
+	// Center of editing panel
+	private AssignTableModel myTableModel;
+	private JTable variableTable;
 	
-	private JLabel assignLabel = new JLabel(" = ");
+	// East of editing panel
+	private JPanel eastButtonPanel = new JPanel();
+	private JButton addNewVariableBtn = new JButton("Add");
+	private JButton removeVariablesBtn = new JButton("remove");
 	
 	public AssignEditDialog(UndoManager undoManager, BlockASSIGN blockASSIGN) {
 		super(undoManager);
@@ -53,20 +64,25 @@ public class AssignEditDialog extends BlockEditDialog{
 	@Override
 	protected void constructEditingPanel() {
 		// TODO Auto-generated method stub
-		this.editingPanel.setLayout(new BorderLayout());
-		JPanel northPanel = new JPanel(new BorderLayout());
-		northPanel.add(this.variableLabel, BorderLayout.WEST);
-		northPanel.add(this.expressionLabel, BorderLayout.EAST);
-		this.editingPanel.add(northPanel, BorderLayout.NORTH);
+editingPanel.setLayout(new BorderLayout());
+		// Center Panel
+		this.myTableModel = new AssignTableModel(this.blockASSIGN.getModel());
+		this.variableTable = new JTable(this.myTableModel);
+		this.variableTable.setPreferredScrollableViewportSize(new Dimension(375, 70));
+        this.variableTable.setFillsViewportHeight(true);
+		editingPanel.add( new JScrollPane(this.variableTable), BorderLayout.CENTER);
 		
-		this.variableTF.setPreferredSize(new Dimension(100,25));
-		this.expressionTF.setPreferredSize(new Dimension(275,25));
-		this.variableTF.setText(this.blockASSIGN.getModel().getString("Variable"));
-		this.expressionTF.setText(this.blockASSIGN.getModel().getString("Expression"));
-		this.editingPanel.add(this.variableTF, BorderLayout.WEST);
-		this.editingPanel.add(assignLabel, BorderLayout.CENTER);
-		this.editingPanel.add(this.expressionTF, BorderLayout.EAST);
+		// East button panel
+		this.eastButtonPanel.setLayout(new GridLayout(2,1));
+		this.removeVariablesBtn.addActionListener(e -> {
+			int[] selectedRows = this.variableTable.getSelectedRows();
+			this.myTableModel.removeVariables(selectedRows);
+		});
+		this.addNewVariableBtn.addActionListener(e -> this.myTableModel.addNewVariable());
+		this.eastButtonPanel.add(this.removeVariablesBtn);
+		this.eastButtonPanel.add(this.addNewVariableBtn);
 		
+		editingPanel.add(eastButtonPanel, BorderLayout.EAST);
 	}
 
 	@Override
@@ -81,8 +97,18 @@ public class AssignEditDialog extends BlockEditDialog{
 	protected void EditAction() {
 		// TODO Auto-generated method stub
 		JSONObject inputDetail = new JSONObject();
-		inputDetail.put("Variable", variableTF.getText());
-		inputDetail.put("Expression", expressionTF.getText());
+		
+		if(this.myTableModel.getData().size() > 0) {
+			for(ArrayList<Object> currentAssignment : this.myTableModel.getData()) {
+				JSONObject tempVar = new JSONObject();
+				tempVar.put("TargetVariable", currentAssignment.get(0));
+				tempVar.put("Expression", currentAssignment.get(2));
+				
+				inputDetail.append("Assignments", tempVar);
+			}
+		}else {
+			inputDetail.put("Assignments",new JSONArray() );
+		}
 		this.undoManager.execute(new EditCommand(blockASSIGN, inputDetail));
 		
 		this.dispose(); // careful with this

@@ -30,20 +30,13 @@ public class DeclareEditDialog extends BlockEditDialog{
 	
 	// Center of editing panel
 	private String[] dataTypes = {"Integer", "Real", "Boolean", "String"};
-	private declareTableModel myTableModel;
+	private DeclareTableModel myTableModel;
 	private JTable variableTable;
 	
 	// East of editing panel
 	private JPanel eastButtonPanel = new JPanel();
 	private JButton addNewVariableBtn = new JButton("Add");
 	private JButton removeVariablesBtn = new JButton("remove");
-	
-	// RowSelection listener
-	
-	
-	
-	// Preview
-	private JLabel previewLabel = new JLabel("Preview : ");
 	
 	public DeclareEditDialog(UndoManager undoManager ,BlockDECLARE blockDECLARE) {
 		super(undoManager);
@@ -75,7 +68,7 @@ public class DeclareEditDialog extends BlockEditDialog{
 		editingPanel.setLayout(new BorderLayout());
 		
 		// Center Panel
-		this.myTableModel = new declareTableModel(this.blockDECLARE.getModel());
+		this.myTableModel = new DeclareTableModel(this.blockDECLARE.getModel());
 		this.variableTable = new JTable(this.myTableModel);
 		this.variableTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
         this.variableTable.setFillsViewportHeight(true);

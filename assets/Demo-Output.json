@@ -1,0 +1,16 @@
+{"Type" : "FlowDiagram",
+"Name" : "myFlowDiagram",
+"Members" : [	{"Type" : "Start",
+				"Name" : "Start1",
+				"Child" : "Output1"
+				},
+				{"Type" : "Output",
+				"Name" : "Output1",
+				"Expression" : "\"oh jesus christ!\"",
+				"Child" : "End1"
+				},
+				{"Type" : "End",
+				"Name" : "End1"
+				}
+			]
+}

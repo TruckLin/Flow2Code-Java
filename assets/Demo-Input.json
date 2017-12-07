@@ -1,0 +1,16 @@
+{"Type" : "FlowDiagram",
+"Name" : "myFlowDiagram",
+"Members" : [	{"Type" : "Start",
+				"Name" : "Start1",
+				"Child" : "Input1"
+				},
+				{"Type" : "Input",
+				"Name" : "Input1",
+				"TargetVariable" : "x",
+				"Child" : "End1"
+				},
+				{"Type" : "End",
+				"Name" : "End1"
+				}
+			]
+}

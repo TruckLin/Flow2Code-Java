@@ -21,9 +21,6 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 		super(model);
 		
 		this.updateBlockContent();
-		this.adjustLabelSize();
-		this.adjustBlockSizeByLabel();
-		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary
@@ -54,7 +51,7 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 			temp = temp + currentVariable.getString("DataType") + "  ";
 			temp = temp + currentVariable.getString("VariableName") + "  ";
 			if(currentVariable.getBoolean("IsArray")) {
-				temp = temp + "is an array of size " + currentVariable.getString("Size");
+				temp = temp + "is an array of size " + currentVariable.get("Size");
 			}
 			if(i < variables.length() - 1) {
 				temp = temp + "<br>";
