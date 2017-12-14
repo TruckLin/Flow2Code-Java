@@ -43,7 +43,7 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 					if(currentModel.getString("Type").equals("End")) {
 						shouldGenerateMore = false;
 					}else {
-						String currentCode = this.codeGenerator.generate(currentModel, indent + "    ");
+						String currentCode = this.codeGenerator.generate(currentModel, indent + "    " + "    ");
 						code += currentCode;
 						targetName = currentModel.getString("Child");
 					}

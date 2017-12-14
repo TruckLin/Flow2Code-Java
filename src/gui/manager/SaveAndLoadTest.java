@@ -8,22 +8,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.json.*;
+import java.nio.file.DirectoryIteratorException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.tcg.json.JSONUtils;
 
-
-public abstract class SaveAndLoadManagerFD {
-	
-	public static JSONObject loadFlowDiagramFromJSON(String path) {
-		JSONObject myObj = JSONUtils.getJSONObjectFromFile(path);
-		return myObj;
-	}
-	public static JSONObject loadGraphicalInfoFromJSON(String path) {
-		JSONObject myObj = JSONUtils.getJSONObjectFromFile(path);
-		return myObj;
-	}
+public class SaveAndLoadTest {
 	
 	public static void saveTextFileFromString(String text, String pathAndFileName) {
 		// Write primitives to an output file
@@ -60,5 +53,31 @@ public abstract class SaveAndLoadManagerFD {
 	        ex.printStackTrace();
 	    }
 		return temp;
-	}	
+	}
+	
+	
+	public static void main(String[] args) {
+	/*	String text = "{Hello World: \"¦n\"}\n";
+		SaveAndLoadTest.saveTextFileFromString(text, "testing.json");
+		//System.out.println(File.separator);
+		//String temp1 = SaveAndLoadTest.getTextStringFromPath("Demo-If.json");
+		//String temp2 = JSONUtils.getJSONStringFromFile("Demo-If.json");
+		String temp1 = SaveAndLoadTest.getTextStringFromPath("testing.json");
+		String temp2 = JSONUtils.getJSONStringFromFile("testing.json");
+		System.out.println(temp1);
+		System.out.println(temp2);
+	*/
+		
+		// List the contents of a directory
+		Path dir = Paths.get(".//assets");
+		try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dir)) {
+		   for (Path entry : dirStream) {
+		      System.out.println(entry.getFileName());  // Filename only
+		      System.out.println(entry.toString());     // Full-path name
+		      
+		   }
+		} catch (IOException | DirectoryIteratorException ex) {
+		   ex.printStackTrace();
+		}
+	}
 }
