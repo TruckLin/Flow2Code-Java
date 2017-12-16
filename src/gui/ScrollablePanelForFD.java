@@ -9,6 +9,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
+import org.json.JSONObject;
+
 import gui.object.BlockFlowDiagram;
 
 public class ScrollablePanelForFD extends JPanel implements Scrollable {
@@ -61,6 +63,9 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 	/** Getters and Setter **/
 	public double getCurrentZoomRatio() {
 		return this.flowDiagram.getCurrentZoomRatio();
+	}
+	public JSONObject getFlowDiagramModel() {
+		return this.flowDiagram.getModel();
 	}
 	
 	@Override

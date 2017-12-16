@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
+import gui.action.saveAndLoadActions;
 import gui.manager.UndoManager;
 
 public class FlowDiagramToolBar extends JToolBar{
@@ -18,6 +19,9 @@ public class FlowDiagramToolBar extends JToolBar{
 	private JButton zoomInButton;
 	private JButton zoomOutButton;
 	private JLabel zoomRatioLabel;
+	
+	private JButton openButton;
+	private JButton saveButton;
 	
 	private PropertyChangeListener undoRedoListener = e -> updateUndoRedoButtons();
 	
@@ -61,6 +65,14 @@ public class FlowDiagramToolBar extends JToolBar{
 		this.add(zoomInButton);
 		this.add(zoomRatioLabel);
 		this.add(zoomOutButton);
+		
+		saveAndLoadActions actions = new saveAndLoadActions(sp.getFlowDiagramModel(),null);
+		this.openButton = new JButton("Open");
+		this.saveButton = new JButton("Save");
+		this.openButton.addActionListener(actions.getLoadActionListener());
+		this.saveButton.addActionListener(actions.getSaveActionListener());
+		this.add(this.openButton);
+		this.add(this.saveButton);
 		
 	}
 	

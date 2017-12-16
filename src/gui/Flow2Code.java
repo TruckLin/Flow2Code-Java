@@ -52,8 +52,8 @@ public class Flow2Code extends JFrame{
 	    NameCounterManager nameManager = new NameCounterManager();
 	    
 	    /** Demo FlowDiagram construction **/
-	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\FlowDiagramDemo.json");
-	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\FlowDiagramDemo-info.json");
+//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\FlowDiagramDemo.json");
+//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\FlowDiagramDemo-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-If.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-If-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-ForLoop.json");
@@ -68,8 +68,8 @@ public class Flow2Code extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Input-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Output.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Output-info.json");
-//	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Empty.json");
-//	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Empty-info.json");
+	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Empty.json");
+	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Empty-info.json");
 
 	    
 	    BlockGenerator blockGenerator = new BlockGenerator();
@@ -145,6 +145,8 @@ public class Flow2Code extends JFrame{
 	    setSize(1000, 600);   // "super" JFrame sets initial size
 	    setVisible(true);    // "super" JFrame shows
 	}
+	
+	
 	
 	/**
 	*	This named inner class TextFetcher extends Thread, fetch text from JSONOBject every 0.5 second.
