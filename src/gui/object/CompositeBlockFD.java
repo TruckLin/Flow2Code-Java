@@ -222,6 +222,22 @@ public abstract class CompositeBlockFD extends BlockFD{
 	}
 	
 	/** override abstract method **/
+	@Override 
+	public JSONObject getGraphicalInfo() {
+		JSONObject loc = new JSONObject();
+		loc.put("x", (int)Math.round(this.getLocation().getX()/this.currentZoomRatio));
+		loc.put("y", (int)Math.round(this.getLocation().getY()/this.currentZoomRatio));
+		JSONObject ans = new JSONObject();
+		ans.put(this.getModel().getString("Name"), loc);
+		
+		for (Component comp : this.getComponents()) {
+			JSONObject tempInfo = ((BlockFD)comp).getGraphicalInfo();
+			for(String key : tempInfo.keySet()) {
+				ans.put(key, tempInfo.get(key));
+			}
+		}
+		return ans;
+	}
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;

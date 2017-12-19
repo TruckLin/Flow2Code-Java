@@ -124,6 +124,14 @@ public abstract class BlockFD extends JPanel{
 		return new Point(x,y);
 	}
 	
+	public JSONObject getGraphicalInfo() {
+		JSONObject loc = new JSONObject();
+		loc.put("x", (int)Math.round(this.getLocation().getX()/this.currentZoomRatio));
+		loc.put("y", (int)Math.round(this.getLocation().getY()/this.currentZoomRatio));
+		JSONObject ans = new JSONObject();
+		ans.put(this.getModel().getString("Name"), loc);
+		return ans;
+	}
 	
 	/** Move the block by displacement **/
 	public void translateLocation(int dx, int dy) {

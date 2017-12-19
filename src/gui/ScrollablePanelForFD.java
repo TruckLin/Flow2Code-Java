@@ -12,16 +12,17 @@ import javax.swing.Scrollable;
 import org.json.JSONObject;
 
 import gui.object.BlockFlowDiagram;
+import gui.object.CompositeBlockFD;
 
 public class ScrollablePanelForFD extends JPanel implements Scrollable {
-	private BlockFlowDiagram flowDiagram;
+	private CompositeBlockFD flowDiagram;
 	
 	private PropertyChangeListener listener = e -> {updateSize(); 
 											//Testing
 											//System.out.println("FlowDiagram update detected.");
 											};
 	
-	public ScrollablePanelForFD(BlockFlowDiagram flowDiagram) {
+	public ScrollablePanelForFD(CompositeBlockFD flowDiagram) {
 		super();
 		this.setLayout(null);
 		this.setBackground(Color.WHITE);
@@ -52,6 +53,20 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 		this.setPreferredSize(new Dimension(x2 + 5,y2 + 5));
 		
 		this.revalidate();
+	}
+	/** Getters and Setters **/
+	public void setCompositeBlockFD(CompositeBlockFD comp) {
+		if(this.flowDiagram != null) {
+			this.remove(this.flowDiagram);
+			this.flowDiagram.removePropertyChangeListener(listener);
+		}
+		this.flowDiagram = comp;
+		if(this.flowDiagram != null) {
+			this.add(this.flowDiagram);
+			this.flowDiagram.addPropertyChangeListener(listener);
+		}
+		
+		this.updateSize();
 	}
 	
 	// Zoom function

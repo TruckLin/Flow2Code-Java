@@ -2,18 +2,18 @@ package gui.manager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.DirectoryIteratorException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.json.JSONObject;
@@ -47,8 +47,8 @@ public class SaveAndLoadTest {
 	    	File fileIn = new File(path);
 	    	//System.out.println("File size is " + fileIn.length() + " bytes");
 	     
-	    	for (int i = 0; i < fileIn.length()/2; ++i) {
-	    		temp = temp + (char)in.readChar();
+	    	for (int i = 0; i < fileIn.length()/2; i++) {
+	    		temp = temp + in.readChar();
 	    	}
 	    	
 	    	//System.out.println(temp);
@@ -60,46 +60,111 @@ public class SaveAndLoadTest {
 	}
 	
 	
-	public static void loadZippedProject(String path) {
-		
-	}
-	
-	public static void copyTextFilesIntoZippedFile(String[] textFilePath, String[] textFilePathInZip ,String zipFilePath) {
-		byte[] textFileInBytes = null;
+	public static void loadFunctionsFromZippedFile(ArrayList<JSONObject> fdFunctions,
+														ArrayList<JSONObject> funcInfos ,String zipFilePath) {
 		File f = new File(zipFilePath);
-		
-		if(textFilePath.length != textFilePathInZip.length) {
-			System.err.println("number if textFilePath != number of textFilePathInZip.");
-			return;
-		}
+		fdFunctions.clear();
+		funcInfos.clear();
 		
 		
-		
-		try(ZipOutputStream out = new ZipOutputStream(new FileOutputStream(f)) ){
-			for(int i = 0; i < textFilePath.length; i++) {
+		try(ZipInputStream in = new ZipInputStream(new FileInputStream(f)) ) {
+			ZipEntry currentEntry;
+			
+			while( (currentEntry = in.getNextEntry()) != null ) {
+				//System.out.println(currentEntry.getName().toString());
 				
-				try (FileInputStream in = new FileInputStream(textFilePath[i])) {
-					 
-					// Check file length
-					File fileIn = new File(textFilePath[i]);
-					textFileInBytes = new byte[(int)fileIn.length()];
-					in.read(textFileInBytes);
-				} catch (IOException ex) {
-					ex.printStackTrace();
+				int begin = 0;
+				int end = 4;
+				
+				if(currentEntry.getName().substring(begin, end).equals("Flow")) continue;
+                
+				byte[] buffer = new byte[2048];
+				int len;
+				String temp = "";
+				while ((len = in.read(buffer)) > 0){
+					ByteArrayInputStream byteIn = new ByteArrayInputStream(buffer);
+					DataInputStream dataIn = new DataInputStream(byteIn);
+					
+					
+					for (int i = 0; i < len; i++) {
+						if(dataIn.available() > 1) {
+							temp = temp + dataIn.readChar();
+						}
+					}
+					
+					//System.out.println("len = " + len);
+                    //System.out.println("buffer.length = " + buffer.length);
+					//System.out.println((char)buffer[0]);
+                   
 				}
 				
-				ZipEntry e = new ZipEntry(textFilePathInZip[i]);
-				out.putNextEntry(e);
-			
-				out.write(textFileInBytes, 0, textFileInBytes.length);
-				out.closeEntry();
+				if(currentEntry.getName().contains("info")) {
+					// Clone JSONObject
+					funcInfos.add(new JSONObject(temp));
+				}else {
+					// Clone JSONObject
+					fdFunctions.add(new JSONObject(temp));
+				}
+				//Testing
+				//System.out.println(temp);
+				//System.out.println(currentEntry.getName().contains("info"));
+				//System.out.println(fdModel.toString(10));
+                //System.out.println("Length of the string read in : " + temp.length());
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		
-		
 	}
+	
+	public static void loadZippedFile(String zipFilePath) {
+		File f = new File(zipFilePath);
+		
+		
+		try(ZipInputStream in = new ZipInputStream(new FileInputStream(f)) ) {
+			ZipEntry currentEntry;
+			
+			while( (currentEntry = in.getNextEntry()) != null ) {
+				System.out.println(currentEntry.getName().toString());
+				Path path = Paths.get(zipFilePath, currentEntry.getName());
+				
+				int begin = 0;
+				int end = 4;
+				//System.out.println("length of the name = " + currentEntry.getName().length());
+				//System.out.println("substring(" + begin + "," + end + ") = " + currentEntry.getName().substring(begin,end));
+				//System.out.println("currentEntry.getName().substring(begin,end).equals(\"Flow\") = "
+				//							+ currentEntry.getName().substring(begin,end).equals("Flow"));
+				
+				if(currentEntry.getName().substring(begin, end).equals("Flow")) continue;
+                
+				byte[] buffer = new byte[2048];
+				int len;
+				String temp = "";
+				while ((len = in.read(buffer)) > 0){
+					ByteArrayInputStream byteIn = new ByteArrayInputStream(buffer);
+					DataInputStream dataIn = new DataInputStream(byteIn);
+					
+					
+					for (int i = 0; i < len; i++) {
+						if(dataIn.available() > 1) {
+							temp = temp + dataIn.readChar();
+						}
+					}
+					
+					//System.out.println("len = " + len);
+                    // System.out.println("buffer.length = " + buffer.length);
+					//System.out.println((char)buffer[0]);
+                   
+				}
+			//	System.out.println(temp);
+            //	System.out.println("Length of the string read in : " + temp.length());
+			}
+			
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	
 	
 	
 	public static void main(String[] args) {
@@ -126,6 +191,7 @@ public class SaveAndLoadTest {
 		   ex.printStackTrace();
 		}
 	*/
+		
 		String textFilePath, textFilePath2,textFilePathInZip ,textFilePathInZip2, zipFilePath;
 		textFilePath = ".\\assets\\Demo-If.json";
 		textFilePath2 = ".\\assets\\Demo-If-info.json";
@@ -137,7 +203,16 @@ public class SaveAndLoadTest {
 		String[] textFilePathsInZip = {textFilePathInZip, textFilePathInZip2, textFilePathInZip3};
 		zipFilePath = ".\\assets\\TestZip.foo";
 		
-		copyTextFilesIntoZippedFile(textFilePaths,textFilePathsInZip ,zipFilePath);
+		// copyTextFilesIntoZippedFile(textFilePaths,textFilePathsInZip ,zipFilePath);
 		
+		//loadZippedFile(zipFilePath);
+		
+		JSONObject fdModel = new JSONObject();
+		JSONObject fdInfo = new JSONObject();
+		SaveAndLoadManagerFD.loadFlowDiagramFromZippedFile(fdModel, fdInfo, zipFilePath);
+		
+		//Testing
+		//System.out.println(fdModel.toString(10));
+		//System.out.println(fdInfo.toString(10));
 	}
 }

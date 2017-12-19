@@ -7,11 +7,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
 
-import gui.action.saveAndLoadActions;
+import gui.action.SaveAndLoadActions;
 import gui.manager.UndoManager;
 
 public class FlowDiagramToolBar extends JToolBar{
-	UndoManager undoManager;
+	private Flow2Code mainFrame;
+	
+	private UndoManager undoManager;
 	private JButton undoButton;
 	private JButton redoButton;
 	
@@ -25,13 +27,15 @@ public class FlowDiagramToolBar extends JToolBar{
 	
 	private PropertyChangeListener undoRedoListener = e -> updateUndoRedoButtons();
 	
-	public FlowDiagramToolBar(UndoManager undoManager, ScrollablePanelForFD sp) {
+	public FlowDiagramToolBar(Flow2Code mainFrame) {
 		super();
-		this.undoManager = undoManager;
+		this.mainFrame = mainFrame;
+		
+		this.undoManager = mainFrame.getUndoManager();
 		
 		undoButton = new JButton("Undo");
 		redoButton = new JButton("Redo");
-		undoManager.addPropertyChangeListener(undoRedoListener);
+		this.undoManager.addPropertyChangeListener(undoRedoListener);
 		
 		undoButton.addActionListener(e-> undoManager.undo());
 		redoButton.addActionListener(e-> undoManager.redo());
@@ -42,7 +46,7 @@ public class FlowDiagramToolBar extends JToolBar{
 		this.add(redoButton);
 		
 		// Zoom in and Zoom out button
-		this.scrollablePanel = sp;
+		this.scrollablePanel = mainFrame.getScrollablePanelForFD();
 		zoomInButton = new JButton("ZoomIn");
 		zoomOutButton = new JButton("ZoomOut");
 		
@@ -66,7 +70,7 @@ public class FlowDiagramToolBar extends JToolBar{
 		this.add(zoomRatioLabel);
 		this.add(zoomOutButton);
 		
-		saveAndLoadActions actions = new saveAndLoadActions(sp.getFlowDiagramModel(),null);
+		SaveAndLoadActions actions = new SaveAndLoadActions(mainFrame);
 		this.openButton = new JButton("Open");
 		this.saveButton = new JButton("Save");
 		this.openButton.addActionListener(actions.getLoadActionListener());
@@ -94,10 +98,16 @@ public class FlowDiagramToolBar extends JToolBar{
 	}
 	
 	/** Getters and Setters **/
-	public ScrollablePanelForFD getScrollablePanel() {
-		return this.scrollablePanel;
+	public JLabel getZoomRatioLabel() {
+		return this.zoomRatioLabel;
 	}
-	public void setScrollablePanel(ScrollablePanelForFD sc) {
-		this.scrollablePanel = sc;
+	public void setUndoManager(UndoManager undo) { 
+		this.undoManager = undo;
+	/*	this.undoButton.removeActionListener(this.undoButton.getActionListeners()[0]);
+		this.redoButton.removeActionListener(this.redoButton.getActionListeners()[0]);
+		undoButton.addActionListener(e-> undoManager.undo());
+		redoButton.addActionListener(e-> undoManager.redo()); */
+		this.undoManager.addPropertyChangeListener(undoRedoListener);
+		this.updateUndoRedoButtons();
 	}
 }
