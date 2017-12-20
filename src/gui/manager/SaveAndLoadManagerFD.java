@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -26,6 +27,10 @@ public abstract class SaveAndLoadManagerFD {
 	
 	public static void saveTextFileFromString(String text, String pathAndFileName) {
 		// Write primitives to an output file
+		//Testing
+		System.out.println("Before we save the input text is : ");
+		System.out.println("    " + text);
+		
 		try (DataOutputStream out = new DataOutputStream( new BufferedOutputStream (new FileOutputStream(pathAndFileName)))){
 			out.writeChars(text);
 			out.flush();
@@ -46,38 +51,75 @@ public abstract class SaveAndLoadManagerFD {
 	// fdModel and fdInfo will hold the data read in from the zipFilePath.
 	public static void loadFlowDiagramFromZippedFile(JSONObject fdModel,JSONObject fdInfo,String zipFilePath) {
 		File f = new File(zipFilePath);
-
+		
 		try(ZipInputStream in = new ZipInputStream(new FileInputStream(f)) ) {
 			ZipEntry currentEntry;
 			
 			while( (currentEntry = in.getNextEntry()) != null ) {
 				//System.out.println(currentEntry.getName().toString());
 				
+				//Testing
+				//File testFile = new File(zipFilePath + "" + currentEntry.getName().toString());
+				System.out.println(zipFilePath + "" + currentEntry.getName().toString());
+				System.out.print("    ");
+				//System.out.println("Entry length = " + testFile.length());
+				
 				int begin = 0;
 				int end = 4;
 				
 				if(currentEntry.getName().substring(begin, end).equals("Func")) continue;
                 
-				byte[] buffer = new byte[2048];
+				byte[] buffer = new byte[5096];
+				//byte[] buffer = new byte[1024];
 				int len;
 				String temp = "";
-				while ((len = in.read(buffer)) > 0){
+
+				//Testing
+				//System.out.println(temp);
+				
+				
+				while ((len = in.read(buffer,0,buffer.length)) != -1){
 					ByteArrayInputStream byteIn = new ByteArrayInputStream(buffer);
 					DataInputStream dataIn = new DataInputStream(byteIn);
 					
 					
-					for (int i = 0; i < len; i++) {
-						if(dataIn.available() > 1) {
-							temp = temp + dataIn.readChar();
-						}
+					for (int i = 0; i < len/2; i++) {
+						char myChar = dataIn.readChar();
+						temp = temp + myChar;
+						System.out.print(myChar);
+						
 					}
+					//Testing
+					System.out.println();
+					System.out.println("len = " + len);
+                    System.out.println("buffer.length = " + buffer.length);
 					
-					//System.out.println("len = " + len);
-                    //System.out.println("buffer.length = " + buffer.length);
-					//System.out.println((char)buffer[0]);
+					dataIn.close();
                    
 				}
 				
+				//Version 2
+			/*	byte in1,in2;
+				while ( (in1 = in.read()) != -1 && (in2 = in.read()) != -1 ) ){
+					ByteArrayInputStream byteIn = new ByteArrayInputStream(buffer);
+					DataInputStream dataIn = new DataInputStream(byteIn);
+					
+					
+					for (int i = 0; i < len/2; i++) {
+						char myChar = dataIn.readChar();
+						temp = temp + myChar;
+						System.out.print(myChar);
+						
+					}
+					//Testing
+					System.out.println();
+					System.out.println("len = " + len);
+                    System.out.println("buffer.length = " + buffer.length);
+					
+					dataIn.close();
+                   
+				}
+				*/
 				if(currentEntry.getName().contains("info")) {
 					// Clone JSONObject
 					JSONObject tempModel = new JSONObject(temp);
@@ -87,6 +129,10 @@ public abstract class SaveAndLoadManagerFD {
 					
 				}else {
 					// Clone JSONObject
+					
+					//Testing
+					System.out.print("\n    " + temp);
+					
 					JSONObject tempModel = new JSONObject(temp);
 					for(String tempKey : tempModel.keySet()) {
 						fdModel.put( tempKey, tempModel.get(tempKey) );
@@ -97,6 +143,9 @@ public abstract class SaveAndLoadManagerFD {
 				//System.out.println(currentEntry.getName().contains("info"));
 				//System.out.println(fdModel.toString(10));
                 //System.out.println("Length of the string read in : " + temp.length());
+				System.out.println("");
+				
+				in.closeEntry();
 			}
 			
 		} catch (IOException ex) {
@@ -146,7 +195,7 @@ public abstract class SaveAndLoadManagerFD {
 	
 	public static void saveFlowDiagramIntoZippedFile(JSONObject fdModel, JSONObject fdInfo, String zipFilePath) {
 		String[] textFilePath = {"FlowDiagram.json", "FlowDiagram-info.json"};
-		String[] textFilePathInZip = {"/FlowDiagram/" + textFilePath[0], "/FlowDiagram/" + textFilePath[1]};
+		String[] textFilePathInZip = {"FlowDiagram/" + textFilePath[0], "FlowDiagram/" + textFilePath[1]};
 		SaveAndLoadManagerFD.saveTextFileFromString(fdModel.toString(), textFilePath[0]);
 		SaveAndLoadManagerFD.saveTextFileFromString(fdInfo.toString(), textFilePath[1]);
 		SaveAndLoadManagerFD.copyTextFilesIntoZippedFile(textFilePath, textFilePathInZip, zipFilePath);

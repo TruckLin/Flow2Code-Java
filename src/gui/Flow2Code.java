@@ -203,7 +203,10 @@ public class Flow2Code extends JFrame{
 		 // Set a common UndoManager for all Blocks.
 	    this.blockFlowDiagram.setUndoManager(undoManager);
 	    // Set a common NameCounterManager for all Blocks.
+	    System.out.println("Before exclusion : " + nameManager.getCurrentCount());
 	    this.blockFlowDiagram.setNameCounterManager(nameManager);
+	    nameManager.excludeExistingNames(this.FlowDiagramInfo);
+	    System.out.println("After exclusion : " + nameManager.getCurrentCount());
 	    // Attach various listeners for blocks
 	    this.blockFlowDiagram.addVariousMouseListeners();
 	}

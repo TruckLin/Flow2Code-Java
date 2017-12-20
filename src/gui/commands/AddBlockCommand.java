@@ -56,6 +56,13 @@ public class AddBlockCommand implements Command {
 		this.sourceBlock = line.getSource();
 		this.terminalBlock = line.getTerminal();
 		
+		this.emptyBlock.zoom(this.parentBlock.getCurrentZoomRatio());
+	
+		/*this.emptyBlock.setCurrentZoomRatio(this.parentBlock.getCurrentZoomRatio());
+		int width = (int)Math.round(this.emptyBlock.getWidth()*this.emptyBlock.getCurrentZoomRatio());
+		int height = (int)Math.round(this.emptyBlock.getHeight()*this.emptyBlock.getCurrentZoomRatio());
+		this.emptyBlock.setBounds(0,0,width,height);*/
+		
 		/** ================================= put emptyModel at the right place. =====================================**/
 		CommandUtilityFunctions.addJSONObjectToParentModel(parentModel, emptyBlock.getModel(),
 												sourceBlock.getModel(), terminalBlock.getModel(), parentBlock, this.line);

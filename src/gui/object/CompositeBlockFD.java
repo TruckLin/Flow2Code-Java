@@ -231,6 +231,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 		ans.put(this.getModel().getString("Name"), loc);
 		
 		for (Component comp : this.getComponents()) {
+			if( !(comp instanceof BlockFD) || ((BlockFD)comp).getModel() == null) continue;
 			JSONObject tempInfo = ((BlockFD)comp).getGraphicalInfo();
 			for(String key : tempInfo.keySet()) {
 				ans.put(key, tempInfo.get(key));

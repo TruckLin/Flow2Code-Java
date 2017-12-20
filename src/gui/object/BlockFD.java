@@ -27,7 +27,7 @@ public abstract class BlockFD extends JPanel{
 	protected UndoManager undoManager;
 	protected NameCounterManager nameManager;
 	
-	protected double currentZoomRatio = 1;
+	protected double currentZoomRatio;
 	
 	protected JLabel blockLabel = new JLabel("");
 	
@@ -42,6 +42,8 @@ public abstract class BlockFD extends JPanel{
 		this.setOpaque(false);
 		
 		this.addPropertyChangeListener(updatePortsListener);
+		
+		this.currentZoomRatio = 1;
 		
 	}
 	
@@ -104,7 +106,7 @@ public abstract class BlockFD extends JPanel{
 	public double getCurrentZoomRatio() {
 		return this.currentZoomRatio;
 	}
-	protected void setCurrentZoomRatio(double zr) {
+	public void setCurrentZoomRatio(double zr) {
 		this.currentZoomRatio = zr;
 	}
 	
@@ -220,7 +222,7 @@ public abstract class BlockFD extends JPanel{
 		this.setCurrentZoomRatio(newRatio);
 	}
 	
-	protected void zoomLabel(double newRatio) {
+	public void zoomLabel(double newRatio) {
 		if(!blockLabel.getText().equals("")) {
 			Font myFont = this.blockLabel.getFont();
 			this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
