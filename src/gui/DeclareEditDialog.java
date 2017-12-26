@@ -14,12 +14,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumn;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import gui.commands.EditCommand;
+import gui.custom.button.AddButton;
+import gui.custom.button.DeleteButton;
 import gui.manager.UndoManager;
 import gui.object.BlockDECLARE;
 import gui.object.BlockIF;
@@ -35,13 +38,22 @@ public class DeclareEditDialog extends BlockEditDialog{
 	
 	// East of editing panel
 	private JPanel eastButtonPanel = new JPanel();
-	private JButton addNewVariableBtn = new JButton("Add");
-	private JButton removeVariablesBtn = new JButton("remove");
+	private AddButton addButton;
+	private DeleteButton deleteButton;
 	
 	public DeclareEditDialog(UndoManager undoManager ,BlockDECLARE blockDECLARE) {
 		super(undoManager);
 		this.blockDECLARE = blockDECLARE;
 		this.buildEditDialog();
+		
+		this.variableTable.getSelectionModel().addListSelectionListener(e -> {
+			ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+			if (lsm.isSelectionEmpty()) {
+				deleteButton.setVisible(false);
+			}else {
+				deleteButton.setVisible(true);
+			}
+		});
 	}
 
 	@Override
@@ -78,14 +90,22 @@ public class DeclareEditDialog extends BlockEditDialog{
 		editingPanel.add( new JScrollPane(this.variableTable), BorderLayout.CENTER);
 		
 		// East button panel
+		double time = 100; // in millisecond.
+		int w = 50;
+		int h = 50;
+		this.addButton = new AddButton(w,h,time);
+		this.deleteButton = new DeleteButton(w,h,time);
 		this.eastButtonPanel.setLayout(new GridLayout(2,1));
-		this.removeVariablesBtn.addActionListener(e -> {
+		this.deleteButton.setMyActionListener(e -> {
 			int[] selectedRows = this.variableTable.getSelectedRows();
 			this.myTableModel.removeVariables(selectedRows);
 		});
-		this.addNewVariableBtn.addActionListener(e -> this.myTableModel.addNewVariable());
-		this.eastButtonPanel.add(this.removeVariablesBtn);
-		this.eastButtonPanel.add(this.addNewVariableBtn);
+		this.addButton.setMyActionListener(e -> this.myTableModel.addNewVariable());
+		
+		
+		this.eastButtonPanel.add(deleteButton);
+		deleteButton.setVisible(false);
+		this.eastButtonPanel.add(addButton);
 		
 		editingPanel.add(eastButtonPanel, BorderLayout.EAST);
 	}

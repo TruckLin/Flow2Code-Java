@@ -191,8 +191,6 @@ public class Flow2Code extends JFrame{
 	    updateBlockFunctions();
 	    updateScrollablePanelForFD();
 	    updateFlowDiagramToolBar();
-	    
-	    
 	}
 	
 	private void updateMenus() {}

@@ -60,8 +60,8 @@ public abstract class SaveAndLoadManagerFD {
 				
 				//Testing
 				//File testFile = new File(zipFilePath + "" + currentEntry.getName().toString());
-				System.out.println(zipFilePath + "" + currentEntry.getName().toString());
-				System.out.print("    ");
+				//System.out.println(zipFilePath + "" + currentEntry.getName().toString());
+				//System.out.print("    ");
 				//System.out.println("Entry length = " + testFile.length());
 				
 				int begin = 0;
@@ -90,9 +90,9 @@ public abstract class SaveAndLoadManagerFD {
 						
 					}
 					//Testing
-					System.out.println();
-					System.out.println("len = " + len);
-                    System.out.println("buffer.length = " + buffer.length);
+					//System.out.println();
+					//System.out.println("len = " + len);
+                    //System.out.println("buffer.length = " + buffer.length);
 					
 					dataIn.close();
                    
@@ -131,7 +131,7 @@ public abstract class SaveAndLoadManagerFD {
 					// Clone JSONObject
 					
 					//Testing
-					System.out.print("\n    " + temp);
+					//System.out.print("\n    " + temp);
 					
 					JSONObject tempModel = new JSONObject(temp);
 					for(String tempKey : tempModel.keySet()) {
@@ -143,7 +143,7 @@ public abstract class SaveAndLoadManagerFD {
 				//System.out.println(currentEntry.getName().contains("info"));
 				//System.out.println(fdModel.toString(10));
                 //System.out.println("Length of the string read in : " + temp.length());
-				System.out.println("");
+				//System.out.println("");
 				
 				in.closeEntry();
 			}
