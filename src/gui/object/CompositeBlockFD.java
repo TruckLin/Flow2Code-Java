@@ -44,7 +44,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 		
 		// Temporary
 		this.setOpaque(false);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	//	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 	}
 	/** Getters and Setters **/

@@ -28,8 +28,8 @@ public abstract class SaveAndLoadManagerFD {
 	public static void saveTextFileFromString(String text, String pathAndFileName) {
 		// Write primitives to an output file
 		//Testing
-		System.out.println("Before we save the input text is : ");
-		System.out.println("    " + text);
+		//System.out.println("Before we save the input text is : ");
+		//System.out.println("    " + text);
 		
 		try (DataOutputStream out = new DataOutputStream( new BufferedOutputStream (new FileOutputStream(pathAndFileName)))){
 			out.writeChars(text);
@@ -86,7 +86,7 @@ public abstract class SaveAndLoadManagerFD {
 					for (int i = 0; i < len/2; i++) {
 						char myChar = dataIn.readChar();
 						temp = temp + myChar;
-						System.out.print(myChar);
+						//System.out.print(myChar);
 						
 					}
 					//Testing

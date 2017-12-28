@@ -102,12 +102,14 @@ public class Flow2Code extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Output-info.json");
 //	    this.FlowDiagramModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Empty.json");
 //	    this.FlowDiagramInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Empty-info.json");
-
-	    ModelGenerator modelGenerator = new ModelGenerator(nameManager);
-	  
+	    SaveAndLoadManagerFD.loadFlowDiagramFromZippedFile(this.FlowDiagramModel, this.FlowDiagramInfo, 
+	    																			".\\assets\\Demo-empty.foo");
+	    
+	    //ModelGenerator modelGenerator = new ModelGenerator(nameManager);
+	    
 	    BlockGenerator blockGenerator = new BlockGenerator();
-	    this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
-	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, null);
+	    //this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
+	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, this.FlowDiagramInfo);
 	    this.blockFlowDiagram.setAppropriateBounds();
 	    //Testing
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
@@ -135,7 +137,7 @@ public class Flow2Code extends JFrame{
 	    scrollPane.setViewport(myViewport);
 	    
 	    //Testing
-	    myViewport.setBackground(Color.yellow);
+	    myViewport.setBackground(Color.white);
 	    
 //	    myViewport.setExtentSize(new Dimension(50,50));
 //		System.out.println(myViewport);

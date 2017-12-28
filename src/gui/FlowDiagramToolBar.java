@@ -1,8 +1,10 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
@@ -14,16 +16,25 @@ public class FlowDiagramToolBar extends JToolBar{
 	private Flow2Code mainFrame;
 	
 	private UndoManager undoManager;
+	
+	private int iconWidth = 25;
+	private int iconHeight = 25;
 	private JButton undoButton;
+	private ImageIcon undoIcon;
 	private JButton redoButton;
+	private ImageIcon redoIcon;
 	
 	private ScrollablePanelForFD scrollablePanel;
 	private JButton zoomInButton;
+	private ImageIcon zoomInIcon;
 	private JButton zoomOutButton;
+	private ImageIcon zoomOutIcon;
 	private JLabel zoomRatioLabel;
 	
 	private JButton openButton;
+	private ImageIcon openIcon;
 	private JButton saveButton;
+	private ImageIcon saveIcon;
 	
 	private PropertyChangeListener undoRedoListener = e -> updateUndoRedoButtons();
 	
@@ -33,8 +44,29 @@ public class FlowDiagramToolBar extends JToolBar{
 		
 		this.undoManager = mainFrame.getUndoManager();
 		
-		undoButton = new JButton("Undo");
-		redoButton = new JButton("Redo");
+		SaveAndLoadActions actions = new SaveAndLoadActions(mainFrame);
+		openIcon = new ImageIcon("icon/load.png");
+		openIcon = 
+			new ImageIcon(openIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		this.openButton = new JButton(openIcon);
+		saveIcon = new ImageIcon("icon/save.png");
+		saveIcon = 
+			new ImageIcon(saveIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		this.saveButton = new JButton(saveIcon);
+		this.openButton.addActionListener(actions.getLoadActionListener());
+		this.saveButton.addActionListener(actions.getSaveActionListener());
+		this.add(this.openButton);
+		this.add(this.saveButton);
+		
+		undoIcon = new ImageIcon("icon/Undo_Arrow.png");
+		undoIcon = 
+			new ImageIcon(undoIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		undoButton = new JButton(undoIcon);
+		
+		redoIcon = new ImageIcon("icon/Redo_Arrow.png");
+		redoIcon = 
+			new ImageIcon(redoIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		redoButton = new JButton(redoIcon);
 		this.undoManager.addPropertyChangeListener(undoRedoListener);
 		
 		undoButton.addActionListener(e-> undoManager.undo());
@@ -47,36 +79,34 @@ public class FlowDiagramToolBar extends JToolBar{
 		
 		// Zoom in and Zoom out button
 		this.scrollablePanel = mainFrame.getScrollablePanelForFD();
-		zoomInButton = new JButton("ZoomIn");
-		zoomOutButton = new JButton("ZoomOut");
+		zoomOutIcon = new ImageIcon("icon/zoom-out.png");
+		zoomOutIcon = 
+			new ImageIcon(zoomOutIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		zoomOutButton = new JButton(zoomOutIcon);
+		zoomInIcon = new ImageIcon("icon/zoom-in.png");
+		zoomInIcon = 
+			new ImageIcon(zoomInIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		zoomInButton = new JButton(zoomInIcon);
 		
 		double zoomGap = 0.25;
 		zoomInButton.addActionListener(e -> {if(scrollablePanel.getCurrentZoomRatio() >= 5) {
-											 	zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio() + "");
+											 	zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio()*100 + "%");
 											 }else {
 												 scrollablePanel.zoom(scrollablePanel.getCurrentZoomRatio() + zoomGap);
-												 zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio() + "");
+												 zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio()*100 + "%");
 											 }
 											});
 		zoomOutButton.addActionListener(e -> {if(scrollablePanel.getCurrentZoomRatio() <= 0.5) {
-												 zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio() + "");
+												 zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio()*100 + "%");
 		 									  }else {
 		 										 scrollablePanel.zoom(scrollablePanel.getCurrentZoomRatio() - zoomGap);
-												 zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio() + "");
+												 zoomRatioLabel.setText(scrollablePanel.getCurrentZoomRatio()*100 + "%");
 		 									  }
 											  });
-		zoomRatioLabel = new JLabel(scrollablePanel.getCurrentZoomRatio() + "");
-		this.add(zoomInButton);
-		this.add(zoomRatioLabel);
+		zoomRatioLabel = new JLabel(scrollablePanel.getCurrentZoomRatio()*100 + "%");
 		this.add(zoomOutButton);
-		
-		SaveAndLoadActions actions = new SaveAndLoadActions(mainFrame);
-		this.openButton = new JButton("Open");
-		this.saveButton = new JButton("Save");
-		this.openButton.addActionListener(actions.getLoadActionListener());
-		this.saveButton.addActionListener(actions.getSaveActionListener());
-		this.add(this.openButton);
-		this.add(this.saveButton);
+		this.add(zoomRatioLabel);
+		this.add(zoomInButton);
 		
 	}
 	
