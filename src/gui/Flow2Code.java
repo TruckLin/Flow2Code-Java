@@ -13,6 +13,7 @@ import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
 import gui.object.CompositeBlockFD;
 import strategy.generator.BlockGenerator;
+import strategy.generator.ModelGenerator;
 import gui.manager.SaveAndLoadManagerFD;
 
 public class Flow2Code extends JFrame{
@@ -99,12 +100,14 @@ public class Flow2Code extends JFrame{
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Input-info.json");
 //	    JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Output.json");
 //	    JSONObject myInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Output-info.json");
-	    this.FlowDiagramModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Empty.json");
-	    this.FlowDiagramInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Empty-info.json");
+//	    this.FlowDiagramModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON(".\\assets\\Demo-Empty.json");
+//	    this.FlowDiagramInfo = SaveAndLoadManagerFD.loadGraphicalInfoFromJSON(".\\assets\\Demo-Empty-info.json");
 
-	    
+	    ModelGenerator modelGenerator = new ModelGenerator(nameManager);
+	  
 	    BlockGenerator blockGenerator = new BlockGenerator();
-	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, this.FlowDiagramInfo);
+	    this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
+	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, null);
 	    this.blockFlowDiagram.setAppropriateBounds();
 	    //Testing
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());

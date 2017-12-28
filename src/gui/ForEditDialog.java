@@ -1,12 +1,14 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -93,44 +95,84 @@ public class ForEditDialog extends BlockEditDialog {
 		editingPanel.setLayout(new BorderLayout());
 		
 		// North panel
-		JPanel northPanel = new JPanel(new GridLayout(3,4));
+		JPanel northPanel = new JPanel();
+		GroupLayout layout = new GroupLayout(northPanel);
+		northPanel.setLayout(layout);
 		
-		Dimension tempDim = new Dimension(100,25);
+		layout.setAutoCreateGaps(true);
+	    layout.setAutoCreateContainerGaps(true);
+	    
+	    // Content-pane adds components
+	    Dimension tempDim = new Dimension(100,25);
 		variableTF.setPreferredSize(tempDim);
 		variableTF.addCaretListener(listener);
 		variableTF.setText(this.blockFOR.getVariable());
-		northPanel.add(this.variableLabel);
-		northPanel.add(this.variableTF);
 		
 		startValueTF.setPreferredSize(tempDim);
 		startValueTF.addCaretListener(listener);
 		startValueTF.setText(this.blockFOR.getStartValue());
-		northPanel.add(this.startValueLabel);
-		northPanel.add(this.startValueTF);
-		
+
 		endValueTF.setPreferredSize(tempDim);
 		endValueTF.addCaretListener(listener);
 		endValueTF.setText(this.blockFOR.getEndValue());
-		northPanel.add(this.endValueLabel);
-		northPanel.add(this.endValueTF);
-		
+
 		String[] directionModel = {"Increasing", "Decreasing"};
 		directionCB = new JComboBox<String>(directionModel);
-		directionCB.setPreferredSize(tempDim);
+		//directionCB.setPreferredSize(tempDim);
 		directionCB.addActionListener(comboBoxListener);
 		if(this.blockFOR.getDirection().equals("Increasing")) {
 			directionCB.setSelectedItem("Increasing");
 		}else {
 			directionCB.setSelectedItem("Decreasing");
 		}
-		northPanel.add(this.directionLabel);
-		northPanel.add(this.directionCB);
+		directionCB.setBackground(Color.WHITE);
+		//directionCB.setForeground(Color.BLUE);
 		
-		stepTF.setPreferredSize(tempDim);
+		//stepTF.setPreferredSize(tempDim);
 		stepTF.addCaretListener(listener);
 		stepTF.setText(this.blockFOR.getStepBy());
-		northPanel.add(this.stepLabel);
-		northPanel.add(this.stepTF);
+		
+	    layout.setHorizontalGroup(
+	        layout.createSequentialGroup()
+	        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,false)
+	        		.addComponent(this.variableLabel)
+	        		.addComponent(this.startValueLabel)
+	        		.addComponent(this.directionLabel)
+	        )
+		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,false)
+		    		.addComponent(this.variableTF)
+	    		  	.addComponent(this.startValueTF)
+	    		  	.addComponent(this.directionCB)
+		    )
+		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,false)
+		    		.addComponent(this.endValueLabel)
+		    		.addComponent(this.stepLabel)
+			)
+		    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,false)
+		    		.addComponent(this.endValueTF)
+		    		.addComponent(this.stepTF)
+			)
+	    );
+		layout.setVerticalGroup(
+			layout.createSequentialGroup()
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					.addComponent(this.variableLabel)
+					.addComponent(this.variableTF)
+		    )
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					.addComponent(this.startValueLabel)
+					.addComponent(this.startValueTF)
+					.addComponent(this.endValueLabel)
+					.addComponent(this.endValueTF)
+		    )
+			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					.addComponent(this.directionLabel)
+					.addComponent(this.directionCB)
+					.addComponent(this.stepLabel)
+					.addComponent(this.stepTF)
+		    )
+		);
+		
 		
 		editingPanel.add(northPanel, BorderLayout.NORTH);
 		

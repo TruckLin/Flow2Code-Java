@@ -36,7 +36,7 @@ public abstract class BlockEditDialog extends JDialog{
 	protected JLabel advancedDialog = new JLabel();
 	
 	// buttons and button panel.
-	protected JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+	protected JPanel buttonPanel = new JPanel(new FlowLayout());
 	protected JButton btnConfirm = new JButton("Ok");
 	protected JButton btnCancel = new JButton("Cancel");
 
@@ -59,11 +59,15 @@ public abstract class BlockEditDialog extends JDialog{
 		int iconHeight = 60;
 		int multiple = 4;
 		icon.setBounds(0,0,iconWidth,iconHeight);
-		icon.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
+		//icon.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
 		this.drawIcon();
 		northPanel.add(icon);
+		
+		//Testing
+		northPanel.setBackground(new Color(0,162,232));
+		
 		helpDialog.setBounds(iconWidth,0,iconWidth * (multiple-1),iconHeight);
-		helpDialog.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
+		//helpDialog.setBorder(BorderFactory.createDashedBorder(Color.BLACK));
 		this.writeHelpDialog();
 		northPanel.add(helpDialog);
 		northPanel.setPreferredSize(new Dimension(iconWidth * multiple, iconHeight));
@@ -71,13 +75,13 @@ public abstract class BlockEditDialog extends JDialog{
 		
 		// Center panel
 		this.constructEditingPanel();
+		this.editingPanel.setBackground(new Color(242,242,242));
 		
 		// Button panel
 		btnConfirm.addActionListener(e -> this.EditAction());
 		btnCancel.addActionListener(e -> this.dispose());
 		buttonPanel.add(btnConfirm);
 		buttonPanel.add(btnCancel);
-		((GridLayout)buttonPanel.getLayout()).setHgap(5);
 		
 		
 		// Advanced Dialog
