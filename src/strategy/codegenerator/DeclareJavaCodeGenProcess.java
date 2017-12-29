@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
+	
 	public DeclareJavaCodeGenProcess(JavaCodeGenerator codeGenerator) {
 		this.codeGenerator = codeGenerator;
 	}

@@ -5,29 +5,30 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
-public class SyntaxCheckerJava {
+import gui.object.CompositeBlockFD;
+
+public class JavaSyntaxChecker {
 	
+	private CompositeBlockFD compositeBlock;
 	private JSONObject modelFD;
 	
-	private ArrayList<String> warnings = new ArrayList<String>();
+	private VariableBranch variableBranch;
+	private ArrayList<String> warningMessages = new ArrayList<String>();
 	
 	
-	public SyntaxCheckerJava(JSONObject model) {
-		this.modelFD = model;
-		
-		for(int x = 0; x < 10; x++) {
-			int y = 0;
-		}
+	public JavaSyntaxChecker(CompositeBlockFD composite) {
+		this.compositeBlock = composite;
+		this.modelFD = composite.getModel();
+		this.variableBranch = new VariableBranch();
 	}
 	
-	
-	public void assignScope() {
-		int scope = 0;
-		
-		
+	/** Getters and Setters **/
+	public VariableBranch getVriableBranch() {
+		return this.variableBranch;
 	}
-	
-	
+	public ArrayList<String> getWarningMessages(){
+		return this.warningMessages;
+	}
 	
 	//Some static methods that help with syntax check before code generation.
 	

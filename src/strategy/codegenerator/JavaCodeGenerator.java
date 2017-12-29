@@ -4,12 +4,23 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import gui.manager.SaveAndLoadManagerFD;
+import gui.object.CompositeBlockFD;
+import strategy.generator.BlockGenerator;
 
 
 
 public class JavaCodeGenerator extends CodeGenerator {
 	
-	public JavaCodeGenerator() {
+	private CompositeBlockFD compositeBlock;
+	
+	private JavaSyntaxChecker syntaxChecker;
+	
+	
+	public JavaCodeGenerator(CompositeBlockFD composite) {
+		
+		this.compositeBlock = composite;
+		this.syntaxChecker = new JavaSyntaxChecker(composite);
+		
 		register("FlowDiagram", new FlowDiagramJavaCodeGenProcess(this));
 		register("Start", (model, indent) -> {return "";}); // done
 		register("End", (model, indent) -> {return "";}); // done
@@ -42,13 +53,29 @@ public class JavaCodeGenerator extends CodeGenerator {
 		
 	}
 	
+	/** Getters and Setters **/
+	public JavaSyntaxChecker getSytaxChecker() {
+		return this.syntaxChecker;
+	}
+	
+	public CompositeBlockFD getCompositeBlockFD() {
+		return this.compositeBlock;
+	}
 	
 	public static void main(String[] args) {
 		// For testing purpose.
-		//JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/Demo-Declare.json");
-		JSONObject myModel = SaveAndLoadManagerFD.loadFlowDiagramFromJSON("/FlowDiagramDemo.json");
-		JavaCodeGenerator codeGenerator = new JavaCodeGenerator();
-		String code = codeGenerator.generate(myModel, "");
+		JSONObject FlowDiagramModel = new JSONObject();
+		JSONObject FlowDiagramInfo = new JSONObject();
+		SaveAndLoadManagerFD.loadFlowDiagramFromZippedFile(FlowDiagramModel, FlowDiagramInfo, 
+				".\\assets\\Demo-DeclareScope.foo");
+		
+		CompositeBlockFD blockFlowDiagram;
+		BlockGenerator blockGenerator = new BlockGenerator();
+	    //this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
+	    blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(FlowDiagramModel, FlowDiagramInfo);
+	    
+		JavaCodeGenerator codeGenerator = new JavaCodeGenerator(blockFlowDiagram);
+		String code = codeGenerator.generate(FlowDiagramModel, "");
 		System.out.println(code);
 		
 		
