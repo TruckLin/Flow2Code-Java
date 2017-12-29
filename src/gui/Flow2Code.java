@@ -35,6 +35,8 @@ public class Flow2Code extends JFrame{
 	private ScrollablePanelForFD scrollablePanelForFD; 
 	private FlowDiagramToolBar fdToolBar;
 	
+	private JTextArea codeView;
+	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu optionMenu;
@@ -53,7 +55,7 @@ public class Flow2Code extends JFrame{
 	public NameCounterManager getNameCounterManager() {return this.nameManager;}
 	public void setNameCounterManager(NameCounterManager nameManager) {this.nameManager = nameManager;}
 	public ScrollablePanelForFD getScrollablePanelForFD() {return this.scrollablePanelForFD;}
-	
+	public JTextArea getCodeTextArea() {return this.codeView;}
 	
 	public Flow2Code() {
 		// Retrieve the top-level content-pane from JFrame
@@ -153,10 +155,10 @@ public class Flow2Code extends JFrame{
 	    
 	    /** Right Panel Construction **/
 	    JPanel rightPanel = new JPanel(new BorderLayout());
-	    JTextArea codeView = new JTextArea();
+	    codeView = new JTextArea();
 	    codeView.setText(this.FlowDiagramModel.toString(10));	    
-	    TextFetcher txtFetcher = new TextFetcher(this.FlowDiagramModel,codeView);
-	    txtFetcher.start();
+	    //TextFetcher txtFetcher = new TextFetcher(this.FlowDiagramModel,codeView);
+	    //txtFetcher.start();
 	    codeView.setEditable(false);
 	    JScrollPane textScrollPane = new JScrollPane(codeView);
 	    rightPanel.add(textScrollPane, BorderLayout.CENTER);

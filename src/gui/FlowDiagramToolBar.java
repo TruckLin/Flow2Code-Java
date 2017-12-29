@@ -11,6 +11,7 @@ import javax.swing.JToolBar;
 
 import gui.action.SaveAndLoadActions;
 import gui.manager.UndoManager;
+import strategy.codegenerator.JavaCodeGenerator;
 
 public class FlowDiagramToolBar extends JToolBar{
 	private Flow2Code mainFrame;
@@ -35,6 +36,9 @@ public class FlowDiagramToolBar extends JToolBar{
 	private ImageIcon openIcon;
 	private JButton saveButton;
 	private ImageIcon saveIcon;
+	
+	private JButton codeGenButton;
+	private ImageIcon codeGenIcon;
 	
 	private PropertyChangeListener undoRedoListener = e -> updateUndoRedoButtons();
 	
@@ -107,6 +111,14 @@ public class FlowDiagramToolBar extends JToolBar{
 		this.add(zoomOutButton);
 		this.add(zoomRatioLabel);
 		this.add(zoomInButton);
+		
+		codeGenButton = new JButton("CodeGen");
+		codeGenButton.addActionListener(e -> {
+			JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
+			String code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(), "");
+			this.mainFrame.getCodeTextArea().setText(code);
+		});
+		this.add(codeGenButton);
 		
 	}
 	
