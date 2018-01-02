@@ -34,16 +34,19 @@ public class Flow2Code extends JFrame{
 	private UndoManager undoManager;
 	private NameCounterManager nameManager;
 	
+	// Left
 	private ScrollablePanelForFD scrollablePanelForFD; 
 	private FlowDiagramToolBar fdToolBar;
 	
+	// Right
 	private JTextArea codeView;
+	private JToolBar codeToolBar;
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu optionMenu;
 	
-	//I18N variables
+	//I18N fields
 	private String language = "en"; // default variable
     private String country = "US";
     private Locale currentLocale;
@@ -152,7 +155,7 @@ public class Flow2Code extends JFrame{
 	    // Attach various listeners for blocks
 	    this.blockFlowDiagram.addVariousMouseListeners();
 	    
-		/** JScrollPane Construction **/
+		/** FlowDiagram JScrollPane Construction **/
 	    this.scrollablePanelForFD = new ScrollablePanelForFD((BlockFlowDiagram) this.blockFlowDiagram);
 	    JViewport myViewport = new JViewport();
 	    myViewport.setView(this.scrollablePanelForFD);
@@ -177,12 +180,16 @@ public class Flow2Code extends JFrame{
 	    
 	    /** Right Panel Construction **/
 	    JPanel rightPanel = new JPanel(new BorderLayout());
+	    this.codeToolBar = new CodeViewToolBar(this);
 	    codeView = new JTextArea();
-	    codeView.setText(this.FlowDiagramModel.toString(10));	    
+	    codeView.setFont(new Font("Courier New", Font.PLAIN,15));
+	    codeView.setText(this.FlowDiagramModel.toString(10));
 	    //TextFetcher txtFetcher = new TextFetcher(this.FlowDiagramModel,codeView);
 	    //txtFetcher.start();
-	    codeView.setEditable(false);
+	    codeView.setEditable(true);
+	    codeView.setTabSize(4);
 	    JScrollPane textScrollPane = new JScrollPane(codeView);
+	    rightPanel.add(codeToolBar, BorderLayout.NORTH);
 	    rightPanel.add(textScrollPane, BorderLayout.CENTER);
 	    
 	    /** JSplitPane Construction**/

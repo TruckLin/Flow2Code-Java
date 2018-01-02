@@ -18,12 +18,7 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	JPopupMenu popup;
-	JMenuItem menuItem;
-	JLabel label;
-	JLabel label2;
 	
-	JDialog dialog;
 	public Main() {
 		// Retrieve the top-level content-pane from JFrame
 	    Container cp = getContentPane();
