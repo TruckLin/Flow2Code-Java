@@ -51,7 +51,6 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 			}
 		}
 		
-		
 		code = code + indent + "    " + "}\n";
 		code = code + indent + "}";
 		

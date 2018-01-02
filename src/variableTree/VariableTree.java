@@ -1,4 +1,4 @@
-package strategy.codegenerator;
+package variableTree;
 
 public abstract class VariableTree {
 

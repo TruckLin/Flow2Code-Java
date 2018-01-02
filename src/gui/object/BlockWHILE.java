@@ -1,14 +1,5 @@
 package gui.object;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-
 import org.json.JSONObject;
 
 import gui.BlockEditDialog;

@@ -51,7 +51,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 		this.setOpaque(false); // we should always see through this while panel.
 		
 		//Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.setBounds(0,0,100,100);
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,

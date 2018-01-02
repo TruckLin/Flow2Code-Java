@@ -1,12 +1,15 @@
 package testing;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Line2D;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 import gui.object.BlockEndLOOP;
 import gui.object.CompositeBlockFD;
+import gui.object.LineFD;
 
 public class Main extends JFrame implements MouseListener, ActionListener{
 
@@ -26,24 +29,25 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	    Container cp = getContentPane();
 	 
 	    // Content-pane sets layout
-	    cp.setLayout(null);
+	    cp.setLayout(new FlowLayout());
 	    
 	    // Allocate the GUI components
 	    // .....
-	    BlockEndLOOP endLoop = new BlockEndLOOP();
-	    endLoop.setBounds(50,50,25,25);
-	    
-	    cp.add(endLoop);
-	    endLoop.repaint();    
-	    // Content-pane adds components
-	    
-	    //Testing findWichSideFunction of CompositeBlockFD
-	    String boundString = "[ left = " + endLoop.getBounds().getMinX();
-	    boundString = boundString + ", right = " + endLoop.getBounds().getMaxX();
-	    boundString = boundString + ", top = " + endLoop.getBounds().getMinY();
-	    boundString = boundString + ", bottom = " + endLoop.getBounds().getMaxY() + "]";
-	    
-
+	    JPanel myPanel = new JPanel() {
+	    	@Override
+	    	public void paintComponent(Graphics g) {
+	    		super.paintComponent(g);
+	    		Graphics2D g2 = (Graphics2D)g;
+	    		
+	    		g2.drawLine(0, 0, 200, 200);
+	    	}
+	    };
+	    myPanel.setPreferredSize(new Dimension(200,200));
+	    System.out.println(myPanel.isOpaque());
+	    myPanel.setOpaque(false);
+	    myPanel.setBackground(new Color(255,0,0,50));
+	    myPanel.repaint();
+	    cp.add(myPanel);
 	    
 	    
 	    

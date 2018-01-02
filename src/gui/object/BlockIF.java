@@ -52,11 +52,16 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		//Set various default property
 		this.setSize(110,110);
 		this.setLayout(null);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		//UndoManager undoManager = new UndoManager();
 		//DemoMouseListener myListener = new DemoMouseListener(undoManager,this);
 		//this.addMouseMotionListener(myListener);
 		//this.addMouseListener(myListener);
+		
+		//Testing for transparent background.
+		//this.setOpaque(true);
+		//this.setBackground(Color.CYAN);
+		//this.setBackground(new Color(255,255,128));
 
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,

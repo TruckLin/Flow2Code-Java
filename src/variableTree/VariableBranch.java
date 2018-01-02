@@ -1,4 +1,4 @@
-package strategy.codegenerator;
+package variableTree;
 
 import java.util.ArrayList;
 
@@ -18,11 +18,26 @@ public class VariableBranch extends VariableTree{
 		this.list.add(var);
 	}
 	
-	public VariableLeaf getLatestVariable() {
+	// or perhaps you can say "last".
+	public VariableBranch getLatestVariableBranch() {
+		if(list.size() == 0) {
+			return this;
+		}
+		
 		VariableTree temp = list.get(list.size()-1);
 		
 		if(temp instanceof VariableBranch) {
-			return ((VariableBranch) temp).getLatestVariable();
+			return ((VariableBranch) temp).getLatestVariableBranch();
+		}else {
+			return this;
+		}
+	}
+	
+	public VariableLeaf getLatestVariableLeaf() {
+		VariableTree temp = list.get(list.size()-1);
+		
+		if(temp instanceof VariableBranch) {
+			return ((VariableBranch) temp).getLatestVariableLeaf();
 		}else {
 			return (VariableLeaf) temp;
 		}

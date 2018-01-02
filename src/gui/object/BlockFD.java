@@ -1,9 +1,7 @@
 package gui.object;
 
 import java.awt.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import javax.swing.*;
 
@@ -17,9 +15,7 @@ import gui.mouselistener.BlockRightClickListener;
 import gui.mouselistener.EndLoopDragListener;
 import gui.mouselistener.LoopDragListener;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 public abstract class BlockFD extends JPanel{
 	
@@ -33,6 +29,11 @@ public abstract class BlockFD extends JPanel{
 	
 	protected PropertyChangeListener updatePortsListener = e -> updatePorts();
 	
+	protected final int textSize = 20;
+	
+	//I18N
+	protected ResourceBundle languageBundle;
+	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
 		super();
@@ -44,6 +45,11 @@ public abstract class BlockFD extends JPanel{
 		this.addPropertyChangeListener(updatePortsListener);
 		
 		this.currentZoomRatio = 1;
+		
+		this.blockLabel.setFont(new Font("Courier New", Font.PLAIN, 
+									(int)Math.round(this.textSize*this.currentZoomRatio)));
+		this.adjustLabelSize();
+		this.adjustLabelLocation();
 		
 	}
 	
@@ -91,10 +97,33 @@ public abstract class BlockFD extends JPanel{
 			this.add(temp);
 		}
 	}
+	public ResourceBundle getLanguageBundle() {
+		return this.languageBundle;
+	}
+	public void setLanguageBundle(ResourceBundle languageBundle) {
+		//Testing
+		//System.out.println("In setLanguageBundle() : ");
+		//System.out.println("    Block Type : " + this.getModel().getString("Type"));
+		//System.out.println("    LanguageBundle.toString() = " + languageBundle.toString());
+		//System.out.println("    LanguageBundle.getString(\"Delete\") = " + languageBundle.getString("Delete"));
+		
+		this.languageBundle = languageBundle;
+		if(this instanceof CompositeBlockFD) {
+			for(Component comp : this.getComponents()) {
+				((BlockFD)comp).setLanguageBundle(languageBundle);
+			}
+		}
+		this.updateBlockContent();
+	}
 	/* Abstract method : updatePorts()
 	 * This should be implemented by all BlockFD, either do nothing, or update port location.
 	 */
 	protected abstract void updatePorts();
+	
+	/* Abstract method : generateVariableTree()
+	 * For each block, return its variable tree representation, it could be VariableLeaf or VariableBranch.
+	 * */
+	//public abstract VariableTree generateVariableTree();
 	
 	public abstract void setUndoManager(UndoManager undoManager);
 	
@@ -118,7 +147,6 @@ public abstract class BlockFD extends JPanel{
 	
 	/** Utility functions **/
 	public abstract void updateBlockContent() ;
-	
 	
 	public Point toContainerCoordinate(Point coordWRTblock) {
 		int x = (int)(this.getLocation().getX() + coordWRTblock.getX());
@@ -281,13 +309,15 @@ public abstract class BlockFD extends JPanel{
 			sizeShouldChange = true;
 		}
 		
-		//Testing
-		//System.out.println("sizeShouldChange = " + sizeShouldChange);
+		/** Mark it always true as supervisor requested.**/
+		sizeShouldChange = true;
+		newWidth = (int) labelDimension.getWidth();
+		newHeight = (int) labelDimension.getHeight();
 		
 		if(sizeShouldChange) {
 			this.setBounds(x,y,
 					newWidth + (int)Math.round(10*this.currentZoomRatio),
-					newHeight + (int)Math.round(5*this.currentZoomRatio));
+					newHeight + (int)Math.round(0*this.currentZoomRatio));
 		}
 	}
 	

@@ -33,7 +33,7 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	
 	
 	public void setAppropriateBounds() {
-		// This function set approriate size according to it's children.
+		// This function set appropsriate size according to it's children.
 		// Size that is just big enough to contain all the children.
 		super.setAppropriateBounds();
 		updatePorts();

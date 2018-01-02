@@ -92,7 +92,10 @@ public class AddBlockCommand implements Command {
 		//System.out.println(nameManager.getCurrentCount() + "");
 		
 		// attach listeners to emptyBlock
-		emptyBlock.addVariousMouseListeners();		
+		emptyBlock.addVariousMouseListeners();
+		
+		// set the languaeBundle
+		emptyBlock.setLanguageBundle(parentBlock.getLanguageBundle());
 		
 		//Testing
 		//System.out.println("AddBlockCommand is called.");

@@ -1,6 +1,7 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -25,8 +26,8 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 		this.setLayout(null);
 		
 		// setDefault bounds
-		this.setBounds(43,80,25,25);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBounds(18,80,14,14);
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.setOpaque(false);
 	}
 	
@@ -34,12 +35,15 @@ public class BlockEndIF extends BlockFD implements WithOutport{
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setColor(Color.yellow);
 		
         int x = (int)this.getLocation().getX();
         int y = (int)this.getLocation().getY();
         int width = this.getWidth();
         int height = this.getHeight();
+        
+        GradientPaint gradientGray = new GradientPaint(0,0,new Color(73,73,73),
+        													width, height,new Color(200,200,200));
+        g2.setPaint(gradientGray);
         
 		g2.fillOval(0, 0, width, height);
     }

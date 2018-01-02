@@ -1,4 +1,4 @@
-package strategy.codegenerator;
+package syntaxCheckers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import gui.object.CompositeBlockFD;
+import variableTree.VariableBranch;
 
 public class JavaSyntaxChecker {
 	

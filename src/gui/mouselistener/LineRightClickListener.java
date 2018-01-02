@@ -20,7 +20,7 @@ public class LineRightClickListener implements MouseListener, MouseMotionListene
 	
 	public LineRightClickListener(CompositeBlockFD compositeBlock) {
 		this.compositeBlock = compositeBlock;
-		this.lineList = ((CompositeBlockFD)compositeBlock).getLineList();
+		this.lineList = compositeBlock.getLineList();
 	}
 	
 	/** Getter and Setters **/

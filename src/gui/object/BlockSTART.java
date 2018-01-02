@@ -21,6 +21,7 @@ public class BlockSTART extends BlockFD implements WithOutport{
 		this.setBounds(0, 0, 100, 25);
 		
 		this.blockLabel.setText("Start");
+		this.adjustBlockSizeByLabel();
 		this.adjustLabelSize();
 		this.adjustLabelLocation();
 		this.add(blockLabel);

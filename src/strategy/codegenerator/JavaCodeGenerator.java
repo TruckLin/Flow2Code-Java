@@ -1,5 +1,7 @@
 package strategy.codegenerator;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,13 +15,10 @@ public class JavaCodeGenerator extends CodeGenerator {
 	
 	private CompositeBlockFD compositeBlock;
 	
-	private JavaSyntaxChecker syntaxChecker;
-	
 	
 	public JavaCodeGenerator(CompositeBlockFD composite) {
 		
 		this.compositeBlock = composite;
-		this.syntaxChecker = new JavaSyntaxChecker(composite);
 		
 		register("FlowDiagram", new FlowDiagramJavaCodeGenProcess(this));
 		register("Start", (model, indent) -> {return "";}); // done
@@ -54,10 +53,6 @@ public class JavaCodeGenerator extends CodeGenerator {
 	}
 	
 	/** Getters and Setters **/
-	public JavaSyntaxChecker getSytaxChecker() {
-		return this.syntaxChecker;
-	}
-	
 	public CompositeBlockFD getCompositeBlockFD() {
 		return this.compositeBlock;
 	}
@@ -77,7 +72,6 @@ public class JavaCodeGenerator extends CodeGenerator {
 		JavaCodeGenerator codeGenerator = new JavaCodeGenerator(blockFlowDiagram);
 		String code = codeGenerator.generate(FlowDiagramModel, "");
 		System.out.println(code);
-		
 		
 		//Testing
 		/*

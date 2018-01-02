@@ -2,6 +2,8 @@ package gui;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.*;
 
@@ -41,6 +43,12 @@ public class Flow2Code extends JFrame{
 	private JMenu fileMenu;
 	private JMenu optionMenu;
 	
+	//I18N variables
+	private String language = "en"; // default variable
+    private String country = "US";
+    private Locale currentLocale;
+    private ResourceBundle languageBundle;
+	
 	// private CodeViewToolBar cvToolBar;
 	
 	/** Getters and Setters **/
@@ -58,12 +66,22 @@ public class Flow2Code extends JFrame{
 	public JTextArea getCodeTextArea() {return this.codeView;}
 	
 	public Flow2Code() {
+		
+		// I18N construction
+		this.language = "ch";
+		this.country = "CH";
+		this.currentLocale = new Locale(language, country);
+		this.languageBundle = ResourceBundle.getBundle("LanguageBundle",currentLocale);
+		
+		//Testing
+		//System.out.println(languageBundle.getString("Delete"));
+		
 		// Retrieve the top-level content-pane from JFrame
 	    Container cp = getContentPane();
 	 
 	    // Content-pane sets layout
 	    cp.setLayout(new BorderLayout());
-	 
+	    
 	    // Allocate the GUI components
 	    // .....
 	    
@@ -113,6 +131,10 @@ public class Flow2Code extends JFrame{
 	    //this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
 	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, this.FlowDiagramInfo);
 	    this.blockFlowDiagram.setAppropriateBounds();
+	    
+	    //i18n
+	    this.blockFlowDiagram.setLanguageBundle(languageBundle);
+	    
 	    //Testing
 	    //System.out.println("isUndoAvailable():" + undoManager.isUndoAvailable());
 	    //ArrayList<LineFD> linelist = ((BlockFlowDiagram)flowDiagram).getLineList();
@@ -208,10 +230,11 @@ public class Flow2Code extends JFrame{
 		 // Set a common UndoManager for all Blocks.
 	    this.blockFlowDiagram.setUndoManager(undoManager);
 	    // Set a common NameCounterManager for all Blocks.
-	    System.out.println("Before exclusion : " + nameManager.getCurrentCount());
+	    //System.out.println("Before exclusion : " + nameManager.getCurrentCount());
 	    this.blockFlowDiagram.setNameCounterManager(nameManager);
 	    nameManager.excludeExistingNames(this.FlowDiagramInfo);
-	    System.out.println("After exclusion : " + nameManager.getCurrentCount());
+	    
+	    //System.out.println("After exclusion : " + nameManager.getCurrentCount());
 	    // Attach various listeners for blocks
 	    this.blockFlowDiagram.addVariousMouseListeners();
 	}
@@ -221,7 +244,7 @@ public class Flow2Code extends JFrame{
 	}
 	private void updateFlowDiagramToolBar() {
 		this.fdToolBar.setUndoManager(this.undoManager);
-		this.fdToolBar.getZoomRatioLabel().setText(this.blockFlowDiagram.getCurrentZoomRatio() + "");
+		this.fdToolBar.getZoomRatioLabel().setText(this.blockFlowDiagram.getCurrentZoomRatio()*100 + "%");
 		//this.fdToolBar.setScrollablePanelForFD(this.scrollablePanelForFD);
 	}
 	
@@ -252,6 +275,16 @@ public class Flow2Code extends JFrame{
 	
 	public static void main(String[] args) {
 		// Run the GUI construction in the Event-Dispatching thread for thread-safety
+		
+		//Testing
+		//list all FontNames
+		/*
+		String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+		for ( int i = 0; i < fonts.length; i++ ){
+	      System.out.println(fonts[i]);
+	    }
+		*/
+		
 		SwingUtilities.invokeLater(new Runnable() {
 	         @Override
 	         public void run() {

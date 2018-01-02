@@ -1,4 +1,4 @@
-package strategy.codegenerator;
+package variableTree;
 
 import org.json.JSONObject;
 
@@ -14,8 +14,8 @@ public class VariableLeaf extends VariableTree{
 		String temp = indent + "    ";
 		temp = temp + variable.getString("DataType") + " ";
 		temp = temp + variable.getString("VariableName") + " ";
-		temp = temp + variable.getString("IsArray") + " ";
-		temp = temp + variable.getString("Size") + " ";	
+		temp = temp + variable.getBoolean("IsArray") + " ";
+		temp = temp + variable.getInt("Size") + " ";	
 		return temp;
 	}
 	

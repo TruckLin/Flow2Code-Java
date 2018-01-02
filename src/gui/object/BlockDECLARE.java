@@ -45,7 +45,25 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
 		JSONArray variables = this.getModel().getJSONArray("Variables");
-		String temp = "<html>Declare : <br>";
+	
+		String temp = "<html>Declare : ";
+		for(int i = 0 ; i < variables.length(); i++) {
+			if(i==0) {temp = temp + "<ul>";}
+			JSONObject currentVariable = variables.getJSONObject(i);
+			temp = temp + "<li>"+currentVariable.getString("DataType") + "  ";
+			temp = temp + currentVariable.getString("VariableName") + "  ";
+			if(currentVariable.getBoolean("IsArray")) {
+				temp = temp + "is an array of size " + currentVariable.get("Size");
+			}
+			if(i < (variables.length() - 1)) {
+				temp = temp + "</li>";
+			}
+		}
+		
+	
+	/*
+		// without html:
+		String temp = "Declare : ";
 		for(int i = 0 ; i < variables.length(); i++) {
 			JSONObject currentVariable = variables.getJSONObject(i);
 			temp = temp + currentVariable.getString("DataType") + "  ";
@@ -54,10 +72,10 @@ public class BlockDECLARE extends OrdinaryBlockFD {
 				temp = temp + "is an array of size " + currentVariable.get("Size");
 			}
 			if(i < variables.length() - 1) {
-				temp = temp + "<br>";
+				temp = temp + "\n";
 			}
 		}
-		
+	*/
 		this.blockLabel.setText(temp);
 		
 		this.adjustLabelSize();
