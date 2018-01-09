@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -32,6 +35,8 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -110,12 +115,30 @@ public class MyTextComponentDemo extends JFrame {
 
         //Put the initial text into the text pane.
         initDocument();
+        // Testing
+        //textPane.setCaret(new DefaultCaret());
         textPane.setCaretPosition(0);
+        
+        
+        //Testing
+        /*
+        try {
+        	
+        	System.out.println("In Constructor:");
+			System.out.println("CaretRectangle = " + textPane.modelToView(textPane.getCaret().getDot()) );
+			System.out.println("textPane.getCaret() = " + textPane.getCaret());
+			System.out.println("textPane.getCaret() instanceof DefaultCaret = \n    " + (textPane.getCaret() instanceof DefaultCaret));
+			DefaultCaret tempCaret = (DefaultCaret)textPane.getCaret();
+			System.out.println("((DefaultCaret)textPane.getCaret()).getBounds() = \n    " 
+										+ ((DefaultCaret)textPane.getCaret()).getBounds());
+										
+        } catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
 
-        //Start watching for undoable edits and caret changes.
-        doc.addUndoableEditListener(new MyUndoableEditListener());
-        textPane.addCaretListener(caretListenerLabel);
-        doc.addDocumentListener(new MyDocumentListener());
+        
     }
 
     //This listens for and reports caret movements.
@@ -144,12 +167,18 @@ public class MyTextComponentDemo extends JFrame {
             	}
             } */
     	    //System.out.println(textPane.getText());
-            
+           
+            /*
             try {
             	
 				//System.out.println("getRowStart = " + Utilities.getRowStart(textPane, e.getDot()));
 				//System.out.println("getRowEnd = " + Utilities.getRowEnd(textPane, e.getDot()));
-				//System.out.println("caretCoord = " + textPane.modelToView(e.getDot()));
+				//System.out.println("In CaretListener:");
+            	//System.out.println("caretCoord = " + textPane.modelToView(e.getDot()));
+            	//System.out.println("EndOfLineStringProperty of document = \n    " + 
+            	//			textPane.getDocument().getProperty(DefaultEditorKit.EndOfLineStringProperty));
+            	//System.out.println(textPane.getFontMetrics(textPane.getFont()).getHeight());
+            	
             	if(e.getDot() == e.getMark()) {
             		textPane.setCaretCoord(textPane.modelToView(e.getDot()));
             		textPane.repaint();
@@ -157,6 +186,12 @@ public class MyTextComponentDemo extends JFrame {
 					textPane.setCaretCoord(null);
 					textPane.repaint();
 				}
+            	
+            	//System.out.println("textPane.getCaret() instanceof DefaultCaret = \n    " + (textPane.getCaret() instanceof DefaultCaret));
+    			//DefaultCaret tempCaret = (DefaultCaret)textPane.getCaret();
+    			//System.out.println("((DefaultCaret)textPane.getCaret()).getBounds() = \n    " 
+    			//							+ ((DefaultCaret)textPane.getCaret()).getBounds());
+            	
 				//System.out.println("Total number of lines = " + textPane.getNumberOfLines());
 				
 				//Highlighter oldHighlighter = textPane.getHighlighter();
@@ -169,8 +204,7 @@ public class MyTextComponentDemo extends JFrame {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-            
-            // textPane.get
+			*/
         }
 
         //This method can be invoked from any thread.  It 
@@ -178,8 +212,7 @@ public class MyTextComponentDemo extends JFrame {
         //must run on the event dispatch thread. We use
         //invokeLater to schedule the code for execution
         //on the event dispatch thread.
-        protected void displaySelectionInfo(final int dot,
-                                            final int mark) {
+        protected void displaySelectionInfo(final int dot, final int mark) {
         	
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -347,8 +380,7 @@ public class MyTextComponentDemo extends JFrame {
 
         SimpleAttributeSet codeAttr = new SimpleAttributeSet();
         StyleConstants.setFontFamily(codeAttr, "Courier New");
-        StyleConstants.setFontSize(codeAttr, 16);
-        
+        StyleConstants.setFontSize(codeAttr, 12);
 
         try {
             for (int i = 0; i < initString.length; i ++) {
@@ -358,6 +390,24 @@ public class MyTextComponentDemo extends JFrame {
         } catch (BadLocationException ble) {
             System.err.println("Couldn't insert initial text.");
         }
+        
+        // We might want to insert components in the future.
+        /*
+        //Start watching for undoable edits and caret changes.
+        JTextField myTF = new JTextField("Test text field");
+        myTF.setEditable(true);
+        textPane.insertComponent(myTF);
+        try {
+			doc.insertString(doc.getLength(), "\n", codeAttr);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        JTextArea myTA = new JTextArea("Test text area");
+        myTA.setEditable(true);
+        myTA.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        textPane.insertComponent(myTA);
+        */
     }
 
     //The following two methods allow us to find an

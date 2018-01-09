@@ -47,9 +47,9 @@ import javax.swing.event.*;
 import javax.swing.undo.*;
 
 public class TextComponentDemo extends JFrame {
-    MyTextPane textPane;
+    JTextPane textPane;
     AbstractDocument doc;
-    static final int MAX_CHARACTERS = 300;
+    //static final int MAX_CHARACTERS = 300;
     JTextArea changeLog;
     String newline = "\n";
     HashMap<Object, Action> actions;
@@ -63,7 +63,7 @@ public class TextComponentDemo extends JFrame {
         super("TextComponentDemo");
 
         //Create the text pane and configure it.
-        textPane = new MyTextPane();
+        textPane = new JTextPane();
         
         //Testing
         //textPane.setBackground(Color.YELLOW);
@@ -71,7 +71,7 @@ public class TextComponentDemo extends JFrame {
         StyledDocument styledDoc = textPane.getStyledDocument();
         if (styledDoc instanceof AbstractDocument) {
             doc = (AbstractDocument)styledDoc;
-            doc.setDocumentFilter(new DocumentSizeFilter(MAX_CHARACTERS));
+           // doc.setDocumentFilter(new DocumentSizeFilter(MAX_CHARACTERS));
         } else {
             System.err.println("Text pane's document isn't an AbstractDocument!");
             System.exit(-1);
@@ -148,7 +148,7 @@ public class TextComponentDemo extends JFrame {
             	}
             } */
     	    //System.out.println(textPane.getText());
-            
+            /*
             try {
             	
 				//System.out.println("getRowStart = " + Utilities.getRowStart(textPane, e.getDot()));
@@ -173,7 +173,7 @@ public class TextComponentDemo extends JFrame {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-            
+            */
             // textPane.get
         }
 
@@ -359,6 +359,21 @@ public class TextComponentDemo extends JFrame {
         } catch (BadLocationException ble) {
             System.err.println("Couldn't insert initial text.");
         }
+        
+        JTextField myTF = new JTextField("Test text field");
+        myTF.setEditable(true);
+        textPane.insertComponent(myTF);
+        try {
+			doc.insertString(doc.getLength(), "\n", attrs[4]);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        JTextArea myTA = new JTextArea("Test text area");
+        myTA.setEditable(true);
+        myTA.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        textPane.insertComponent(myTA);
+        
     }
 
     protected SimpleAttributeSet[] initAttributes(int length) {

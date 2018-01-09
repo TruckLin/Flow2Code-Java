@@ -9,6 +9,8 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
+import gui.codeView.CodeViewContainer;
+import gui.codeView.CodeViewToolBar;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
@@ -39,8 +41,7 @@ public class Flow2Code extends JFrame{
 	private FlowDiagramToolBar fdToolBar;
 	
 	// Right
-	private JTextArea codeView;
-	private JToolBar codeToolBar;
+	private CodeViewContainer codeViewContainer;
 	
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
@@ -66,7 +67,8 @@ public class Flow2Code extends JFrame{
 	public NameCounterManager getNameCounterManager() {return this.nameManager;}
 	public void setNameCounterManager(NameCounterManager nameManager) {this.nameManager = nameManager;}
 	public ScrollablePanelForFD getScrollablePanelForFD() {return this.scrollablePanelForFD;}
-	public JTextArea getCodeTextArea() {return this.codeView;}
+	public JTextPane getCodeTextPane() {return this.codeViewContainer.getCodeViewTextPane();}
+	public CodeViewContainer getCodeViewContainer() {return this.codeViewContainer;}
 	
 	public Flow2Code() {
 		
@@ -179,18 +181,7 @@ public class Flow2Code extends JFrame{
 	    leftPanel.add(scrollPane, BorderLayout.CENTER);
 	    
 	    /** Right Panel Construction **/
-	    JPanel rightPanel = new JPanel(new BorderLayout());
-	    this.codeToolBar = new CodeViewToolBar(this);
-	    codeView = new JTextArea();
-	    codeView.setFont(new Font("Courier New", Font.PLAIN,15));
-	    codeView.setText(this.FlowDiagramModel.toString(10));
-	    //TextFetcher txtFetcher = new TextFetcher(this.FlowDiagramModel,codeView);
-	    //txtFetcher.start();
-	    codeView.setEditable(true);
-	    codeView.setTabSize(4);
-	    JScrollPane textScrollPane = new JScrollPane(codeView);
-	    rightPanel.add(codeToolBar, BorderLayout.NORTH);
-	    rightPanel.add(textScrollPane, BorderLayout.CENTER);
+	    JPanel rightPanel = new CodeViewContainer(this);
 	    
 	    /** JSplitPane Construction**/
 	    JSplitPane splitPane = new JSplitPane();
