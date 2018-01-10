@@ -23,9 +23,9 @@ public class RunJavaCodeAction implements ActionListener{
 		
 		Runtime run = Runtime.getRuntime();
 		String javaCode = codeViewContainer.getCodeViewTextPane().getText();
-		FileHandle.saveTextFileFromString(codeViewContainer.getCodeViewTextPane().getText(), "tempcode.java");
+		FileHandle.saveTextFileFromString(codeViewContainer.getCodeViewTextPane().getText(), "FlowCode.java");
 		
-		
+		/*
 		try {
 	        run.exec("javac tempcode.java");
 	        Process p = run.exec("java tempcode");
@@ -39,7 +39,7 @@ public class RunJavaCodeAction implements ActionListener{
         } catch (IOException ex) {
             ex.printStackTrace();
        }
-		
+		*/
 		//Testing
 		System.out.println("RunJavaCodeAction is performed.");
 		System.out.println("Code : \n" + javaCode);

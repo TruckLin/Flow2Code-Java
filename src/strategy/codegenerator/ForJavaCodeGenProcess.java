@@ -17,8 +17,8 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 		JSONArray members = model.getJSONArray("Members");
 		int numMembers = members.length();
 		String code = "";
-		code = code + indent + "for( " + model.getString("Initialisation") + ", " + model.getString("Condition") 
-										+ ", "+ model.getString("PostProcess") + " ) {\n\n";
+		code = code + indent + "for( " + model.getString("Initialisation") + "; " + model.getString("Condition") 
+										+ "; "+ model.getString("PostProcess") + " ) {\n\n";
 		
 		// we first find the JSONObject of Type "Start"
 		JSONObject currentModel;

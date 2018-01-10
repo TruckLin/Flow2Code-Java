@@ -19,7 +19,7 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 		boolean shouldGenerateMore = false;
 		
 		String code = "";
-		code = code + indent + "public class Main{\n" + 
+		code = code + indent + "public class FlowCode{\n" + 
 					  indent + "    " +"public static void main(String[] args){\n\n";
 		
 		// we first find the JSONObject of Type "Start"

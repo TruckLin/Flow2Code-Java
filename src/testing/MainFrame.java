@@ -11,7 +11,7 @@ import gui.object.BlockEndLOOP;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
 
-public class Main extends JFrame implements MouseListener, ActionListener{
+public class MainFrame extends JFrame implements MouseListener, ActionListener{
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	private static final long serialVersionUID = 1L;
 	
 	
-	public Main() {
+	public MainFrame() {
 		// Retrieve the top-level content-pane from JFrame
 	    Container cp = getContentPane();
 	 
@@ -62,7 +62,7 @@ public class Main extends JFrame implements MouseListener, ActionListener{
 	      SwingUtilities.invokeLater(new Runnable() {
 	         @Override
 	         public void run() {
-	            new Main();  // Let the constructor do the job
+	            new MainFrame();  // Let the constructor do the job
 	         }
 	      });
 	}
