@@ -181,13 +181,13 @@ public class Flow2Code extends JFrame{
 	    leftPanel.add(scrollPane, BorderLayout.CENTER);
 	    
 	    /** Right Panel Construction **/
-	    JPanel rightPanel = new CodeViewContainer(this);
+	    codeViewContainer = new CodeViewContainer(this);
 	    
 	    /** JSplitPane Construction**/
 	    JSplitPane splitPane = new JSplitPane();
 	    splitPane.setDividerLocation(700);
 	    splitPane.add(leftPanel,JSplitPane.LEFT);
-	    splitPane.add(rightPanel, JSplitPane.RIGHT);
+	    splitPane.add(codeViewContainer, JSplitPane.RIGHT);
 	    
 	    // Content-pane adds components
 	    this.setJMenuBar(menuBar);

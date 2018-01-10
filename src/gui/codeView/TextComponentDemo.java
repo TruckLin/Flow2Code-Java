@@ -118,6 +118,7 @@ public class TextComponentDemo extends JFrame {
 
         //Start watching for undoable edits and caret changes.
         doc.addUndoableEditListener(new MyUndoableEditListener());
+        
         textPane.addCaretListener(caretListenerLabel);
         doc.addDocumentListener(new MyDocumentListener());
     }

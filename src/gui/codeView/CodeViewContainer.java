@@ -19,6 +19,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 import gui.Flow2Code;
+import gui.codeView.TextComponentDemo.MyUndoableEditListener;
 
 public class CodeViewContainer extends JPanel{
 	
@@ -62,6 +63,12 @@ public class CodeViewContainer extends JPanel{
         //Add the components
         this.add(codeViewToolBar, BorderLayout.NORTH);
 	    this.add(codeViewTextPane, BorderLayout.CENTER);
+	    
+	  //Start watching for undoable edits and caret changes.
+      doc.addUndoableEditListener(new MyUndoableEditListener());
+      
+      // Fill the hash table
+      this.actions = this.createActionTable(this.codeViewTextPane);
 		
 	}
 	
@@ -73,6 +80,8 @@ public class CodeViewContainer extends JPanel{
             undo.addEdit(e.getEdit());
             undoAction.updateUndoState();
             redoAction.updateRedoState();
+            
+            
         }
     }
     
@@ -86,7 +95,10 @@ public class CodeViewContainer extends JPanel{
             actions.put(a.getValue(Action.NAME), a);
             
             //Testing
-            //System.out.println("Action name = " + a.getValue(Action.NAME));
+            //System.out.println(i + "th action : ");
+            //System.out.println("    Action name = " + a.getValue(Action.NAME));
+            //System.out.println("    Short description = " + a.getValue(Action.SHORT_DESCRIPTION));
+            
         }
 	return actions;
     }
