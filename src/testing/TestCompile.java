@@ -16,36 +16,50 @@ import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 public class TestCompile {
 	public static void main(String[] args) {
 		CompilationProgress progress = null; // instantiate your subclass
+		String encoding = 
+			//	"-encoding UTF-16 ";
+				"";
+		String fileName = 
+			//	"FlowCode.java";
+				//"Add2Numbers.java";
+				"ForLoop.java";
+		String tempCommand = 
+				encoding + fileName;
+		
 		BatchCompiler.compile(
-		   "-encoding UTF-16 FlowCode.java",
-		   new PrintWriter(System.out),
-		   new PrintWriter(System.err),
-		   progress);
-		
-		
+			tempCommand,
+		    new PrintWriter(System.out),
+		    new PrintWriter(System.err),
+		    progress);
 		
 		try {
-			Process p = Runtime.getRuntime().exec("java FlowCode");
+			String temp = "java ForLoop";
+			System.out.println(temp);
+			//Runtime.getRuntime().exec("cmd.exe");
+			Process p = Runtime.getRuntime().exec(temp);
+			//Scanner sc = new Scanner(System.in);
 			
 			
-			BufferedReader in = new BufferedReader(  
-                    new InputStreamReader(p.getInputStream()));
-			String line;
+			//sc.close();
+			
+			//Process p = Runtime.getRuntime().exec("java Add2Numbers");
+			/*
+			int exitValue;
+			try {
+				exitValue = p.waitFor();
+				System.out.println("Process Completed with exit value of " + exitValue);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	         */
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	        String line;
 			while ((line = in.readLine()) != null) {
 				System.out.println(line);
+				
 			}
-			
-			OutputStream out = p.getOutputStream(); // out from parent process into sub-processs.
-			BufferedWriter myOut = new BufferedWriter(new OutputStreamWriter(out));
-			Scanner sc = new Scanner(System.in);
-	        
-	        out.write(50);
-			
-			//System.out.println("output stream is null?" + (out==null));
-			
-			
-			
-	        sc.close();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

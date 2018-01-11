@@ -11,7 +11,7 @@ public class ScannerExample{
         
         Scanner in = new Scanner(System.in);
         x = in.nextInt();
-        in.close();
+       // in.close();
         try {
         	System.out.println("Waiting");
 			Thread.sleep(500);

@@ -231,6 +231,8 @@ public class Flow2Code extends JFrame{
 	    //System.out.println("Before exclusion : " + nameManager.getCurrentCount());
 	    this.blockFlowDiagram.setNameCounterManager(nameManager);
 	    nameManager.excludeExistingNames(this.FlowDiagramInfo);
+	    //Set language bundle
+	    this.blockFlowDiagram.setLanguageBundle(this.languageBundle);
 	    
 	    //System.out.println("After exclusion : " + nameManager.getCurrentCount());
 	    // Attach various listeners for blocks

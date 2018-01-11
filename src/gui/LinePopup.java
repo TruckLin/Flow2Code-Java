@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 import javax.swing.JMenuItem;
