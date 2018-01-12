@@ -1,16 +1,24 @@
+import java.util.Scanner;
 
 //import java.util.Scanner;
-import java.io.DataInputStream;
-import java.io.IOException;
+
 
 public class ForLoop {
 	public static void main(String[] args) {
-		//Scanner sc = new Scanner(System.in);
-		 //  sc.close();
+		Scanner sc = new Scanner(System.in);
+		 
 		   int i;
-		   for(i = 1; i <= 50; i++) {
+		   for(i = 1; i <= 20; i++) {
 			   System.out.println("i = " + i);
+			 //  System.out.print("Enter your number : ");
+			//   System.out.print(sc.nextLine() + "\n");
 		   }
+		   
+		System.out.println("Enter a number : ");
+		int j = sc.nextInt();
+		System.out.println("the number entered is : " + j);
+		
+		sc.close();
 		   
 		   
 		  /*
