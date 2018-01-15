@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 
 //import temp.ForLoop;
 
-public class test {
+public class testCmdConsole {
 	public static void main(String args[]) {
 	//	ForLoop.main(null);
 		CompilationProgress progress = null; // instantiate your subclass
@@ -17,8 +17,8 @@ public class test {
 					"";
 			String fileName = 
 				//	"FlowCode";
-					//"Add2Numbers";
-					"ForLoop";
+					"Add2Numbers";
+					//"ForLoop";
 			String fileExtension = 
 					".java";
 			
@@ -32,7 +32,7 @@ public class test {
 		
 		
 	    try {
-	      Process p = Runtime.getRuntime().exec("cmd.exe /c start cmd /k java ForLoop");
+	      Process p = Runtime.getRuntime().exec("cmd.exe /c start cmd /k java " + fileName);
 	      //p = Runtime.getRuntime().exec("cmd.exe /c start");
 	      p.waitFor();
 	      System.out.println("ok");

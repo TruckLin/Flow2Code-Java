@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.json.JSONObject;
 
@@ -68,6 +70,8 @@ public class SaveAndLoadActions {
 		
 		this.fc = new JFileChooser();
 		fc.setCurrentDirectory(new File("."));
+		fc.setFileFilter(new FileNameExtensionFilter(".foo","foo"));
+		fc.setAcceptAllFileFilterUsed(false);
 	}
 	
 	

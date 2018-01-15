@@ -9,7 +9,7 @@ import javax.swing.JToolBar;
 import javax.swing.undo.UndoManager;
 
 import gui.Flow2Code;
-import gui.action.RunJavaCodeAction;
+import gui.action.RunJavaCodeActionWithCMD;
 import gui.codeView.CodeViewContainer.RedoAction;
 import gui.codeView.CodeViewContainer.UndoAction;
 
@@ -73,7 +73,7 @@ public class CodeViewToolBar extends JToolBar{
 		
 		// Run button
 		this.runButton = new JButton("Run");
-		this.runAction = new RunJavaCodeAction(this.codeViewContainer);
+		this.runAction = new RunJavaCodeActionWithCMD(this.codeViewContainer);
 		this.runButton.addActionListener(runAction);
 		this.add(runButton);
 		

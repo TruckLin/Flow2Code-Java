@@ -17,7 +17,7 @@ public class FileHandle {
 		// Write primitives to an output file
 		
 		//Testing 
-		System.out.println("Path : " + pathAndFileName);
+		//System.out.println("Path : " + pathAndFileName);
 		
 		try (DataOutputStream out = new DataOutputStream( new BufferedOutputStream (new FileOutputStream(pathAndFileName)))){
 			out.writeChars(text);

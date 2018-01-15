@@ -21,9 +21,6 @@ public class TestCompile {
 	private InputStream fromSub;
 	private InputStream stderr;
 	
-	private Thread writeThread;
-	private Thread readThread;
-	
 	public TestCompile() {
 		CompilationProgress progress = null; // instantiate your subclass
 		String encoding = 
@@ -59,61 +56,8 @@ public class TestCompile {
 			e.printStackTrace();
 		}
 		
-		this.readThread = new readFromSubProcess();
-		//this.writeThread = new writeToSubProcess();
 		
-		readThread.run();
-		//writeThread.run();
 		
-	}
-	
-	private class writeToSubProcess extends Thread{
-		@Override
-		public void run() {
-			Scanner sc = new Scanner(System.in);
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(toSub));
-			
-			while(subProcess.isAlive()) {
-				//Testing
-				System.out.println("writeThread, in while loop.");
-				try {
-					out.write(sc.nextInt());
-					this.sleep(10);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			sc.close();
-		}
-	}
-	private class readFromSubProcess extends Thread{
-		@Override
-		public void run() {
-			BufferedReader in = new BufferedReader(new InputStreamReader(fromSub));
-			//while(subProcess.isAlive()) {
-				//Testing
-				//System.out.println("subProcess.isAlive() " + subProcess.isAlive());
-		        String line;
-		        try {
-					while((line = in.readLine()) != null) {
-						System.out.println("ReadFromSubProcess, while loop running");
-						System.out.println(line);
-						sleep(10);
-					}
-					System.out.println("while loop terminated");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}catch(InterruptedException e) {
-					e.printStackTrace();
-				}
-			//}
-		}
 	}
 	
 	public static void main(String[] args) {

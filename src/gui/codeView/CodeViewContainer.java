@@ -20,6 +20,7 @@ import javax.swing.undo.UndoManager;
 
 import gui.Flow2Code;
 import gui.codeView.TextComponentDemo.MyUndoableEditListener;
+import strategy.codegenerator.JavaCodeGenerator;
 
 public class CodeViewContainer extends JPanel{
 	
@@ -49,6 +50,12 @@ public class CodeViewContainer extends JPanel{
             System.err.println("Text pane's document isn't an AbstractDocument!");
             System.exit(-1);
         }
+        
+        JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
+		String code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(), "");
+		this.codeViewTextPane.setText(code);
+        
+        
         JScrollPane scrollPane = new JScrollPane(codeViewTextPane);
         scrollPane.setPreferredSize(new Dimension(400, 400));
         

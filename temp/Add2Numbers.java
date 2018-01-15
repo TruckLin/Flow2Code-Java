@@ -7,9 +7,9 @@ public class Add2Numbers {
 	   
       Scanner in = new Scanner(System.in);
       
-     // System.out.println("Enter first number : ");
+      System.out.println("Enter first number : ");
       int num1 = in.nextInt();
-     // System.out.println("Enter second number : ");
+      System.out.println("Enter second number : ");
       int num2 = in.nextInt();
       System.out.println(num1 + num2);
       

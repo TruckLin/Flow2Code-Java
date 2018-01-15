@@ -14,9 +14,9 @@ public class ForLoop {
 			//   System.out.print(sc.nextLine() + "\n");
 		   }
 		   
-		System.out.println("Enter a number : ");
-		int j = sc.nextInt();
-		System.out.println("the number entered is : " + j);
+		//System.out.println("Enter a number : ");
+		//int j = sc.nextInt();
+		//System.out.println("the number entered is : " + j);
 		
 		sc.close();
 		   
