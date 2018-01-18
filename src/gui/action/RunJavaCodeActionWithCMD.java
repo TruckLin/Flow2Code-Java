@@ -54,7 +54,6 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 		
 		//Testing
 		//System.out.println(encoding + fileName + fileExtension);
-		
 		BatchCompiler.compile(
 			encoding + 
 			path + 

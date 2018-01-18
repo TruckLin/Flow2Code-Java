@@ -47,7 +47,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 															+ " );" + "\n";
 												return code;
 											});
-		register("Input", (model, code, indent) -> {return code;});
+		register("Input", new InputJavaCodeGenProcess(this));
 		
 	}
 	

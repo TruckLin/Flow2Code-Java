@@ -1,5 +1,7 @@
 package strategy.codegenerator;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,6 +14,10 @@ public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 	@Override
 	public String generateCode(JSONObject model,String code, String indent) {
 		// TODO Auto-generated method stub
+		
+		// Get the number of variables declared before we enter the for loop.
+		ArrayList<JSONObject> varList = this.codeGenerator.getVariableList();
+		int numOfVarStart = varList.size();
 		
 		// Setting up
 		JSONArray members = model.getJSONArray("Members");
@@ -43,7 +49,12 @@ public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 			}
 		}
 		
-		code = code + indent + "}\n\n";
+		code = code + indent + "}\n";
+		
+		// Destroy all variables added in during for loop.
+		for(int k = numOfVarStart; k <= (varList.size()-1); k++) {
+			varList.remove(k);
+		}
 		
 		return code;
 	}

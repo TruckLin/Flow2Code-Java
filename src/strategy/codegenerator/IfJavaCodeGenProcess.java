@@ -53,12 +53,8 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		}
 		
 		// Destroy all variables added in during if statement.
-		int numOfVarEnd = varList.size();
-		if(numOfVarEnd >= numOfVarStart){
-			// if some local variables were declared, we remove those from the list, as they won't be available anymore.
-			for(int k = numOfVarStart; k <= (numOfVarEnd-1); k++) {
-				varList.remove(k);
-			}
+		for(int k = numOfVarStart; k <= (varList.size()-1); k++) {
+			varList.remove(k);
 		}
 		
 		// Close up the bracket
@@ -91,12 +87,8 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		}
 		
 		// Destroy all variables added in during else statement.
-		numOfVarEnd = varList.size();
-		if(numOfVarEnd >= numOfVarStart){
-			// if some local variables were declared, we remove those from the list, as they won't be available anymore.
-			for(int k = numOfVarStart; k <= (numOfVarEnd-1); k++) {
-				varList.remove(k);
-			}
+		for(int k = numOfVarStart; k <= (varList.size()-1); k++) {
+			varList.remove(k);
 		}
 		
 		// Close up the bracket
