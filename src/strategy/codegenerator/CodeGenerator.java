@@ -14,11 +14,12 @@ public abstract class CodeGenerator{
 		registry.put(modelType, process);
 	}
 	
-	public String generate(JSONObject model, String indent) {
+	
+	public String generate(JSONObject model,String code, String indent) {
 		//Testing
 		//System.out.println("model.getString(\"Type\") = " + model.getString("Type"));
 		
-		return registry.get(model.getString("Type")).generateCode(model, indent);
+		return registry.get(model.getString("Type")).generateCode(model, code,indent);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package strategy.codegenerator;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,7 +12,7 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model, String indent) {
+	public String generateCode(JSONObject model,String code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Setting up
@@ -19,7 +21,6 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		int numTrueMembers = trueMembers.length();
 		int numFalseMembers = falseMembers.length();
 		
-		String code = "";
 		code = code + indent + "if( " + model.getString("Expression") + " ) {\n";
 		
 		// we first find the JSONObject of Type "Start"
@@ -27,6 +28,11 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		
 		// Code generation for True members.
 		String targetName = model.getJSONObject("StartIf").getString("TrueChild");
+		
+		// Get the number of variables declared before we enter the bracket.
+		ArrayList<JSONObject> varList = this.codeGenerator.getVariableList();
+		int numOfVarStart = varList.size();
+		
 		while(true) {
 			if(model.getJSONObject("EndIf").getString("Name").equals(targetName)) {
 				break;
@@ -39,21 +45,37 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					String currentCode = this.codeGenerator.generate(currentModel, indent + "    ");
-					code += currentCode;
+					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
 			}
 		}
 		
+		// Destroy all variables added in during if statement.
+		int numOfVarEnd = varList.size();
+		if(numOfVarEnd >= numOfVarStart){
+			// if some local variables were declared, we remove those from the list, as they won't be available anymore.
+			for(int k = numOfVarStart; k <= (numOfVarEnd-1); k++) {
+				varList.remove(k);
+			}
+		}
+		
+		// Close up the bracket
+		code = code + indent + "}";
+		if( numFalseMembers == 0 ) {
+			code = code + "\n";
+			return code;
+		}
+		
+		// At this point, we know that we have some statement in else{}, numOfVarStart should remain unchanged.
 		// Code generation for false members.
+		code = code + " else {\n";
 		targetName = model.getJSONObject("StartIf").getString("FalseChild");
 		while(true) {
 			if(model.getJSONObject("EndIf").getString("Name").equals(targetName)) {
 				break;
 			}
-			
 			for(int i = 0; i < numFalseMembers; i++) {
 				currentModel = falseMembers.getJSONObject(i);
 				
@@ -61,16 +83,24 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					String currentCode = this.codeGenerator.generate(currentModel, indent + "    ");
-					code += currentCode;
+					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
 			}
 		}
 		
+		// Destroy all variables added in during else statement.
+		numOfVarEnd = varList.size();
+		if(numOfVarEnd >= numOfVarStart){
+			// if some local variables were declared, we remove those from the list, as they won't be available anymore.
+			for(int k = numOfVarStart; k <= (numOfVarEnd-1); k++) {
+				varList.remove(k);
+			}
+		}
 		
-		code = code + indent + "}\n\n";
+		// Close up the bracket
+		code = code + indent + "}\n";
 		
 		return code;
 	}

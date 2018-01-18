@@ -115,7 +115,8 @@ public class FlowDiagramToolBar extends JToolBar{
 		codeGenButton = new JButton("CodeGen");
 		codeGenButton.addActionListener(e -> {
 			JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
-			String code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(), "");
+			String code = "";
+			code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(),code, "");
 			this.mainFrame.getCodeTextPane().setText(code);
 		});
 		this.add(codeGenButton);

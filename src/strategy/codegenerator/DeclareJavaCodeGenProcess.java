@@ -11,14 +11,16 @@ public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model, String indent) {
+	public String generateCode(JSONObject model,String code, String indent) {
 		// TODO Auto-generated method stub
 		
-		String code = "";
 		JSONArray variables = model.getJSONArray("Variables");
 		for(int i = 0; i < variables.length(); i = i+1) {
 			
 			JSONObject currentVar = variables.getJSONObject(i);
+			
+			codeGenerator.getVariableList().add(currentVar);
+			
 			String dataType = currentVar.getString("DataType");
 			Boolean isArray = currentVar.getBoolean("IsArray");
 			String VariableName = currentVar.getString("VariableName");

@@ -10,7 +10,7 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model, String indent) {
+	public String generateCode(JSONObject model,String code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Setting up
@@ -18,7 +18,6 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 		int numMembers = members.length();
 		boolean shouldGenerateMore = false;
 		
-		String code = "";
 		code = code + indent + "public class FlowCode{\n" + 
 					  indent + "    " +"public static void main(String[] args){\n\n";
 		
@@ -43,8 +42,7 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 					if(currentModel.getString("Type").equals("End")) {
 						shouldGenerateMore = false;
 					}else {
-						String currentCode = this.codeGenerator.generate(currentModel, indent + "    " + "    ");
-						code += currentCode;
+						code = this.codeGenerator.generate(currentModel,code ,indent + "    " + "    ");
 						targetName = currentModel.getString("Child");
 					}
 				}

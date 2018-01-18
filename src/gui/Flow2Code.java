@@ -73,13 +73,15 @@ public class Flow2Code extends JFrame{
 	public Flow2Code() {
 		
 		// I18N construction
-		this.language = "ch";
-		this.country = "CH";
+		this.language = "en";
+		this.country = "US";
 		this.currentLocale = new Locale(language, country);
+		//Locale.setDefault(currentLocale);
 		this.languageBundle = ResourceBundle.getBundle("LanguageBundle",currentLocale);
 		
 		//Testing
 		//System.out.println(languageBundle.getString("Delete"));
+		//	System.out.println(Locale.getDefault());
 		
 		// Retrieve the top-level content-pane from JFrame
 	    Container cp = getContentPane();
@@ -131,7 +133,6 @@ public class Flow2Code extends JFrame{
 	    																			".\\assets\\Demo-empty.foo");
 	    
 	    //ModelGenerator modelGenerator = new ModelGenerator(nameManager);
-	    
 	    BlockGenerator blockGenerator = new BlockGenerator();
 	    //this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
 	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, this.FlowDiagramInfo);

@@ -26,8 +26,8 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 		// TODO Auto-generated method stub
 		
 		//Testing
-		String oldDir =  System.getProperty("user.dir");
-		System.out.println("Working Directory = " + oldDir);
+//		String oldDir =  System.getProperty("user.dir");
+//		System.out.println("Working Directory = " + oldDir);
 //		System.setProperty("user.dir", oldDir + "\\temp");
 //		System.out.println("Working Directory = " +
 //	              System.getProperty("user.dir"));

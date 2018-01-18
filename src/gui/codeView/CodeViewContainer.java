@@ -16,10 +16,14 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
+
+//Two different UndoManager
+//import javax.swing.undo.UndoManager;
+
 
 import gui.Flow2Code;
-import gui.codeView.TextComponentDemo.MyUndoableEditListener;
+import gui.commands.UndoableEditCommand;
+import gui.manager.UndoManager;
 import strategy.codegenerator.JavaCodeGenerator;
 
 public class CodeViewContainer extends JPanel{
@@ -52,7 +56,8 @@ public class CodeViewContainer extends JPanel{
         }
         
         JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
-		String code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(), "");
+        String code = "";
+		code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(), code, "");
 		this.codeViewTextPane.setText(code);
         
         
@@ -64,6 +69,9 @@ public class CodeViewContainer extends JPanel{
         this.redoAction = new RedoAction();
         this.undo = new UndoManager();
         
+        //Testing
+        //this.undo = new MyTestUndoManager();
+        
         
         this.codeViewToolBar = new CodeViewToolBar(this);
         
@@ -74,6 +82,8 @@ public class CodeViewContainer extends JPanel{
 	  //Start watching for undoable edits and caret changes.
       doc.addUndoableEditListener(new MyUndoableEditListener());
       
+      
+      
       // Fill the hash table
       this.actions = this.createActionTable(this.codeViewTextPane);
 		
@@ -82,12 +92,70 @@ public class CodeViewContainer extends JPanel{
 	//This one listens for edits that can be undone.
     protected class MyUndoableEditListener
                     implements UndoableEditListener {
+    	
+    	private long lastSignificantEditTime;
+    	private long lastEditTime;
+    	
+    	public MyUndoableEditListener() {
+    		this.lastSignificantEditTime = System.currentTimeMillis();
+    		this.lastEditTime = System.currentTimeMillis();
+    		//System.out.println(this.lastSignificantEditTime);
+    	}
+    	
         public void undoableEditHappened(UndoableEditEvent e) {
-            //Remember the edit and update the menus.
-            undo.addEdit(e.getEdit());
-            undoAction.updateUndoState();
-            redoAction.updateRedoState();
+            //Remember the edit
+        	
+        	/*** Swing version ***/
+        	/*
+        	// Get current time
+        	long currentTime = System.currentTimeMillis();
+        	// make sure there are edits in undo stack
+            if(undo.canUndo()) {
+            	//Testing
+            //	e.getEdit()
+            	String previousUndoType = undo.getUndoPresentationName();
+            	int i = previousUndoType.indexOf(' ');
+            	previousUndoType = previousUndoType.substring(i + 1, previousUndoType.length());
+            //	System.out.println("undo.getUndoPresentationName() = " + undo.getUndoPresentationName());
+            //	System.out.println("e.getEdit().getPresentationName() = " + e.getEdit().getPresentationName() );
+            //	System.out.println("e.getEdit().getClass() = " + e.getEdit().);
+            //	System.out.println("e.getEdit().isSignificant() = " + e.getEdit().isSignificant());
             
+            	//	undo.
+            //	System.out.println("previousUndoType = " + previousUndoType);
+            //	System.out.println("currentUndoType = " + e.getEdit().getPresentationName());
+            //	System.out.println("previousUndoType.equals(currentUndoType) = " + 
+            //								previousUndoType.equals( e.getEdit().getPresentationName() ));
+            	
+            	if( (!previousUndoType.equals(e.getEdit().getPresentationName())) || 
+            								( (currentTime - this.lastEditTime) > 2000) ) {
+            		// if previous type and current type are different or
+            		//				It has been x seconds since last significantEdit
+            		// Then current edit should be significant.
+            		undo.addEdit(e.getEdit());
+                	undoAction.updateUndoState();
+                    redoAction.updateRedoState();
+                    this.lastSignificantEditTime = currentTime;
+                    this.lastEditTime = currentTime;
+            	}else {
+            		// Otherwise we add insignificant edit.
+            		 undo.addEdit(new EditorUndoableEdit(e.getEdit()) );
+            		 undoAction.updateUndoState();
+                     redoAction.updateRedoState(); 
+                     this.lastEditTime = currentTime;
+            	}
+            	
+            }else {
+            	undo.addEdit(e.getEdit());
+            	undoAction.updateUndoState();
+                redoAction.updateRedoState();
+                this.lastSignificantEditTime = currentTime;
+                this.lastEditTime = currentTime;
+            }
+            */
+            /** My version **/
+        	UndoableEditCommand undoableEditCommand = new UndoableEditCommand(e.getEdit());
+            undo.addUndoableCommand(undoableEditCommand);
             
         }
     }
@@ -132,6 +200,8 @@ public class CodeViewContainer extends JPanel{
         }
 
         protected void updateUndoState() {
+        	/** Swing Version **/
+        	/*
             if (undo.canUndo()) {
                 setEnabled(true);
                 putValue(Action.NAME, undo.getUndoPresentationName());
@@ -139,6 +209,7 @@ public class CodeViewContainer extends JPanel{
                 setEnabled(false);
                 putValue(Action.NAME, "Undo");
             }
+            */
         }
     }
 
@@ -160,6 +231,8 @@ public class CodeViewContainer extends JPanel{
         }
 
         protected void updateRedoState() {
+        	/** Swing Version **/
+        	/*
             if (undo.canRedo()) {
                 setEnabled(true);
                 putValue(Action.NAME, undo.getRedoPresentationName());
@@ -167,6 +240,7 @@ public class CodeViewContainer extends JPanel{
                 setEnabled(false);
                 putValue(Action.NAME, "Redo");
             }
+            */
         }
     }
 	

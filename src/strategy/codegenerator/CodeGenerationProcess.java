@@ -6,5 +6,5 @@ import gui.manager.NameCounterManager;
 import strategy.generator.ModelGenerator;
 
 public interface CodeGenerationProcess {
-	public String generateCode(JSONObject model, String indent);
+	public String generateCode(JSONObject model, String CodeSoFar, String indent);
 }

@@ -10,13 +10,13 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model, String indent) {
+	public String generateCode(JSONObject model,String code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Setting up
 		JSONArray members = model.getJSONArray("Members");
 		int numMembers = members.length();
-		String code = "";
+		
 		code = code + indent + "for( " + model.getString("Initialisation") + "; " + model.getString("Condition") 
 										+ "; "+ model.getString("PostProcess") + " ) {\n\n";
 		
@@ -37,8 +37,7 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					String currentCode = this.codeGenerator.generate(currentModel, indent + "    ");
-					code += currentCode;
+					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
