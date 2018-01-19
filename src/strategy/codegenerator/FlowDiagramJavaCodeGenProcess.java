@@ -49,6 +49,12 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 			}
 		}
 		
+		
+		// Check whether Scanner is used
+		if(code.contains("import java.util.Scanner;")) {
+			code = code + indent + "    " + "    " +"sc.close();\n";
+		}
+		
 		code = code + indent + "    " + "}\n";
 		code = code + indent + "}";
 		

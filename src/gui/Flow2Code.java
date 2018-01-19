@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -28,10 +29,6 @@ public class Flow2Code extends JFrame{
 	private JSONObject FlowDiagramModel = new JSONObject();
 	private JSONObject FlowDiagramInfo = new JSONObject();
 	private CompositeBlockFD blockFlowDiagram;
-	
-	private ArrayList<JSONObject> functions = new ArrayList<JSONObject>(); 
-	private ArrayList<JSONObject> functionsInfo = new ArrayList<JSONObject>();
-	private ArrayList<CompositeBlockFD> blockFunctions = new ArrayList<CompositeBlockFD>();
 	
 	private UndoManager undoManager;
 	private NameCounterManager nameManager;

@@ -3,28 +3,24 @@ package testing;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
-		
+	    public static void main(String[] args){
+	        Scanner sc = new Scanner(System.in);
 
+	        int cpuNum;
+	        int myGuess;
 
-		        int myNum;
-		        int usersGuess;
+	        cpuNum = (int)Math.round(Math.random()*1000);
+	        myGuess = sc.nextInt();
+	        while( myGuess != cpuNum ) {
 
-		        myNum = 314;
-		        System.out.println( "Welcome to our game! \n Enter your first guess :" );
-		        Scanner sc1 = new Scanner(System.in);
-		        usersGuess = sc1.nextInt();
-		      //  sc1.close();
-		        
-		        while( usersGuess != myNum ) {
-
-		            System.out.println( "Unfortunate! Try again : " );
-		       //     Scanner sc2 = new Scanner(System.in);
-		            usersGuess = sc1.nextInt();
-		       //     sc2.close();
-		        }
-		        
-		        System.out.println( "Congrats ! You've got it !" );
-		        sc1.close();
-	}
+	            if( cpuNum > myGuess ) {
+	                System.out.println( "Higher" );
+	            } else {
+	                System.out.println( "Lower" );
+	            }
+	            myGuess = sc.nextInt();
+	        }
+	        System.out.println( "Correct " );
+	        sc.close();
+	    }
 }
