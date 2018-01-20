@@ -115,6 +115,41 @@ public abstract class BlockFD extends JPanel{
 		}
 		this.updateBlockContent();
 	}
+	// This method controls which statements should be generated.
+	public void setCodeGenForAll(String type, boolean should) {
+		//Testing
+		//System.out.println("Class = " + this.getClass());
+		//System.out.println("setCodeGenForAll is called.");
+		//System.out.println("should CodeGen = " + should);
+		
+		if(this.model == null) {
+			//Testing
+			//System.out.println("model is null for this block.");
+			return;
+		}
+		String blockType = this.model.getString("Type");
+		
+		//Testing
+		//System.out.println("Type = " + type + " , BlockType = " + blockType);
+		if(type.equals(blockType)) {
+			this.getModel().put("CodeGen", should);
+			//Testing
+			//System.out.println("I think we have put CodeGen in.");
+		}
+		
+		// If the current Block is composite, call setCodeGenForAll for the children.
+		if(this instanceof CompositeBlockFD) {
+			Component[] complist = ((CompositeBlockFD)this).getComponents();
+			for(Component comp : complist) {
+				if(comp instanceof BlockFD) {
+					((BlockFD)comp).setCodeGenForAll(type, should);
+				}
+			}
+		}
+		
+	}
+	
+	
 	/* Abstract method : updatePorts()
 	 * This should be implemented by all BlockFD, either do nothing, or update port location.
 	 */

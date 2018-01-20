@@ -27,6 +27,7 @@ public class ModelGenerator{
 				model.put("Type", "FlowDiagram");
 				model.append("Members",START);
 				model.append("Members",END);
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("Start", 
@@ -35,6 +36,7 @@ public class ModelGenerator{
 				model.put("Type", "Start");
 				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("Child", "");
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("End", 
@@ -42,6 +44,7 @@ public class ModelGenerator{
 				JSONObject model = new JSONObject();
 				model.put("Type", "End");
 				model.put("Name",nameCounterManager.getAvailableName());
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("While",
@@ -56,6 +59,7 @@ public class ModelGenerator{
 				model.put("StartLoop", startLoop);
 				model.put("Members", new JSONArray());
 				model.put("Child", "");
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("For",
@@ -77,6 +81,7 @@ public class ModelGenerator{
 				model.put("StartLoop", startLoop);
 				model.put("Members", new JSONArray());
 				model.put("Child", "");
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("StartLoop", 
@@ -85,6 +90,7 @@ public class ModelGenerator{
 				model.put("Type", "StartLoop");
 				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("Child", model.getString("Name"));	
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("If",
@@ -104,6 +110,7 @@ public class ModelGenerator{
 				model.put("TrueMembers", new JSONArray());
 				model.put("FalseMembers", new JSONArray());
 				model.put("Child", "");
+				model.put("CodeGen", true);
 		
 				return model;
 			});
@@ -115,6 +122,7 @@ public class ModelGenerator{
 				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("TrueChild", "");
 				model.put("FalseChild", "");
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("EndIf", 
@@ -122,6 +130,7 @@ public class ModelGenerator{
 				JSONObject model = new JSONObject();
 				model.put("Type", "EndIf");
 				model.put("Name",nameCounterManager.getAvailableName());
+				model.put("CodeGen", true);
 				return model;
 			});
 		
@@ -132,7 +141,7 @@ public class ModelGenerator{
 				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("Variables",new JSONArray());
 				model.put("Child", "");
-				
+				model.put("CodeGen", true);
 				return model;
 			});
 		register("Assign",
@@ -142,7 +151,7 @@ public class ModelGenerator{
 				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("Assignments",new JSONArray());
 				model.put("Child", "");
-				
+				model.put("CodeGen", true);
 				return model;	
 			});
 		register("Output", 
@@ -152,6 +161,7 @@ public class ModelGenerator{
 				model.put("Name",nameCounterManager.getAvailableName());
 				model.put("Expression","");
 				model.put("Child", "");
+				model.put("CodeGen", true);
 				
 				return model;
 			});
@@ -162,6 +172,7 @@ public class ModelGenerator{
 				model.put("Name", nameCounterManager.getAvailableName());
 				model.put("TargetVariable","");
 				model.put("Child", "");
+				model.put("CodeGen", true);
 				return model;	
 		});
 	}

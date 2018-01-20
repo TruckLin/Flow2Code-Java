@@ -23,7 +23,13 @@ public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 		JSONArray members = model.getJSONArray("Members");
 		int numMembers = members.length();
 		
-		code = code + indent + "while( " + model.getString("Expression") + " ) {\n\n";
+		// Check whether we should generate the code.
+		if(!model.getBoolean("CodeGen")) {
+			code = code + indent + "// Fill in the content of this while loop.\n";
+			code = code + indent + "while(        ) {\n";
+		} else {
+			code = code + indent + "while( " + model.getString("Expression") + " ) {\n";
+		}
 		
 		// we first find the JSONObject of Type "Start"
 		JSONObject currentModel;

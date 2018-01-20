@@ -6,7 +6,11 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import gui.action.SaveAndLoadActions;
@@ -112,6 +116,12 @@ public class FlowDiagramToolBar extends JToolBar{
 		this.add(zoomRatioLabel);
 		this.add(zoomInButton);
 		
+		this.addSeparator();
+		
+		//Testing what will happen if we group the buttons
+		JPanel codeGenPanel = new JPanel();
+		
+		
 		codeGenButton = new JButton("CodeGen");
 		codeGenButton.addActionListener(e -> {
 			JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
@@ -119,7 +129,61 @@ public class FlowDiagramToolBar extends JToolBar{
 			code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(),code, "");
 			this.mainFrame.getCodeTextPane().setText(code);
 		});
-		this.add(codeGenButton);
+		
+		codeGenPanel.add(codeGenButton);
+		
+		//Testing
+		JCheckBoxMenuItem forBox = new JCheckBoxMenuItem("for");
+		forBox.setSelected(true);
+		forBox.addActionListener(e->{
+				JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+				boolean shouldCodeGen = box.getState();
+				this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("For", shouldCodeGen);
+			});
+	    JCheckBoxMenuItem whileBox = new JCheckBoxMenuItem("while");
+	    whileBox.setSelected(true);
+	    whileBox.addActionListener(e->{
+			JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+			boolean shouldCodeGen = box.getState();
+			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("While", shouldCodeGen);
+		});
+	    JCheckBoxMenuItem ifBox = new JCheckBoxMenuItem("if");
+	    ifBox.setSelected(true);
+	    ifBox.addActionListener(e->{
+			JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+			boolean shouldCodeGen = box.getState();
+			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("If", shouldCodeGen);
+		});
+	    JCheckBoxMenuItem declareBox = new JCheckBoxMenuItem("declare");
+	    declareBox.setSelected(true);
+	    declareBox.addActionListener(e->{
+			JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+			boolean shouldCodeGen = box.getState();
+			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("Declare", shouldCodeGen);
+		});
+	    JCheckBoxMenuItem assignBox = new JCheckBoxMenuItem("assign");
+	    assignBox.setSelected(true);
+	    assignBox.addActionListener(e->{
+			JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+			boolean shouldCodeGen = box.getState();
+			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("Assign", shouldCodeGen);
+		});
+	    
+	    JMenuBar menuBar = new JMenuBar();
+	    JMenu myMenu = new JMenu("Options");
+	    myMenu.add(forBox);
+	    myMenu.add(whileBox);
+	    myMenu.add(ifBox);
+	    myMenu.add(declareBox);
+	    myMenu.add(assignBox);
+	    menuBar.add(myMenu);
+		
+		codeGenPanel.add(menuBar);
+		codeGenPanel.setOpaque(false);
+		
+		this.add(codeGenPanel);
+		
+		//this.add(codeGenButton);
 		
 	}
 	

@@ -20,31 +20,31 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 	
 	
 	public MainFrame() {
-		// Retrieve the top-level content-pane from JFrame
-	    Container cp = getContentPane();
-	 
-	    // Content-pane sets layout
-	    cp.setLayout(new FlowLayout());
 	    
 	    // Allocate the GUI components
 	    // .....
-	    JPanel myPanel = new JPanel() {
-	    	@Override
-	    	public void paintComponent(Graphics g) {
-	    		super.paintComponent(g);
-	    		Graphics2D g2 = (Graphics2D)g;
-	    		
-	    		g2.drawLine(0, 0, 200, 200);
-	    	}
-	    };
+	    JPanel myPanel = new JPanel(new FlowLayout());
 	    myPanel.setPreferredSize(new Dimension(200,200));
-	    System.out.println(myPanel.isOpaque());
-	    myPanel.setOpaque(false);
-	    myPanel.setBackground(new Color(255,0,0,50));
-	    myPanel.repaint();
-	    cp.add(myPanel);
+	    
+	    JCheckBoxMenuItem forBox = new JCheckBoxMenuItem("for");
+	    JCheckBoxMenuItem whileBox = new JCheckBoxMenuItem("while");
+	    JCheckBoxMenuItem ifBox = new JCheckBoxMenuItem("if");
+	    JCheckBoxMenuItem declareBox = new JCheckBoxMenuItem("declare");
+	    JCheckBoxMenuItem assignBox = new JCheckBoxMenuItem("assign");
+	    
+	    JMenuBar menuBar = new JMenuBar();
+	    JMenu myMenu = new JMenu("Options");
+	    myMenu.add(forBox);
+	    myMenu.add(whileBox);
+	    myMenu.add(ifBox);
+	    myMenu.add(declareBox);
+	    myMenu.add(assignBox);
+
+	    menuBar.add(myMenu);
+	    myPanel.add(menuBar);
 	    
 	    
+	    this.setContentPane(myPanel);
 	    
 	    // Source object adds listener
 	    // .....

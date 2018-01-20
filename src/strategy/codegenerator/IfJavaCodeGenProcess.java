@@ -21,8 +21,13 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		int numTrueMembers = trueMembers.length();
 		int numFalseMembers = falseMembers.length();
 		
-		code = code + indent + "if( " + model.getString("Expression") + " ) {\n";
-		
+		// Check whether we should generate the code.
+		if(!model.getBoolean("CodeGen")) {
+			code = code + indent + "// Fill in the content of this if statement.\n";
+			code = code + indent + "if(        ) {\n";
+		} else {
+			code = code + indent + "if( " + model.getString("Expression") + " ) {\n";
+		}
 		// we first find the JSONObject of Type "Start"
 		JSONObject currentModel;
 		

@@ -32,6 +32,10 @@ public class JavaCodeGenerator extends CodeGenerator {
 		register("EndIf", (model, code, indent) -> {return code;}); // done
 		register("Declare", new DeclareJavaCodeGenProcess(this));
 		register("Assign", (model, code, indent) -> {
+												if(!model.getBoolean("CodeGen")) {
+													code = code + indent + "// Write your own assignment\n";
+													return code;
+												}
 												JSONArray assignments = model.getJSONArray("Assignments");
 												for(int i = 0; i < assignments.length(); i++) {
 													code = code + indent +

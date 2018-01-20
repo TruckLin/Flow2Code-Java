@@ -67,6 +67,7 @@ public abstract class SaveAndLoadManagerFD {
 				int begin = 0;
 				int end = 4;
 				
+				// if the currentEntry is a function.
 				if(currentEntry.getName().substring(begin, end).equals("Func")) continue;
                 
 				byte[] buffer = new byte[5096];

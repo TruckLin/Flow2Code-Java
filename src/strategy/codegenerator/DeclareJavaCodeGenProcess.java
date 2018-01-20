@@ -14,6 +14,11 @@ public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 	public String generateCode(JSONObject model,String code, String indent) {
 		// TODO Auto-generated method stub
 		
+		if(!model.getBoolean("CodeGen")) {
+			code = code + indent + "// Write your own Declaration.\n\n";
+			return code;
+		}
+		
 		JSONArray variables = model.getJSONArray("Variables");
 		for(int i = 0; i < variables.length(); i = i+1) {
 			

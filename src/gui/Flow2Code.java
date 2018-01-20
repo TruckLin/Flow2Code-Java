@@ -129,9 +129,9 @@ public class Flow2Code extends JFrame{
 	    SaveAndLoadManagerFD.loadFlowDiagramFromZippedFile(this.FlowDiagramModel, this.FlowDiagramInfo, 
 	    																			".\\assets\\Demo-empty.foo");
 	    
-	    //ModelGenerator modelGenerator = new ModelGenerator(nameManager);
+	    ModelGenerator modelGenerator = new ModelGenerator(nameManager);
 	    BlockGenerator blockGenerator = new BlockGenerator();
-	    //this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
+	    this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
 	    this.blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(this.FlowDiagramModel, this.FlowDiagramInfo);
 	    this.blockFlowDiagram.setAppropriateBounds();
 	    
@@ -193,12 +193,22 @@ public class Flow2Code extends JFrame{
 	    
 	    // Source object adds listener
 	    // .....
+	    
+	    //Testing
+	    /*
+	    JTextArea JSONDisplay = new JTextArea();
+	    this.add(new JScrollPane(JSONDisplay), BorderLayout.SOUTH);
+	    TextFetcher myJSONFetcher = new TextFetcher(this.FlowDiagramModel, JSONDisplay);
+	    myJSONFetcher.start();
+	 	*/
 	 
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       // Exit the program when the close-window button clicked
 	    setTitle("......");  // "super" JFrame sets title
 	    setSize(1000, 600);   // "super" JFrame sets initial size
 	    setVisible(true);    // "super" JFrame shows
+	    
+	    
 	}
 	
 	
