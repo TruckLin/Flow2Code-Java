@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -52,6 +53,7 @@ public abstract class SaveAndLoadManagerFD {
 	public static void loadFlowDiagramFromZippedFile(JSONObject fdModel,JSONObject fdInfo,String zipFilePath) {
 		File f = new File(zipFilePath);
 		
+		// ZipInpuStream with specify character set?
 		try(ZipInputStream in = new ZipInputStream(new FileInputStream(f)) ) {
 			ZipEntry currentEntry;
 			
@@ -68,12 +70,22 @@ public abstract class SaveAndLoadManagerFD {
 				int end = 4;
 				
 				// if the currentEntry is a function.
+				//Testing
+				//System.out.println(currentEntry.getName().substring(begin, end));
+				//System.out.println(currentEntry.getName().substring(begin, end).equals("Func"));
+				
 				if(currentEntry.getName().substring(begin, end).equals("Func")) continue;
                 
+				/** Read in the content from ZipInputStream **/
+				
+				String temp = ""; // this holds all the characters in the current entry.
+				
+				// Version 1
+				/*
 				byte[] buffer = new byte[5096];
 				//byte[] buffer = new byte[1024];
 				int len;
-				String temp = "";
+				
 
 				//Testing
 				//System.out.println(temp);
@@ -98,7 +110,7 @@ public abstract class SaveAndLoadManagerFD {
 					dataIn.close();
                    
 				}
-				
+				*/
 				//Version 2
 			/*	byte in1,in2;
 				while ( (in1 = in.read()) != -1 && (in2 = in.read()) != -1 ) ){
@@ -121,6 +133,16 @@ public abstract class SaveAndLoadManagerFD {
                    
 				}
 				*/
+				
+				//Version 3
+				Scanner sc = new Scanner(in, "UTF-16");
+				 while (sc.hasNextLine()) {
+				     temp = temp + sc.nextLine();
+				 }
+				// Testing
+				 System.out.println("Entry = " + currentEntry.getName());
+				 System.out.println("File content = " + temp);
+				
 				if(currentEntry.getName().contains("info")) {
 					// Clone JSONObject
 					JSONObject tempModel = new JSONObject(temp);
@@ -195,10 +217,17 @@ public abstract class SaveAndLoadManagerFD {
 	}
 	
 	public static void saveFlowDiagramIntoZippedFile(JSONObject fdModel, JSONObject fdInfo, String zipFilePath) {
-		String[] textFilePath = {"FlowDiagram.json", "FlowDiagram-info.json"};
+		String[] textFilePath = {"temp/FlowDiagram.json", "temp/FlowDiagram-info.json"};
 		String[] textFilePathInZip = {"FlowDiagram/" + textFilePath[0], "FlowDiagram/" + textFilePath[1]};
 		SaveAndLoadManagerFD.saveTextFileFromString(fdModel.toString(), textFilePath[0]);
 		SaveAndLoadManagerFD.saveTextFileFromString(fdInfo.toString(), textFilePath[1]);
+		
+		//Testing
+	//	Scanner sc = new Scanner(System.in);
+	//	System.out.println("Waiting for input...");
+	//	int i = sc.nextInt();
+	//	System.out.println("i = :" + i);
+		
 		SaveAndLoadManagerFD.copyTextFilesIntoZippedFile(textFilePath, textFilePathInZip, zipFilePath);
 	
 		Path path = null;
