@@ -52,6 +52,9 @@ public class SaveAndLoadActions {
              String path = file.toString();
              JSONObject model = this.mainFrame.getFlowDiagramModel();
              JSONObject graphicalInfo = this.mainFrame.getBlockFlowDiagram().getGraphicalInfo();
+             if( ! path.endsWith(".foo")) {
+            	 path = path + ".foo";
+             }
              SaveAndLoadManagerFD.saveFlowDiagramIntoZippedFile(model, graphicalInfo, path);
              
              //Testing

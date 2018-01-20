@@ -139,9 +139,9 @@ public abstract class SaveAndLoadManagerFD {
 				 while (sc.hasNextLine()) {
 				     temp = temp + sc.nextLine();
 				 }
-				// Testing
-				 System.out.println("Entry = " + currentEntry.getName());
-				 System.out.println("File content = " + temp);
+				 // Testing
+			//	 System.out.println("Entry = " + currentEntry.getName());
+			//	 System.out.println("File content = " + temp);
 				
 				if(currentEntry.getName().contains("info")) {
 					// Clone JSONObject
