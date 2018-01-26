@@ -6,6 +6,7 @@ import java.util.HashMap;
 public abstract class TextTree {
 	
 	public abstract String getText();
+	
 /*	
 	getText()
 	able to insert text without too much trouble
@@ -16,4 +17,5 @@ public abstract class TextTree {
 	TextTree.get(int index)
 	TextTree.get(String key) this should search the whole tree.
 */
+	
 }

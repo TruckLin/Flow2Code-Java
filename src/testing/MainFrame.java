@@ -7,6 +7,12 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import editor.system.CodeEditPanel;
+import editor.system.TextAreaLeaf;
+import editor.system.TextBranch;
+import editor.system.TextFieldLeaf;
+import editor.system.TextLeaf;
+import editor.system.TextTree;
 import gui.object.BlockEndLOOP;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
@@ -23,32 +29,38 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 	    
 	    // Allocate the GUI components
 	    // .....
-	    JPanel myPanel = new JPanel(new FlowLayout());
-	    myPanel.setPreferredSize(new Dimension(200,200));
+	   // Testing TextTree model
+	    TextBranch documentTree = new TextBranch();
+	    documentTree.addTree(new TextLeaf("public class HelloWorld { \n    public static void main(String[] args){ "));
+	    documentTree.addTree(new TextLeaf("\n        System.out.println(\"Hello World!\")\n"));
+	    documentTree.addTree(new TextLeaf("        Let's enter something : "));
+	    //documentTree.addTree(new TextAreaLeaf());
+	    documentTree.addTree(new TextFieldLeaf());
+	    documentTree.addTree(new TextLeaf("Is it working?\n    }\n}") );
 	    
-	    JCheckBoxMenuItem forBox = new JCheckBoxMenuItem("for");
-	    JCheckBoxMenuItem whileBox = new JCheckBoxMenuItem("while");
-	    JCheckBoxMenuItem ifBox = new JCheckBoxMenuItem("if");
-	    JCheckBoxMenuItem declareBox = new JCheckBoxMenuItem("declare");
-	    JCheckBoxMenuItem assignBox = new JCheckBoxMenuItem("assign");
-	    
-	    JMenuBar menuBar = new JMenuBar();
-	    JMenu myMenu = new JMenu("Options");
-	    myMenu.add(forBox);
-	    myMenu.add(whileBox);
-	    myMenu.add(ifBox);
-	    myMenu.add(declareBox);
-	    myMenu.add(assignBox);
-
-	    menuBar.add(myMenu);
-	    myPanel.add(menuBar);
-	    
-	    
-	    this.setContentPane(myPanel);
+	    this.setContentPane(new CodeEditPanel(documentTree));
+	   
+	/*    JPanel np = new JPanel(null);
+		JTextField tf = new JTextField();
+		tf.setBounds(100,100,100,50);
+		np.add(tf);
+		int initialWidth = 100;
+		tf.addCaretListener(e -> {
+					int newWidth = tf.getText().length()*8;
+					if(newWidth > initialWidth) {
+						tf.setBounds(tf.getLocation().x, tf.getLocation().y, newWidth, 50 );
+					} else {
+						tf.setBounds(tf.getLocation().x, tf.getLocation().y, initialWidth, 50 );
+					}
+				});
+		
+		this.setContentPane(np);
+		*/
 	    
 	    // Source object adds listener
 	    // .....
-	 
+	    	
+	    
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setTitle("JComponent Test");
 	    setSize(500, 450);  // or pack()
