@@ -1,4 +1,4 @@
-package editor.system;
+package editor.system.testing;
 
 import javax.swing.JTextField;
 
@@ -8,8 +8,6 @@ public class TextFieldLeaf extends TextTree{
 	
 	private boolean initialised = false;
 	// This variable indicated whether the boundary of textfield has been initialised.
-	
-	private int currentWidth = 0;
 	
 	public TextFieldLeaf(){
 		super();
@@ -35,10 +33,7 @@ public class TextFieldLeaf extends TextTree{
 		this.initialised = b;
 	}
 	public int getCurrentWidth() {
-		return this.currentWidth;
-	}
-	public void setCurrentWidth(int cw) {
-		this.currentWidth = cw;
+		return this.myTextField.getWidth();
 	}
 	
 	

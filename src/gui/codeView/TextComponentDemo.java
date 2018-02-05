@@ -357,6 +357,7 @@ public class TextComponentDemo extends JFrame {
                 doc.insertString(doc.getLength(), initString[i] + newline,
                         attrs[i]);
             }
+            
         } catch (BadLocationException ble) {
             System.err.println("Couldn't insert initial text.");
         }

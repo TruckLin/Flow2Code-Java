@@ -1,10 +1,13 @@
-package editor.system;
+package editor.system.testing;
 
 import javax.swing.JTextArea;
 
 public class TextAreaLeaf extends TextTree{
 	
 	private JTextArea leafArea;
+	
+	private boolean initialised = false;
+	// This variable indicated whether the boundary of textArea has been initialised.
 		
 	public TextAreaLeaf() {
 		super();
@@ -14,6 +17,12 @@ public class TextAreaLeaf extends TextTree{
 	/** Getters and Setters **/
 	public JTextArea getTextArea() {
 		return this.leafArea;
+	}
+	public boolean getInitialised() {
+		return this.initialised;
+	}
+	public void setInitialised(boolean b) {
+		this.initialised = b;
 	}
 	
 	@Override

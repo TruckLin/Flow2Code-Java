@@ -7,12 +7,14 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import editor.system.CodeEditPanel;
-import editor.system.TextAreaLeaf;
-import editor.system.TextBranch;
-import editor.system.TextFieldLeaf;
-import editor.system.TextLeaf;
-import editor.system.TextTree;
+import editor.system.testing.CodeEditPanel;
+import editor.system.testing.CodeEditPanelV2;
+import editor.system.testing.TestingPanel;
+import editor.system.testing.TextAreaLeaf;
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextFieldLeaf;
+import editor.system.testing.TextLeaf;
+import editor.system.testing.TextTree;
 import gui.object.BlockEndLOOP;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
@@ -35,11 +37,18 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 	    documentTree.addTree(new TextLeaf("\n        System.out.println(\"Hello World!\")\n"));
 	    documentTree.addTree(new TextLeaf("        Let's enter something : "));
 	    //documentTree.addTree(new TextAreaLeaf());
-	    documentTree.addTree(new TextFieldLeaf());
+	    //documentTree.addTree(new TextFieldLeaf());
+	    //documentTree.addTree(new TextFieldLeaf());
 	    documentTree.addTree(new TextLeaf("Is it working?\n    }\n}") );
+	    documentTree.addTree(new TextAreaLeaf());
+
+	    documentTree.addTree(new TextFieldLeaf());
 	    
-	    this.setContentPane(new CodeEditPanel(documentTree));
+	    this.setContentPane(new CodeEditPanelV2(documentTree));
 	   
+	   
+	    //this.setContentPane(new TestingPanel());
+	    
 	/*    JPanel np = new JPanel(null);
 		JTextField tf = new JTextField();
 		tf.setBounds(100,100,100,50);

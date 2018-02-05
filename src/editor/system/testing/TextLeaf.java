@@ -1,4 +1,4 @@
-package editor.system;
+package editor.system.testing;
 
 public class TextLeaf extends TextTree{
 	private String text;

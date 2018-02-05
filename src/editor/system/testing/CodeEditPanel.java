@@ -1,4 +1,4 @@
-package editor.system;
+package editor.system.testing;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -148,19 +148,22 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				
 				this.add(tf);
 				// Add caret listener
+			//	tf.removeCaretListener(tf.getCaretListeners());
+				
+				//Testing
+				System.out.println("Number of caretListeners : " + tf.getCaretListeners().length);
+				
 				tf.addCaretListener(e -> {
 					//Testing
 					System.out.println("listener triggered.");
 					
 					int newWidth = FM.stringWidth(tf.getText());
 					if(newWidth > initialWidth) {
-						tf.setBounds(tf.getLocation().x, tf.getLocation().y, newWidth, this.lineHeight );
-						((TextFieldLeaf)textTree).setCurrentWidth(newWidth);
+						tf.setBounds(x_baseLine, y_baseLine - this.lineAscent, newWidth, this.lineHeight );
 					} else {
-						tf.setBounds(tf.getLocation().x, tf.getLocation().y, initialWidth, this.lineHeight );
-						((TextFieldLeaf)textTree).setCurrentWidth(initialWidth);
+						tf.setBounds(x_baseLine, y_baseLine - this.lineAscent, initialWidth, this.lineHeight );
 					}
-					CodeEditPanel.this.repaint();
+					this.repaint();
 				});
 				
 				//Update x_baseline location
