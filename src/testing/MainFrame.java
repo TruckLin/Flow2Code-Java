@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import editor.system.testing.CodeEditPanel;
-import editor.system.testing.CodeEditPanelV2;
 import editor.system.testing.TestingPanel;
 import editor.system.testing.TextAreaLeaf;
 import editor.system.testing.TextBranch;
@@ -25,7 +24,6 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	
 	public MainFrame() {
 	    
@@ -44,7 +42,7 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 
 	    documentTree.addTree(new TextFieldLeaf());
 	    
-	    this.setContentPane(new CodeEditPanelV2(documentTree));
+	    this.setContentPane(new CodeEditPanel(documentTree));
 	   
 	   
 	    //this.setContentPane(new TestingPanel());
