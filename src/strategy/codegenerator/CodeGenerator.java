@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.json.JSONObject;
 
-import editor.system.testing.TextBranch;
-import editor.system.testing.TextTree;
+import gui.codeView.TextBranch;
+import gui.codeView.TextTree;
 import gui.object.BlockFD;
 import strategy.generator.ModelGenerationProcess;
 

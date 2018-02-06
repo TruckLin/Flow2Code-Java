@@ -1,4 +1,4 @@
-package editor.system.testing;
+package gui.codeView;
 
 import java.awt.Color;
 import java.awt.Dimension;

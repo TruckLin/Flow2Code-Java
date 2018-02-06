@@ -13,8 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import editor.system.testing.TextBranch;
 import gui.action.SaveAndLoadActions;
+import gui.codeView.TextBranch;
 import gui.manager.UndoManager;
 import strategy.codegenerator.JavaCodeGenerator;
 

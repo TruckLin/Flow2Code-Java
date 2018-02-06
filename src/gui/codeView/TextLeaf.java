@@ -1,4 +1,4 @@
-package editor.system.testing;
+package gui.codeView;
 
 public class TextLeaf extends TextTree{
 	private String text;

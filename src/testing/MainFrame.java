@@ -7,13 +7,12 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import editor.system.testing.CodeEditPanel;
-import editor.system.testing.TestingPanel;
-import editor.system.testing.TextAreaLeaf;
-import editor.system.testing.TextBranch;
-import editor.system.testing.TextFieldLeaf;
-import editor.system.testing.TextLeaf;
-import editor.system.testing.TextTree;
+import gui.codeView.CodeEditPanel;
+import gui.codeView.TextAreaLeaf;
+import gui.codeView.TextBranch;
+import gui.codeView.TextFieldLeaf;
+import gui.codeView.TextLeaf;
+import gui.codeView.TextTree;
 import gui.object.BlockEndLOOP;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;

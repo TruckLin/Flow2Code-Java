@@ -3,8 +3,8 @@ package strategy.codegenerator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import editor.system.testing.TextBranch;
-import editor.system.testing.TextLeaf;
+import gui.codeView.TextBranch;
+import gui.codeView.TextLeaf;
 
 public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;

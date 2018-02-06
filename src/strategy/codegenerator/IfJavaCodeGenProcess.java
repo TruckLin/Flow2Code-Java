@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import editor.system.testing.TextBranch;
-import editor.system.testing.TextFieldLeaf;
-import editor.system.testing.TextLeaf;
+import gui.codeView.TextBranch;
+import gui.codeView.TextFieldLeaf;
+import gui.codeView.TextLeaf;
 
 public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;

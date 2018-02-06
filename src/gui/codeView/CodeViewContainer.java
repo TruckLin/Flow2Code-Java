@@ -17,9 +17,6 @@ import javax.swing.text.StyledDocument;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import editor.system.testing.CodeEditPanel;
-import editor.system.testing.TextBranch;
-
 //Two different UndoManager
 //import javax.swing.undo.UndoManager;
 

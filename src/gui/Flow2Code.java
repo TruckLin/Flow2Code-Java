@@ -10,7 +10,7 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
-import editor.system.testing.CodeEditPanel;
+import gui.codeView.CodeEditPanel;
 import gui.codeView.CodeViewContainer;
 import gui.codeView.CodeViewToolBar;
 import gui.manager.NameCounterManager;

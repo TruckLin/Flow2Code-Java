@@ -2,8 +2,8 @@ package strategy.codegenerator;
 
 import org.json.JSONObject;
 
-import editor.system.testing.TextBranch;
-import editor.system.testing.TextTree;
+import gui.codeView.TextBranch;
+import gui.codeView.TextTree;
 import gui.manager.NameCounterManager;
 import strategy.generator.ModelGenerator;
 

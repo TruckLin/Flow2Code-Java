@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import editor.system.testing.TextAreaLeaf;
-import editor.system.testing.TextBranch;
-import editor.system.testing.TextLeaf;
+import gui.codeView.TextAreaLeaf;
+import gui.codeView.TextBranch;
+import gui.codeView.TextLeaf;
 import gui.manager.SaveAndLoadManagerFD;
 import gui.object.CompositeBlockFD;
 import strategy.generator.BlockGenerator;
