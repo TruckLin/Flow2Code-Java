@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextFieldLeaf;
+import editor.system.testing.TextLeaf;
+
 public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
 	public ForJavaCodeGenProcess(JavaCodeGenerator codeGenerator) {
@@ -12,7 +16,7 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model,String code, String indent) {
+	public TextBranch generateCode(JSONObject model,TextBranch code, String indent) {
 		// TODO Auto-generated method stub
 		
 
@@ -26,11 +30,12 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 		
 		// Check whether we should generate the code.
 		if(!model.getBoolean("CodeGen")) {
-			code = code + indent + "// Fill in the content of this for loop.\n";
-			code = code + indent + "for(        ) {\n";
+			code.addTree(new TextLeaf("// Fill in the content of this for loop.\n" + indent + "for("));
+			code.addTree(new TextFieldLeaf());
+			code.addTree(new TextLeaf(") {\n"));
 		} else {
-			code = code + indent + "for( " + model.getString("Initialisation") + "; " + model.getString("Condition") 
-			+ "; "+ model.getString("PostProcess") + " ) {\n";
+			code.addTree(new TextLeaf(indent + "for( " + model.getString("Initialisation") + "; " + model.getString("Condition") 
+			+ "; "+ model.getString("PostProcess") + " ) {\n"));
 		}
 		
 		// we first find the JSONObject of Type "Start"
@@ -50,14 +55,14 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
+					code = (TextBranch) this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
 			}
 		}
 		
-		code = code + indent + "}\n";
+		code.addTree(new TextLeaf(indent + "}\n"));
 		
 		// Destroy all variables added in during for loop.
 		for(int k = numOfVarStart; k <= (varList.size()-1); k++) {

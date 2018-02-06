@@ -30,4 +30,10 @@ public class TextAreaLeaf extends TextTree{
 		// TODO Auto-generated method stub
 		return leafArea.getText();
 	}
+
+	@Override
+	public boolean contains(String str) {
+		// TODO Auto-generated method stub
+		return this.leafArea.getText().contains(str);
+	}
 }

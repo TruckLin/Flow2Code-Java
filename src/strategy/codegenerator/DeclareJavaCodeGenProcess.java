@@ -3,6 +3,10 @@ package strategy.codegenerator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import editor.system.testing.TextAreaLeaf;
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextLeaf;
+
 public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
 	
@@ -11,12 +15,12 @@ public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model,String code, String indent) {
+	public TextBranch generateCode(JSONObject model,TextBranch code, String indent) {
 		// TODO Auto-generated method stub
 		
 		if(!model.getBoolean("CodeGen")) {
-			code = code + indent + "// Write your own Declaration.\n\n";
-			return code;
+			code.addTree(new TextLeaf(indent + "// Write your own Declaration.\n" + indent));
+			code.addTree(new TextAreaLeaf());
 		}
 		
 		JSONArray variables = model.getJSONArray("Variables");
@@ -30,38 +34,36 @@ public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 			Boolean isArray = currentVar.getBoolean("IsArray");
 			String VariableName = currentVar.getString("VariableName");
 			int size = currentVar.getInt("Size");
-			
-			code = code + indent;
-			
+
 			String dataTypeString = "";
 			if(dataType.equals("Integer")) {
-				code = code + "int";
 				dataTypeString = "int";
 			}else if(dataType.equals("Real")) {
-				code = code + "double";
 				dataTypeString = "double";
 			}else if(dataType.equals("Boolean")) {
-				code = code + "boolean";
 				dataTypeString = "boolean";
 			}else {
-				code = code + "String";
 				dataTypeString = "String";
 			}
 			
-			if(isArray) {
-				code = code + "[]";
+			
+			if(model.getBoolean("CodeGen")) {
+				code.addTree(new TextLeaf(indent));
+				code.addTree(new TextLeaf(dataTypeString));
+				if(isArray) {
+					code.addTree(new TextLeaf("[]"));
+				}
+				
+				code.addTree(new TextLeaf(" " + VariableName));
+				
+				if( !isArray ) {
+					code.addTree(new TextLeaf(";\n"));
+				}else {
+					code.addTree(new TextLeaf(" = new " + dataTypeString +"[" + size + "];\n"));
+				}
 			}
 			
-			code = code + " " + VariableName;
-			
-			if( !isArray ) {
-				code = code + ";\n";
-			}else {
-				code = code + " = new " + dataTypeString +"[" + size + "];\n";
-			}
 		} // end of for loop.
-		
-		code = code + "\n";
 		
 		return code;
 	}

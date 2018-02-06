@@ -35,6 +35,12 @@ public class TextFieldLeaf extends TextTree{
 	public int getCurrentWidth() {
 		return this.myTextField.getWidth();
 	}
+
+	@Override
+	public boolean contains(String str) {
+		// TODO Auto-generated method stub
+		return this.myTextField.getText().contains(str);
+	}
 	
 	
 }

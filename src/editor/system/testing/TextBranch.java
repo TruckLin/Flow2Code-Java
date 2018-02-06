@@ -33,26 +33,40 @@ public class TextBranch extends TextTree{
 		this.leaves.add(someTree);
 	}
 	
-	/* Waiting to be completed , not sure if we need this.*/
-//	public void addTree(String key, TextTree someTree) {
-		// TODO Auto-generated method stub
-		
-//	}
-	
 	public void insertTree(int index, TextTree someTree) {
 		this.leaves.add(index, someTree);
 	}
-	/* Waiting to be completed , not sure if we need this.*/
-//	public void insertTree(String key, TextTree someTree, int index) {
-		// TODO Auto-generated method stub
-		
-//	}
 
 	public int getIndexOf(TextTree someTree) {
 		// TODO Auto-generated method stub
 		return leaves.indexOf(someTree);
 	}
-
+	
+	// This function returns the first leaf that contains the given String
+	// return -1 if not found.
+	public int getIndexOfLeafContainString(String str) {
+		int i = 0;
+		for(TextTree textLeaf : leaves) {
+			if(textLeaf.contains(str)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+	
+	//This function returns the first leaf the contains str after certain index k.
+	// ***including the k'th leaf***
+	// return -1 if not found.
+	public int getIndexOfLeafContainString(String str, int k) {
+		for( ; k < this.leaves.size(); k++) {
+			if(this.leaves.get(k).contains(str)) {
+				return k;
+			}
+		}
+		return -1;
+	}
+	
 	public TextTree get(int index) {
 		// TODO Auto-generated method stub
 		return leaves.get(index);
@@ -61,10 +75,14 @@ public class TextBranch extends TextTree{
 	public ArrayList<TextTree> getLeaves(){
 		return this.leaves;
 	}
-
-	/* Waiting to be completed , not sure if we need this.*/
-//	public TextTree get(String key) {
+	@Override
+	public boolean contains(String str) {
 		// TODO Auto-generated method stub
-//		return null;
-//	}
+		for(TextTree textLeaf : leaves) {
+			if(textLeaf.contains(str)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

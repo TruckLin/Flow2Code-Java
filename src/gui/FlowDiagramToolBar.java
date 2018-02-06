@@ -13,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import editor.system.testing.TextBranch;
 import gui.action.SaveAndLoadActions;
 import gui.manager.UndoManager;
 import strategy.codegenerator.JavaCodeGenerator;
@@ -125,9 +126,9 @@ public class FlowDiagramToolBar extends JToolBar{
 		codeGenButton = new JButton("CodeGen");
 		codeGenButton.addActionListener(e -> {
 			JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
-			String code = "";
-			code = codeGenerator.generate(this.mainFrame.getFlowDiagramModel(),code, "");
-			this.mainFrame.getCodeTextPane().setText(code);
+			TextBranch code = new TextBranch();
+			code = (TextBranch) codeGenerator.generate(this.mainFrame.getFlowDiagramModel(),code, "");
+			this.mainFrame.getCodeEditPanel().setTextModel(code);
 		});
 		
 		codeGenPanel.add(codeGenButton);

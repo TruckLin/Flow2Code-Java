@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextFieldLeaf;
+import editor.system.testing.TextLeaf;
+
 public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
 	public WhileJavaCodeGenProcess(JavaCodeGenerator codeGenerator) {
@@ -12,7 +16,7 @@ public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model,String code, String indent) {
+	public TextBranch generateCode(JSONObject model,TextBranch code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Get the number of variables declared before we enter the for loop.
@@ -25,10 +29,12 @@ public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 		
 		// Check whether we should generate the code.
 		if(!model.getBoolean("CodeGen")) {
-			code = code + indent + "// Fill in the content of this while loop.\n";
-			code = code + indent + "while(        ) {\n";
+			code.addTree(new TextLeaf(indent + "// Fill in the content of this while loop.\n"));
+			code.addTree(new TextLeaf(indent + "while("));
+			code.addTree(new TextFieldLeaf());
+			code.addTree(new TextLeaf(") {\n"));
 		} else {
-			code = code + indent + "while( " + model.getString("Expression") + " ) {\n";
+			code.addTree(new TextLeaf(indent + "while( " + model.getString("Expression") + " ) {\n"));
 		}
 		
 		// we first find the JSONObject of Type "Start"
@@ -48,14 +54,14 @@ public class WhileJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
+					code = (TextBranch) this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
 			}
 		}
 		
-		code = code + indent + "}\n";
+		code.addTree(new TextLeaf(indent + "}\n"));
 		
 		// Destroy all variables added in during for loop.
 		for(int k = numOfVarStart; k <= (varList.size()-1); k++) {

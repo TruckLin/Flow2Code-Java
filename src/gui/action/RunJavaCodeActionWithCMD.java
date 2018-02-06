@@ -3,6 +3,7 @@ package gui.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -46,15 +47,16 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 				".java";
 		
 		Runtime run = Runtime.getRuntime();
-		String javaCode = codeViewContainer.getCodeViewTextPane().getText();
-		FileHandle.saveTextFileFromString(codeViewContainer.getCodeViewTextPane().getText(), ".\\temp\\FlowCode.java");
+		String javaCode = codeViewContainer.getCodeEditPanel().getText();
+		FileHandle.saveTextFileFromString(codeViewContainer.getCodeEditPanel().getText(), ".\\temp\\FlowCode.java");
 		
 		CompilationProgress progress = null; // instantiate your subclass
 		
 		
 		//Testing
 		//System.out.println(encoding + fileName + fileExtension);
-		BatchCompiler.compile(
+		
+		boolean success = BatchCompiler.compile(
 			encoding + 
 			path + 
 			fileName + 
@@ -63,18 +65,21 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 		    new PrintWriter(System.err),
 		    progress);
 		
+		//Testing
+		//System.out.println("Compilation success = " + success);
 		
-	    try {
-	      Process p = Runtime.getRuntime().exec("cmd.exe /c start cmd /k java -cp " + ".\\temp " +fileName);
-	      p.waitFor();
-
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	    } catch (InterruptedException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+		if(success) {
+		    try {
+		      Process p = Runtime.getRuntime().exec("cmd.exe /c start cmd /k java -cp " + ".\\temp " +fileName);
+		      p.waitFor();
+	
+		    } catch (IOException ex) {
+		        ex.printStackTrace();
+		    } catch (InterruptedException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
 		}
-	    
 	   // System.setProperty("user.dir", oldDir);
 
 	}

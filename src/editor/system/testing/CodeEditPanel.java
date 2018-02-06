@@ -155,6 +155,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		
 		if(this.textModel!= null) {
 			this.addTextComponentInTextModel();
+			this.repaint();
 		}
 	}
 	
@@ -222,13 +223,15 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				// Add caret listener
 				ta.addCaretListener(this.textAreaListener);
 				
-				//Update y_baseLine location but x_baseLine remains the same.
+				//Update y_baseLine location and x_baseLine location
+				this.x_baseLine = this.lineNumberBarWidth;
 				this.y_baseLine += ta.getHeight();
 			}else {
 				/** if the TextAreaLeaf is initialised **/
 				ta.setLocation(x_baseLine, y_baseLine-this.lineAscent);
 				
-				//Update y_baseLine location but x_baseLine remains the same.
+				//Update y_baseLine location and x_baseLine location
+				this.x_baseLine = this.lineNumberBarWidth;
 				this.y_baseLine += ta.getHeight();
 
 			}
@@ -359,6 +362,9 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				this.paintCurerentLineNumberBar(g2);
 			}
 			
+			//Update x_baseLine location
+			this.x_baseLine = this.lineNumberBarWidth;
+			
 			//Testing
 			//System.out.println("y_baseLine after = " + this.y_baseLine);
 			
@@ -383,6 +389,11 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		String lineNumber = Integer.toString(this.numLineSoFar);
 		int numWidth = this.FM.stringWidth(lineNumber);
 		g2.drawString(lineNumber, this.lineNumberBarWidth/2-numWidth/2 , this.y_baseLine);
+	}
+	
+	/** Getters and Setters **/
+	public String getText() {
+		return this.textModel.getText();
 	}
 	
 	/** Scrollable interface **/

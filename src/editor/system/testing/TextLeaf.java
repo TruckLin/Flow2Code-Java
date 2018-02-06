@@ -17,4 +17,10 @@ public class TextLeaf extends TextTree{
 		return this.text;
 	}
 
+	@Override
+	public boolean contains(String str) {
+		// TODO Auto-generated method stub
+		return this.text.contains(str);
+	}
+
 }

@@ -7,6 +7,7 @@ public abstract class TextTree {
 	
 	public abstract String getText();
 	
+	public abstract boolean contains(String str);
 /*	
 	getText()
 	able to insert text without too much trouble

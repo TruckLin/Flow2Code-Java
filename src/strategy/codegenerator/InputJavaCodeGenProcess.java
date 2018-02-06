@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextLeaf;
+
 public class InputJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
 	
@@ -13,7 +16,7 @@ public class InputJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model, String CodeSoFar, String indent) {
+	public TextBranch generateCode(JSONObject model,TextBranch code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Target variable string written down by user.
@@ -36,7 +39,17 @@ public class InputJavaCodeGenProcess implements CodeGenerationProcess{
 		int refferedVar = -1;
 		// Try to find whether the variable is declared.
 		// if not, refferedVar remains zero.
+		
+		//Testing
+		//System.out.println("variableList.size() = " + variableList.size());
+		
 		for(int i = 0; i < variableList.size(); i++) {
+			// Testing
+			//System.out.println("i'th var name = " + variableList.get(i).getString("VariableName"));
+			//System.out.println("TargetVariableName = " + targetVariableName);
+			//System.out.println(".equals() = " + variableList.get(i).getString("VariableName").equals(targetVariableName));
+			
+			
 			if(variableList.get(i).getString("VariableName").equals(targetVariableName)) refferedVar = i;
 		}
 		
@@ -44,8 +57,8 @@ public class InputJavaCodeGenProcess implements CodeGenerationProcess{
 		String commenting = "";
 		if(refferedVar == -1) {
 			commenting = "//";
-			CodeSoFar = CodeSoFar + "\n" + indent + commenting + targetVariableName +" is either not declared or not visible.\n";
-			return CodeSoFar;
+			code.addTree(new TextLeaf("\n" + indent + commenting + targetVariableName +" is either not declared or not visible.\n"));
+			return code;
 		} else {
 			// get the variable type and decide which function to call.
 			String variableType = variableList.get(refferedVar).getString("DataType");
@@ -62,28 +75,19 @@ public class InputJavaCodeGenProcess implements CodeGenerationProcess{
 			
 			// Check whether Scanner is imported.
 			// if it is, we assume the global variable Scanner sc  is also declared.
-			if ( !CodeSoFar.contains("import java.util.Scanner;")) {
-				CodeSoFar = "import java.util.Scanner; \n" + CodeSoFar;
+			if ( !code.contains("import java.util.Scanner;")) {
+				code.insertTree(0, new TextLeaf("import java.util.Scanner; \n"));
+				int indexOfClass = code.getIndexOfLeafContainString("args)");
 				
-				int indexOfClass = CodeSoFar.indexOf("args)");
-				
-				int indexToStart = CodeSoFar.indexOf('{', indexOfClass);
-				
-				CodeSoFar = CodeSoFar.substring(0, indexToStart+1) + 
-											"\n" + "    " + "    " + "Scanner sc = new Scanner(System.in);" + 
-											CodeSoFar.substring(indexToStart+1);
-				
+				if(indexOfClass != -1) {
+					code.insertTree(indexOfClass + 1, new TextLeaf("    " + "    " + "Scanner sc = new Scanner(System.in);\n" ));
+				}
 				//Testing
 				//sSystem.out.println("indexOfClass = " + indexOfClass);
 				
 			}
-			
-			
-			
-			CodeSoFar = CodeSoFar + indent + model.getString("TargetVariable") + readInStatement;
-
-			
-			return CodeSoFar;
+			code.addTree(new TextLeaf(indent + model.getString("TargetVariable") + readInStatement));
+			return code;
 		}
 		
 		

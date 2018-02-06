@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import editor.system.testing.TextAreaLeaf;
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextLeaf;
 import gui.manager.SaveAndLoadManagerFD;
 import gui.object.CompositeBlockFD;
 import strategy.generator.BlockGenerator;
@@ -33,22 +36,23 @@ public class JavaCodeGenerator extends CodeGenerator {
 		register("Declare", new DeclareJavaCodeGenProcess(this));
 		register("Assign", (model, code, indent) -> {
 												if(!model.getBoolean("CodeGen")) {
-													code = code + indent + "// Write your own assignment\n";
+													code.addTree(new TextLeaf(indent + "//Write your own assignments\n" + indent));
+													code.addTree(new TextAreaLeaf());
 													return code;
 												}
 												JSONArray assignments = model.getJSONArray("Assignments");
 												for(int i = 0; i < assignments.length(); i++) {
-													code = code + indent +
+													code.addTree(new TextLeaf(indent +
 															assignments.getJSONObject(i).getString("TargetVariable") + " = " + 
-															assignments.getJSONObject(i).getString("Expression") + ";\n";
+															assignments.getJSONObject(i).getString("Expression") + ";\n"));
 												}
 												//code += "\n";
 												return code;
 											});
 		register("Output", (model, code, indent) -> {	
-												code = code + indent + 
+												code.addTree(new TextLeaf(indent + 
 														"System.out.println( " + model.getString("Expression") 
-															+ " );" + "\n";
+															+ " );" + "\n"));
 												return code;
 											});
 		register("Input", new InputJavaCodeGenProcess(this));
@@ -76,8 +80,8 @@ public class JavaCodeGenerator extends CodeGenerator {
 	    blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(FlowDiagramModel, FlowDiagramInfo);
 	    
 		JavaCodeGenerator codeGenerator = new JavaCodeGenerator(blockFlowDiagram);
-		String code = "";
-		code = codeGenerator.generate(FlowDiagramModel,code, "");
+		TextBranch code = new TextBranch();
+		code = (TextBranch)codeGenerator.generate(FlowDiagramModel,code, "");
 		System.out.println(code);
 		
 		//Testing

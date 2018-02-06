@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextFieldLeaf;
+import editor.system.testing.TextLeaf;
+
 public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
 	public IfJavaCodeGenProcess(JavaCodeGenerator codeGenerator) {
@@ -12,7 +16,7 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model,String code, String indent) {
+	public TextBranch generateCode(JSONObject model,TextBranch code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Setting up
@@ -23,10 +27,13 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		
 		// Check whether we should generate the code.
 		if(!model.getBoolean("CodeGen")) {
-			code = code + indent + "// Fill in the content of this if statement.\n";
-			code = code + indent + "if(        ) {\n";
+			code.addTree(new TextLeaf(indent + "// Fill in the content of this if statement.\n"
+								+ indent + "if("));
+			code.addTree(new TextFieldLeaf());
+			code.addTree(new TextLeaf(") {\n"));
+
 		} else {
-			code = code + indent + "if( " + model.getString("Expression") + " ) {\n";
+			code.addTree(new TextLeaf(indent + "if( " + model.getString("Expression") + " ) {\n"));
 		}
 		// we first find the JSONObject of Type "Start"
 		JSONObject currentModel;
@@ -50,7 +57,7 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
+					code = (TextBranch) this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
@@ -63,15 +70,15 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		}
 		
 		// Close up the bracket
-		code = code + indent + "}";
+		code.addTree(new TextLeaf(indent + "}"));
 		if( numFalseMembers == 0 ) {
-			code = code + "\n";
+			code.addTree(new TextLeaf("\n"));
 			return code;
 		}
 		
 		// At this point, we know that we have some statement in else{}, numOfVarStart should remain unchanged.
 		// Code generation for false members.
-		code = code + " else {\n";
+		code.addTree(new TextLeaf(" else {\n"));
 		targetName = model.getJSONObject("StartIf").getString("FalseChild");
 		while(true) {
 			if(model.getJSONObject("EndIf").getString("Name").equals(targetName)) {
@@ -84,7 +91,7 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 				//System.out.print(currentModel.getString("Name"));
 				
 				if(currentModel.getString("Name").equals(targetName)) {
-					code = this.codeGenerator.generate(currentModel, code, indent + "    ");
+					code = (TextBranch) this.codeGenerator.generate(currentModel, code, indent + "    ");
 					targetName = currentModel.getString("Child");
 					break;
 				}
@@ -97,7 +104,7 @@ public class IfJavaCodeGenProcess implements CodeGenerationProcess{
 		}
 		
 		// Close up the bracket
-		code = code + indent + "}\n";
+		code.addTree(new TextLeaf(indent + "}\n"));
 		
 		return code;
 	}

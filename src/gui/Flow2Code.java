@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
+import editor.system.testing.CodeEditPanel;
 import gui.codeView.CodeViewContainer;
 import gui.codeView.CodeViewToolBar;
 import gui.manager.NameCounterManager;
@@ -64,7 +65,7 @@ public class Flow2Code extends JFrame{
 	public NameCounterManager getNameCounterManager() {return this.nameManager;}
 	public void setNameCounterManager(NameCounterManager nameManager) {this.nameManager = nameManager;}
 	public ScrollablePanelForFD getScrollablePanelForFD() {return this.scrollablePanelForFD;}
-	public JTextPane getCodeTextPane() {return this.codeViewContainer.getCodeViewTextPane();}
+	public CodeEditPanel getCodeEditPanel() {return this.codeViewContainer.getCodeEditPanel();}
 	public CodeViewContainer getCodeViewContainer() {return this.codeViewContainer;}
 	
 	public Flow2Code() {

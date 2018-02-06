@@ -3,6 +3,9 @@ package strategy.codegenerator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import editor.system.testing.TextBranch;
+import editor.system.testing.TextLeaf;
+
 public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 	private JavaCodeGenerator codeGenerator;
 	public FlowDiagramJavaCodeGenProcess(JavaCodeGenerator codeGenerator) {
@@ -10,7 +13,7 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 	}
 	
 	@Override
-	public String generateCode(JSONObject model,String code, String indent) {
+	public TextBranch generateCode(JSONObject model,TextBranch code, String indent) {
 		// TODO Auto-generated method stub
 		
 		// Setting up
@@ -18,8 +21,8 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 		int numMembers = members.length();
 		boolean shouldGenerateMore = false;
 		
-		code = code + indent + "public class FlowCode{\n" + 
-					  indent + "    " +"public static void main(String[] args){\n\n";
+		code.addTree(new TextLeaf(indent + "public class FlowCode{\n" + 
+					  indent + "    " +"public static void main(String[] args){\n"));
 		
 		// we first find the JSONObject of Type "Start"
 		JSONObject currentModel;
@@ -42,7 +45,7 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 					if(currentModel.getString("Type").equals("End")) {
 						shouldGenerateMore = false;
 					}else {
-						code = this.codeGenerator.generate(currentModel,code ,indent + "    " + "    ");
+						code = (TextBranch) this.codeGenerator.generate(currentModel,code ,indent + "    " + "    ");
 						targetName = currentModel.getString("Child");
 					}
 				}
@@ -52,11 +55,10 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 		
 		// Check whether Scanner is used
 		if(code.contains("import java.util.Scanner;")) {
-			code = code + indent + "    " + "    " +"sc.close();\n";
+			code.addTree(new TextLeaf(indent + "    " + "    " +"sc.close();\n"));
 		}
 		
-		code = code + indent + "    " + "}\n";
-		code = code + indent + "}";
+		code.addTree(new TextLeaf(indent + "    " + "}\n" + indent +"}")); // this is always the final leaf.
 		
 		return code;
 	}
