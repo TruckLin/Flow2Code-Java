@@ -2,6 +2,9 @@ package gui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -18,13 +21,13 @@ public class LinePopup extends JPopupMenu{
 	private UndoManager undoManager;
 	private NameCounterManager nameManager;
 	private LineFD line;
-	private JMenuItem declareItem = new JMenuItem("Declare");
-	private JMenuItem assignItem = new JMenuItem("Assign");
-	private JMenuItem inputItem = new JMenuItem("Input");
-	private JMenuItem outputItem = new JMenuItem("Output");
-	private JMenuItem forItem = new JMenuItem("For");
-	private JMenuItem whileItem = new JMenuItem("While");
-	private JMenuItem ifItem = new JMenuItem("If");
+	private JMenuItem declareItem = new JMenuItem("");
+	private JMenuItem assignItem = new JMenuItem("");
+	private JMenuItem inputItem = new JMenuItem("");
+	private JMenuItem outputItem = new JMenuItem("");
+	private JMenuItem forItem = new JMenuItem("");
+	private JMenuItem whileItem = new JMenuItem("");
+	private JMenuItem ifItem = new JMenuItem("");
 	
 	
 	public LinePopup(CompositeBlockFD compositeBlock, LineFD line) {
@@ -34,6 +37,15 @@ public class LinePopup extends JPopupMenu{
 		this.undoManager = compositeBlock.getUndoManager();
 		this.nameManager = compositeBlock.getNameCounterManager();
 		this.setLine(line);
+		
+		ResourceBundle languageBundle = compositeBlock.getLanguageBundle();
+		this.declareItem.setText(languageBundle.getString("Declare"));
+		this.assignItem.setText(languageBundle.getString("Assign"));
+		this.inputItem.setText(languageBundle.getString("Input"));
+		this.outputItem.setText(languageBundle.getString("Output"));
+		this.forItem.setText(languageBundle.getString("For"));
+		this.whileItem.setText(languageBundle.getString("While"));
+		this.ifItem.setText(languageBundle.getString("If"));
 		
 		// Add all the menu items
 		this.add(this.declareItem);

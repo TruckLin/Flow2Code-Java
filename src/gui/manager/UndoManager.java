@@ -32,6 +32,25 @@ public class UndoManager {
 		private boolean redoAvailable = isRedoAvailable();
 	}
 	
+	// This function is created for UndoableEditCommand.
+	// which allow commad to be push into stack without executing it.
+	public void addUndoableCommand(Command command) {
+		try {
+			OldState oldState = new OldState();
+		//	command.execute();
+			if( !undoStack.isEmpty() && undoStack.peek().isCollapsible(command)) {
+				undoStack.peek().collapse(command);
+			}else {
+				undoStack.push(command);
+			}
+			redoStack.clear();
+			fireChanges(oldState);
+		} catch (IllegalStateException e) {
+			// report and log
+			System.err.println(e.toString());
+		}
+	}
+	
 	public void execute(Command command) {
 		try {
 			OldState oldState = new OldState();
@@ -63,6 +82,7 @@ public class UndoManager {
 			}
 		}
 	}
+	
 	
 	public void redo() {
 		if (!redoStack.isEmpty()) {

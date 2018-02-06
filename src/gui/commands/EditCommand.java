@@ -6,7 +6,7 @@ import gui.interfaces.Command;
 import gui.object.BlockFD;
 
 public class EditCommand implements Command{
-	JSONObject oldInputDetail;
+	JSONObject oldModel;
 	JSONObject newInputDetail;
 	
 	JSONObject model;
@@ -17,26 +17,29 @@ public class EditCommand implements Command{
 		this.block = block;
 		this.model = block.getModel();
 		this.newInputDetail = newInputDetail;
-		this.oldInputDetail = obtainInputDetailFromModel(model);
+		this.oldModel = cloneJSONObject(model);
+
+		//Testing
+		//for(String temp : newInputDetail.keySet()) {
+		//	System.out.println(temp);
+		//}
+		
 	}
 	
 	public void replaceInputDetailOfModel(JSONObject model, JSONObject someInputDetail) {
-		if(model.getString("Type").equals("While")) {
-			model.put( "Expression", someInputDetail.getString("Expression") );
-		}else if(model.getString("Type").equals("For")) {
-			
-		}// and any others
+		for(String temp : newInputDetail.keySet()) {
+			model.put( temp, someInputDetail.get(temp) );
+		}
 	}
 	
-	public JSONObject obtainInputDetailFromModel(JSONObject model) {
-		JSONObject inputDetail = new JSONObject();
-		if(model.getString("Type").equals("While")) {
-			inputDetail.put( "Expression", model.getString("Expression") );
-		}else if(model.getString("Type").equals("For")) {
-			
-		}// and any others
+	public JSONObject cloneJSONObject(JSONObject model) {
+		JSONObject newJSONObj = new JSONObject();
 		
-		return inputDetail;
+		for(String temp : model.keySet()) {
+			newJSONObj.put( temp, model.get(temp) );
+		}
+		
+		return newJSONObj;
 	}
 	
 	
@@ -48,7 +51,7 @@ public class EditCommand implements Command{
 
 	@Override
 	public void undo() {
-		this.replaceInputDetailOfModel(this.model, this.oldInputDetail);
+		this.replaceInputDetailOfModel(this.model, this.oldModel);
 		this.block.updateBlockContent();
 	}
 

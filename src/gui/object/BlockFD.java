@@ -1,9 +1,7 @@
 package gui.object;
 
 import java.awt.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import javax.swing.*;
 
@@ -17,9 +15,7 @@ import gui.mouselistener.BlockRightClickListener;
 import gui.mouselistener.EndLoopDragListener;
 import gui.mouselistener.LoopDragListener;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 public abstract class BlockFD extends JPanel{
 	
@@ -27,11 +23,16 @@ public abstract class BlockFD extends JPanel{
 	protected UndoManager undoManager;
 	protected NameCounterManager nameManager;
 	
-	protected double currentZoomRatio = 1;
+	protected double currentZoomRatio;
 	
 	protected JLabel blockLabel = new JLabel("");
 	
 	protected PropertyChangeListener updatePortsListener = e -> updatePorts();
+	
+	protected final int textSize = 20;
+	
+	//I18N
+	protected ResourceBundle languageBundle;
 	
 	/** Constructors **/
 	public BlockFD(JSONObject model) {
@@ -42,6 +43,13 @@ public abstract class BlockFD extends JPanel{
 		this.setOpaque(false);
 		
 		this.addPropertyChangeListener(updatePortsListener);
+		
+		this.currentZoomRatio = 1;
+		
+		this.blockLabel.setFont(new Font("Courier New", Font.PLAIN, 
+									(int)Math.round(this.textSize*this.currentZoomRatio)));
+		this.adjustLabelSize();
+		this.adjustLabelLocation();
 		
 	}
 	
@@ -89,10 +97,68 @@ public abstract class BlockFD extends JPanel{
 			this.add(temp);
 		}
 	}
+	public ResourceBundle getLanguageBundle() {
+		return this.languageBundle;
+	}
+	public void setLanguageBundle(ResourceBundle languageBundle) {
+		//Testing
+		//System.out.println("In setLanguageBundle() : ");
+		//System.out.println("    Block Type : " + this.getModel().getString("Type"));
+		//System.out.println("    LanguageBundle.toString() = " + languageBundle.toString());
+		//System.out.println("    LanguageBundle.getString(\"Delete\") = " + languageBundle.getString("Delete"));
+		
+		this.languageBundle = languageBundle;
+		if(this instanceof CompositeBlockFD) {
+			for(Component comp : this.getComponents()) {
+				((BlockFD)comp).setLanguageBundle(languageBundle);
+			}
+		}
+		this.updateBlockContent();
+	}
+	// This method controls which statements should be generated.
+	public void setCodeGenForAll(String type, boolean should) {
+		//Testing
+		//System.out.println("Class = " + this.getClass());
+		//System.out.println("setCodeGenForAll is called.");
+		//System.out.println("should CodeGen = " + should);
+		
+		if(this.model == null) {
+			//Testing
+			//System.out.println("model is null for this block.");
+			return;
+		}
+		String blockType = this.model.getString("Type");
+		
+		//Testing
+		//System.out.println("Type = " + type + " , BlockType = " + blockType);
+		if(type.equals(blockType)) {
+			this.getModel().put("CodeGen", should);
+			//Testing
+			//System.out.println("I think we have put CodeGen in.");
+		}
+		
+		// If the current Block is composite, call setCodeGenForAll for the children.
+		if(this instanceof CompositeBlockFD) {
+			Component[] complist = ((CompositeBlockFD)this).getComponents();
+			for(Component comp : complist) {
+				if(comp instanceof BlockFD) {
+					((BlockFD)comp).setCodeGenForAll(type, should);
+				}
+			}
+		}
+		
+	}
+	
+	
 	/* Abstract method : updatePorts()
 	 * This should be implemented by all BlockFD, either do nothing, or update port location.
 	 */
 	protected abstract void updatePorts();
+	
+	/* Abstract method : generateVariableTree()
+	 * For each block, return its variable tree representation, it could be VariableLeaf or VariableBranch.
+	 * */
+	//public abstract VariableTree generateVariableTree();
 	
 	public abstract void setUndoManager(UndoManager undoManager);
 	
@@ -104,7 +170,7 @@ public abstract class BlockFD extends JPanel{
 	public double getCurrentZoomRatio() {
 		return this.currentZoomRatio;
 	}
-	protected void setCurrentZoomRatio(double zr) {
+	public void setCurrentZoomRatio(double zr) {
 		this.currentZoomRatio = zr;
 	}
 	
@@ -117,13 +183,20 @@ public abstract class BlockFD extends JPanel{
 	/** Utility functions **/
 	public abstract void updateBlockContent() ;
 	
-	
 	public Point toContainerCoordinate(Point coordWRTblock) {
 		int x = (int)(this.getLocation().getX() + coordWRTblock.getX());
 		int y = (int)(this.getLocation().getY() + coordWRTblock.getY());
 		return new Point(x,y);
 	}
 	
+	public JSONObject getGraphicalInfo() {
+		JSONObject loc = new JSONObject();
+		loc.put("x", (int)Math.round(this.getLocation().getX()/this.currentZoomRatio));
+		loc.put("y", (int)Math.round(this.getLocation().getY()/this.currentZoomRatio));
+		JSONObject ans = new JSONObject();
+		ans.put(this.getModel().getString("Name"), loc);
+		return ans;
+	}
 	
 	/** Move the block by displacement **/
 	public void translateLocation(int dx, int dy) {
@@ -199,9 +272,7 @@ public abstract class BlockFD extends JPanel{
 		int height = (int) Math.round(oldRec.getHeight()*newRatio/currentZoomRatio);
 		Rectangle newRec = new Rectangle(x,y,width,height);
 		this.setBounds(newRec);
-		
-		
-		
+
 		if(this.isCompositeBlockFD()) {
 			Component[] comps = this.getComponents();
 			for(Component comp : comps) {
@@ -214,25 +285,75 @@ public abstract class BlockFD extends JPanel{
 		this.setCurrentZoomRatio(newRatio);
 	}
 	
-	protected void zoomLabel(double newRatio) {
+	public void zoomLabel(double newRatio) {
 		if(!blockLabel.getText().equals("")) {
 			Font myFont = this.blockLabel.getFont();
 			this.blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, 
 										(int)Math.round(myFont.getSize()*newRatio/this.currentZoomRatio)));
-			this.adjustLabelBounds();
+			this.adjustLabelSize();
+			this.adjustLabelLocation();
 		}
 		
 	}
 	
-	public void adjustLabelBounds() {
+	public void adjustLabelSize() {
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		this.blockLabel.setSize(labelDimension);
+	}
+	
+	// adjustLabelLocation() should always be called after adjustLabelSize() and adjestBlockSize()
+	public void adjustLabelLocation() {
+		
 		int width = this.getWidth();
 		int height = this.getHeight();
-		
 		Dimension labelDimension = this.blockLabel.getPreferredSize();
 		Point newLocation = new Point( (int)Math.round(width/2 - labelDimension.getWidth()/2), 
-										(int)Math.round(height/2 - labelDimension.getHeight()/2));
-		this.blockLabel.setSize(labelDimension);
+									   (int)Math.round(height/2 - labelDimension.getHeight()/2));
+		
+		//Testing
+	//	if(this.blockLabel.getText().startsWith("I")) {
+	//		System.out.println(this.blockLabel.getText());
+	//	}
+		
 		this.blockLabel.setLocation(newLocation);
+	}
+	
+	public void adjustBlockSizeByLabel() {
+		int minWidth = (int)Math.round(100*this.currentZoomRatio);
+		int minHeight = (int)Math.round(25*this.currentZoomRatio);
+		
+		boolean sizeShouldChange = false;
+		
+		int newWidth = minWidth;
+		int newHeight = minHeight;
+		
+		
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		
+		// We need to also deal with the case when text label got shorter. BlockSize needs to shrink.
+		int x = (int)this.getLocation().getX();
+		int y = (int)this.getLocation().getY();
+		this.setBounds(x,y, minWidth , minHeight);
+		
+		if(labelDimension.getWidth() > minWidth) {
+			newWidth = (int)labelDimension.getWidth();
+			sizeShouldChange = true;
+		}
+		if(labelDimension.getHeight() > minHeight){
+			newHeight = (int)labelDimension.getHeight();
+			sizeShouldChange = true;
+		}
+		
+		/** Mark it always true as supervisor requested.**/
+		sizeShouldChange = true;
+		newWidth = (int) labelDimension.getWidth();
+		newHeight = (int) labelDimension.getHeight();
+		
+		if(sizeShouldChange) {
+			this.setBounds(x,y,
+					newWidth + (int)Math.round(10*this.currentZoomRatio),
+					newHeight + (int)Math.round(0*this.currentZoomRatio));
+		}
 	}
 	
 

@@ -10,12 +10,17 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
+import gui.BlockEditDialog;
+import gui.ForEditDialog;
+import gui.IfEditDialog;
 import gui.manager.UndoManager;
 import gui.mouselistener.MouseEnterListener;
 
 public class BlockIF extends OrdinaryCompositeBlockFD{
 	private BlockStartIF blockStartIF;
 	private BlockEndIF blockEndIF;
+	
+	private IfEditDialog editDialog;
 	
 	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
 	private PropertyChangeListener MoveBlockEndLoopListener = 
@@ -29,7 +34,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 								parentMaxY = comp.getBounds().getMaxY();
 						}
 					}
-					if(blockEndIF.getBounds().getMaxY() < parentMaxY) {
+					if( blockEndIF != null && blockEndIF.getBounds().getMaxY() < parentMaxY) {
 						int h = BlockIF.this.getHeight() - blockEndIF.getHeight();
 						blockEndIF.setLocation((int)blockEndIF.getLocation().getX(),h);
 					}
@@ -47,11 +52,16 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		//Set various default property
 		this.setSize(110,110);
 		this.setLayout(null);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		//UndoManager undoManager = new UndoManager();
 		//DemoMouseListener myListener = new DemoMouseListener(undoManager,this);
 		//this.addMouseMotionListener(myListener);
 		//this.addMouseListener(myListener);
+		
+		//Testing for transparent background.
+		//this.setOpaque(true);
+		//this.setBackground(Color.CYAN);
+		//this.setBackground(new Color(255,255,128));
 
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,
@@ -130,8 +140,16 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		String displayString = ("If( " + this.getExpression() + " )");
 		this.blockStartIF.getBlockLabel().setText(displayString);
 		
-		
-		// blockStartLOOP may need to change size and location
-		// this.blockStartLOOP.setAppropriateBounds();
+		this.blockStartIF.adjustLabelSize();
+		this.blockStartIF.adjustBlockSizeByLabel();
+		this.blockStartIF.adjustLabelLocation();
+
+		this.setAppropriateBounds();
+	}
+	
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new IfEditDialog(undoManager, this);
+		return this.editDialog;
 	}
 }

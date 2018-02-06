@@ -1,26 +1,37 @@
 package gui;
 
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import gui.commands.AddBlockCommand;
 import gui.commands.DeleteBlockCommand;
-import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.*;
 
 public class BlockPopup extends JPopupMenu{
 	private UndoManager undoManager;
 	private BlockFD block;
-	private JMenuItem deleteItem = new JMenuItem("Delete");
-	private JMenuItem editItem = new JMenuItem("Edit");
+	private JMenuItem deleteItem = new JMenuItem();
+	private JMenuItem editItem = new JMenuItem();
 	
 	public BlockPopup (UndoManager undoManager, BlockFD block) {
 		super();
 		this.undoManager = undoManager;
 		this.setBlockFD(block);
+		
+		ResourceBundle languageBundle = block.getLanguageBundle();
+		
+		//Testing
+		//System.out.println("In the constructor of BlockPopup:");
+		//System.out.println("    Block type : " + block.getModel().getString("Type"));
+		//System.out.println("    LanguageBundle is null : " + (languageBundle == null));
+		//System.out.println("    deleteItem is null : " + (deleteItem == null));
+	//	System.out.println("    languageBundle.getString(\"Delete\") = " + languageBundle.getString("Delete"));
+		
+		this.deleteItem.setText( languageBundle.getString("Delete") );
+		this.editItem.setText( languageBundle.getString("Edit") );
 		
 		// Add all the menu items
 		this.add(this.deleteItem);

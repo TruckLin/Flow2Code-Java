@@ -57,12 +57,14 @@ public class MouseEnterListener implements MouseListener{
 			this.originalBorder = ((JPanel)block.getParent()).getBorder();
 			this.originalBackgroundColor = ((JPanel)block.getParent()).getBackground();
 			((JPanel)block.getParent()).setBorder(border);
-			((JPanel)block.getParent()).setBackground(backgroundColor);
+			//((JPanel)block.getParent()).setBackground(backgroundColor);
+			((JPanel)block.getParent()).repaint();
 		}else{
 			this.originalBorder = block.getBorder();
 			this.originalBackgroundColor = block.getBackground();
 			block.setBorder(border);
-			block.setBackground(backgroundColor);
+			//block.setBackground(backgroundColor);
+			block.repaint();
 		}
 	}
 
@@ -72,14 +74,16 @@ public class MouseEnterListener implements MouseListener{
 		// TODO Auto-generated method stub
 		if(this.shouldChangeParentPanel) {
 			((JPanel)block.getParent()).setBorder(originalBorder);
-			((JPanel)block.getParent()).setBackground(originalBackgroundColor);
+			//((JPanel)block.getParent()).setBackground(originalBackgroundColor);
+			((JPanel)block.getParent()).repaint();
 			
 			this.originalBorder = null;
 			this.originalBackgroundColor = null;
 			
 		}else{
 			block.setBorder(originalBorder);
-			block.setBackground(originalBackgroundColor);
+			//block.setBackground(originalBackgroundColor);
+			block.repaint();
 			
 			this.originalBorder = null;
 			this.originalBackgroundColor = null;

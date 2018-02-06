@@ -9,15 +9,25 @@ import java.beans.PropertyChangeListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import gui.AssignEditDialog;
+import gui.BlockEditDialog;
+import gui.DeclareEditDialog;
+import gui.manager.UndoManager;
 
 public class BlockASSIGN extends OrdinaryBlockFD{
 	
+	private AssignEditDialog editDialog;
+	
 	public BlockASSIGN(JSONObject model) {
 		super(model);
-		
-		this.blockLabel.setText("Assign");
-		this.adjustLabelBounds();
+
+		this.updateBlockContent();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary
@@ -38,7 +48,30 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
+		JSONArray assignments = this.getModel().getJSONArray("Assignments");
+		String temp = "<html>Assign : <br>";
+		for(int i = 0 ; i < assignments.length(); i++) {
+			JSONObject currentAssignment = assignments.getJSONObject(i);
+			temp = temp + currentAssignment.getString("TargetVariable") + " = ";
+			temp = temp + currentAssignment.getString("Expression");
+			if(i < assignments.length() - 1) {
+				temp = temp + "<br>";
+			}
+		}
 		
+		this.blockLabel.setText(temp);
+		
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
+		if(this.getParent() instanceof CompositeBlockFD) {
+			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
+		}
+	}
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new AssignEditDialog(undoManager, this);
+		return this.editDialog;
 	}
 	
 	/** getters **/

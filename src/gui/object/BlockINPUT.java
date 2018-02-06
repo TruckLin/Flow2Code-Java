@@ -10,13 +10,22 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
+import gui.BlockEditDialog;
+import gui.DeclareEditDialog;
+import gui.InputEditDialog;
+import gui.manager.UndoManager;
+
 public class BlockINPUT extends OrdinaryBlockFD {
+	
+	private InputEditDialog editDialog;
 	
 	public BlockINPUT(JSONObject model) {
 		super(model);
 		
-		this.blockLabel.setText("Input");
-		this.adjustLabelBounds();
+		this.updateBlockContent();
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
 		this.add(blockLabel);
 		
 		//Temporary
@@ -25,6 +34,10 @@ public class BlockINPUT extends OrdinaryBlockFD {
 		//Testing
 		//System.out.println("Constructor 1 of BlockDECLARE is called and N = " + N);
 
+	}
+	/** Getters and Setters **/
+	public String getTargetVariable() {
+		return this.getModel().getString("TargetVariable");
 	}
 	
 	/** Override the abstract methods **/
@@ -37,6 +50,18 @@ public class BlockINPUT extends OrdinaryBlockFD {
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
-		
+		this.blockLabel.setText("Input to variable " + this.getTargetVariable());
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
+		if(this.getParent() instanceof CompositeBlockFD) {
+			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
+		}
+	}
+	
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new InputEditDialog(undoManager, this);
+		return this.editDialog;
 	}
 }

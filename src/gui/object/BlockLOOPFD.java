@@ -34,7 +34,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 								parentMaxY = comp.getBounds().getMaxY();
 						}
 					}
-					if(blockEndLOOP.getBounds().getMaxY() < parentMaxY) {
+					if(blockEndLOOP != null && blockEndLOOP.getBounds().getMaxY() < parentMaxY) {
 						int h = BlockLOOPFD.this.getHeight() - blockEndLOOP.getHeight();
 						blockEndLOOP.setLocation((int)blockEndLOOP.getLocation().getX(),h);
 					}
@@ -51,7 +51,7 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 		this.setOpaque(false); // we should always see through this while panel.
 		
 		//Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		this.setBounds(0,0,100,100);
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,

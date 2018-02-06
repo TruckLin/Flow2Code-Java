@@ -17,48 +17,69 @@ public class CommandUtilityFunctions {
 		}else if(parentModel.getString("Type").equals("If")) {
 			// the parent block is BlockIF.
 			
-			// A test to check if whether source or terminal is in trueMembers.
-			boolean inTrueMembers = false;
+			// A test to check whether source and terminal are both in trueMembers.
+			boolean sourceInTrueMembers = false;
+			boolean terminalInTrueMembers = false;
 			JSONArray trueModelList = parentModel.getJSONArray("TrueMembers");
 			for(int i = 0; i < trueModelList.length(); i++) {
 				String tempName = trueModelList.getJSONObject(i).getString("Name");
-				if(tempName.equals(sourceModel.getString("Name")) || tempName.equals(terminalModel.getString("Name"))) {
-					inTrueMembers = true;
-					break;
-				}
+				if(tempName.equals(sourceModel.getString("Name"))) sourceInTrueMembers = true;
+				if(tempName.equals(terminalModel.getString("Name"))) terminalInTrueMembers = true;
 			}
-			boolean inFalseMembers = false;
+			boolean sourceInFalseMembers = false;
+			boolean terminalInFalseMembers = false;
 			JSONArray falseModelList = parentModel.getJSONArray("FalseMembers");
 			for(int i = 0; i < falseModelList.length(); i++) {
 				String tempName = falseModelList.getJSONObject(i).getString("Name");
-				if(tempName.equals(sourceModel.getString("Name")) || tempName.equals(terminalModel.getString("Name"))) {
-					inFalseMembers = true;
-					break;
-				}
+				if(tempName.equals(sourceModel.getString("Name"))) sourceInFalseMembers = true;
+				if(tempName.equals(terminalModel.getString("Name"))) terminalInFalseMembers = true;
 			}
 			
-			if(inTrueMembers) {
+			if((sourceInTrueMembers && terminalInFalseMembers)) {
+				// both in true
 				parentModel.append("TrueMembers", currentModel);
 				sourceModel.put("Child", currentModel.getString("Name"));
 				currentModel.put("Child",terminalModel.getString("Name"));
-			}else if(inFalseMembers){
+			}else if((sourceInFalseMembers && terminalInFalseMembers)) {
+				// both in false
 				parentModel.append("FalseMembers", currentModel);
 				sourceModel.put("Child", currentModel.getString("Name"));
 				currentModel.put("Child",terminalModel.getString("Name"));
+			}else if(sourceInTrueMembers) {
+				// only source in true, which means terminal is endIf
+				parentModel.append("TrueMembers", currentModel);
+				sourceModel.put("Child", currentModel.getString("Name"));
+				currentModel.put("Child",terminalModel.getString("Name"));
+			}else if (terminalInTrueMembers) {
+				// only terminal in true, which means source is startIf
+				parentModel.append("TrueMembers", currentModel);
+				sourceModel.put("TrueChild", currentModel.getString("Name"));
+				currentModel.put("Child",terminalModel.getString("Name"));
+			}else if(sourceInFalseMembers) {
+				// only source in false, which means terminal is endIf
+				parentModel.append("FalseMembers", currentModel);
+				sourceModel.put("Child", currentModel.getString("Name"));
+				currentModel.put("Child",terminalModel.getString("Name"));
+			}else if (terminalInFalseMembers) {
+				// only terminal in false, which means source is startIf
+				parentModel.append("FalseMembers", currentModel);
+				sourceModel.put("FalseChild", currentModel.getString("Name"));
+				currentModel.put("Child",terminalModel.getString("Name"));
 			}else {
+				// both source and terminal not in trueMembers or falseMembers,
+				// which means if block is still empty.
 				if( sourceLine.getStartPort().getSide().equals("right") ) {
 					parentModel.append("TrueMembers", currentModel);
-					sourceModel.put("Child", currentModel.getString("Name"));
+					sourceModel.put("TrueChild", currentModel.getString("Name"));
 					currentModel.put("Child",terminalModel.getString("Name"));
 				}else if( sourceLine.getEndPort().getSide().equals("left") ) {
 					parentModel.append("FalseMembers", currentModel);
-					sourceModel.put("Child", currentModel.getString("Name"));
+					sourceModel.put("FalseChild", currentModel.getString("Name"));
 					currentModel.put("Child",terminalModel.getString("Name"));
 				}else {
 					System.err.println("Something unexpected happened in AddBlockCommand :\nIn redo() \n add block within BlockIF, insert model section");
 				}
 			}
-			
 		}else {
 			System.err.println("Parent Model has no key called Members and it's not If.\nIn redo() \n Detail:" + parentModel.toString(10));
 		}

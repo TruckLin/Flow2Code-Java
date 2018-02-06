@@ -10,13 +10,19 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
+import gui.BlockEditDialog;
+import gui.InputEditDialog;
+import gui.OutputEditDialog;
+import gui.manager.UndoManager;
+
 public class BlockOUTPUT extends OrdinaryBlockFD{
+	
+	private OutputEditDialog editDialog;
 	
 	public BlockOUTPUT(JSONObject model) {
 		super(model);
 
-		this.blockLabel.setText("Output");
-		this.adjustLabelBounds();
+		this.updateBlockContent();
 		this.add(blockLabel);
 		
 		//Temporary
@@ -26,6 +32,11 @@ public class BlockOUTPUT extends OrdinaryBlockFD{
 		//System.out.println("Constructor 1 of BlockDECLARE is called and N = " + N);
 
 	}
+	/** Getters and Setters **/
+	public String getExpression() {
+		return this.getModel().getString("Expression");
+	}
+	
 	/** Override the abstract methods **/
 	@Override
 	public boolean representCompositeBlock() {
@@ -35,11 +46,18 @@ public class BlockOUTPUT extends OrdinaryBlockFD{
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
-		
+		this.blockLabel.setText("Output : " + this.getExpression());
+		this.adjustLabelSize();
+		this.adjustBlockSizeByLabel();
+		this.adjustLabelLocation();
+		if(this.getParent() instanceof CompositeBlockFD) {
+			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
+		}
 	}
 	
-	/** getters **/
-	
-	
-	/** Setters **/
+	@Override
+	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
+		this.editDialog = new OutputEditDialog(undoManager, this);
+		return this.editDialog;
+	}
 }

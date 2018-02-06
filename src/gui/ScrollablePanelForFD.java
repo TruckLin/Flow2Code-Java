@@ -9,17 +9,20 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
+import org.json.JSONObject;
+
 import gui.object.BlockFlowDiagram;
+import gui.object.CompositeBlockFD;
 
 public class ScrollablePanelForFD extends JPanel implements Scrollable {
-	private BlockFlowDiagram flowDiagram;
+	private CompositeBlockFD flowDiagram;
 	
 	private PropertyChangeListener listener = e -> {updateSize(); 
 											//Testing
 											//System.out.println("FlowDiagram update detected.");
 											};
 	
-	public ScrollablePanelForFD(BlockFlowDiagram flowDiagram) {
+	public ScrollablePanelForFD(CompositeBlockFD flowDiagram) {
 		super();
 		this.setLayout(null);
 		this.setBackground(Color.WHITE);
@@ -51,6 +54,20 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 		
 		this.revalidate();
 	}
+	/** Getters and Setters **/
+	public void setCompositeBlockFD(CompositeBlockFD comp) {
+		if(this.flowDiagram != null) {
+			this.remove(this.flowDiagram);
+			this.flowDiagram.removePropertyChangeListener(listener);
+		}
+		this.flowDiagram = comp;
+		if(this.flowDiagram != null) {
+			this.add(this.flowDiagram);
+			this.flowDiagram.addPropertyChangeListener(listener);
+		}
+		
+		this.updateSize();
+	}
 	
 	// Zoom function
 	public void zoom( double newRatio) {
@@ -61,6 +78,9 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 	/** Getters and Setter **/
 	public double getCurrentZoomRatio() {
 		return this.flowDiagram.getCurrentZoomRatio();
+	}
+	public JSONObject getFlowDiagramModel() {
+		return this.flowDiagram.getModel();
 	}
 	
 	@Override

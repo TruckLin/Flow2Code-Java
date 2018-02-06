@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
@@ -44,7 +45,14 @@ public abstract class CompositeBlockFD extends BlockFD{
 		
 		// Temporary
 		this.setOpaque(false);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	//	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		//Testing for transparent background.
+	//	this.setOpaque(true);
+	//	this.setBackground(new Color(255,0,255,155));
+		
+		//Testing for transparent background.
+		//this.setBackground(new Color(255,255,128));
 		
 	}
 	/** Getters and Setters **/
@@ -69,7 +77,19 @@ public abstract class CompositeBlockFD extends BlockFD{
 	// This function is responsible for painting the lines.
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		
+		//Testing transparent backgroundColor
+		g2.setColor(new Color(255,255,155,80));
+		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
+		//Testing how we could draw text.
+		//char[] testText = "Testing drawChars".toCharArray();
+		//g2.drawChars(testText, 0,50);
+		//g2.setColor(Color.BLACK);
+		//String testText = "Testing drawChars";
+		//g2.drawString(testText, 0,50);
 		
 		for(int i = 0; i < lineList.size(); i++) {
 			LineFD currentLine = this.lineList.get(i);
@@ -169,8 +189,8 @@ public abstract class CompositeBlockFD extends BlockFD{
 		
 		// some Extra width if required. extraWidth represents the minimum horizontal 
 		// distance from CompositeBlock's boundary to the components it contains.
-		int extraWidth = 5;
-		int extraHeight = 0;		
+		int extraWidth = (int)Math.round( 5 * this.getCurrentZoomRatio());
+		int extraHeight = (int)Math.round( 0 * this.getCurrentZoomRatio());	
 		
 		// Shift children components according to minimums.
 		int x;
@@ -222,6 +242,23 @@ public abstract class CompositeBlockFD extends BlockFD{
 	}
 	
 	/** override abstract method **/
+	@Override 
+	public JSONObject getGraphicalInfo() {
+		JSONObject loc = new JSONObject();
+		loc.put("x", (int)Math.round(this.getLocation().getX()/this.currentZoomRatio));
+		loc.put("y", (int)Math.round(this.getLocation().getY()/this.currentZoomRatio));
+		JSONObject ans = new JSONObject();
+		ans.put(this.getModel().getString("Name"), loc);
+		
+		for (Component comp : this.getComponents()) {
+			if( !(comp instanceof BlockFD) || ((BlockFD)comp).getModel() == null) continue;
+			JSONObject tempInfo = ((BlockFD)comp).getGraphicalInfo();
+			for(String key : tempInfo.keySet()) {
+				ans.put(key, tempInfo.get(key));
+			}
+		}
+		return ans;
+	}
 	@Override
 	public void setUndoManager(UndoManager undoManager) {
 		this.undoManager = undoManager;

@@ -33,6 +33,9 @@ public class BlockRightClickListener implements MouseListener{
 			// Do some thing
 			blockPopup = new BlockPopup(undoManager, block);
 			blockPopup.show(e.getComponent(),e.getX(), e.getY());
+			
+			//Testing
+			//System.out.println(block.getModel().getString("Name"));
 		}
 	}
 
