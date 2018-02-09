@@ -10,8 +10,6 @@ import java.io.PrintWriter;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 
-import com.tcg.json.FileHandle;
-
 import gui.codeView.CodeViewContainer;
 import gui.manager.SaveAndLoadManagerFD;
 

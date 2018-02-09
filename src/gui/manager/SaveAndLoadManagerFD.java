@@ -21,8 +21,6 @@ import java.nio.file.Paths;
 
 import org.json.*;
 
-import com.tcg.json.JSONUtils;
-
 
 public abstract class SaveAndLoadManagerFD {
 	
@@ -40,14 +38,7 @@ public abstract class SaveAndLoadManagerFD {
 		}
 	}
 	
-	public static JSONObject loadFlowDiagramFromJSON(String path) {
-		JSONObject myObj = JSONUtils.getJSONObjectFromFile(path);
-		return myObj;
-	}
-	public static JSONObject loadGraphicalInfoFromJSON(String path) {
-		JSONObject myObj = JSONUtils.getJSONObjectFromFile(path);
-		return myObj;
-	}
+
 	
 	// fdModel and fdInfo will hold the data read in from the zipFilePath.
 	public static void loadFlowDiagramFromZippedFile(JSONObject fdModel,JSONObject fdInfo,String zipFilePath) {
