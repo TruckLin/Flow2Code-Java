@@ -13,6 +13,7 @@ import java.io.IOException;
 public class FileHandle {
 	
 	/** All encoded in UCS-2, 2-bytes Unicode **/
+/*
 	public static void saveTextFileFromString(String text, String pathAndFileName) {
 		// Write primitives to an output file
 		
@@ -25,7 +26,7 @@ public class FileHandle {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-	}
+	}*/
 	
 	public static String getTextStringFromPath(String path) {
 		String temp = "";

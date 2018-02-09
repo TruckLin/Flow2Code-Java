@@ -10,9 +10,9 @@ import javax.swing.JLabel;
 
 import org.json.JSONObject;
 
-import gui.BlockEditDialog;
-import gui.InputEditDialog;
-import gui.OutputEditDialog;
+import gui.editDialog.BlockEditDialog;
+import gui.editDialog.InputEditDialog;
+import gui.editDialog.OutputEditDialog;
 import gui.manager.UndoManager;
 
 public class BlockOUTPUT extends OrdinaryBlockFD{

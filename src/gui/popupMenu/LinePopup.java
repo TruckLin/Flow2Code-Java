@@ -1,4 +1,4 @@
-package gui;
+package gui.popupMenu;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;

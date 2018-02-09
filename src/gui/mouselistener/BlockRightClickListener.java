@@ -5,11 +5,11 @@ import java.awt.event.MouseListener;
 
 import javax.swing.SwingUtilities;
 
-import gui.BlockPopup;
-import gui.LinePopup;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.LineFD;
+import gui.popupMenu.BlockPopup;
+import gui.popupMenu.LinePopup;
 
 public class BlockRightClickListener implements MouseListener{
 	private UndoManager undoManager;

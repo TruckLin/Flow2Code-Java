@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
-import gui.LinePopup;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
+import gui.popupMenu.LinePopup;
 
 public class LineRightClickListener implements MouseListener, MouseMotionListener{
 	private CompositeBlockFD compositeBlock;

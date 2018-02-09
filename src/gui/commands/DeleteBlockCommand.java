@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-import gui.LinePopup;
 import gui.interfaces.Command;
 import gui.mouselistener.LineRightClickListener;
 import gui.object.BlockFD;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
 import gui.object.LineFD.BlockChangeListener;
+import gui.popupMenu.LinePopup;
 
 public class DeleteBlockCommand implements Command{
 	private BlockFD currentBlock;

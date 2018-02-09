@@ -1,4 +1,4 @@
-package gui;
+package gui.flowView;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +15,7 @@ import javax.swing.JToolBar;
 
 import gui.action.SaveAndLoadActions;
 import gui.codeView.TextBranch;
+import gui.mainFrame.Flow2Code;
 import gui.manager.UndoManager;
 import strategy.codegenerator.JavaCodeGenerator;
 

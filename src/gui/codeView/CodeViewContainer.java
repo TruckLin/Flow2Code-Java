@@ -17,12 +17,8 @@ import javax.swing.text.StyledDocument;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-//Two different UndoManager
-//import javax.swing.undo.UndoManager;
-
-
-import gui.Flow2Code;
 import gui.commands.UndoableEditCommand;
+import gui.mainFrame.Flow2Code;
 import gui.manager.UndoManager;
 import strategy.codegenerator.JavaCodeGenerator;
 

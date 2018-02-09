@@ -10,9 +10,9 @@ import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
-import gui.BlockEditDialog;
-import gui.ForEditDialog;
-import gui.IfEditDialog;
+import gui.editDialog.BlockEditDialog;
+import gui.editDialog.ForEditDialog;
+import gui.editDialog.IfEditDialog;
 import gui.manager.UndoManager;
 import gui.mouselistener.MouseEnterListener;
 

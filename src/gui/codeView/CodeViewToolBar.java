@@ -9,9 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 //import javax.swing.undo.UndoManager;
 import gui.manager.UndoManager;
-
-import gui.Flow2Code;
 import gui.action.RunJavaCodeActionWithCMD;
+import gui.mainFrame.Flow2Code;
 
 public class CodeViewToolBar extends JToolBar{
 	private CodeViewContainer codeViewContainer;

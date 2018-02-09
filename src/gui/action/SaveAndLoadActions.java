@@ -10,9 +10,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.json.JSONObject;
 
-import filesystem.FileChooserDemo;
-import gui.Flow2Code;
-import gui.ScrollablePanelForFD;
+import gui.flowView.ScrollablePanelForFD;
+import gui.mainFrame.Flow2Code;
 import gui.manager.SaveAndLoadManagerFD;
 import gui.manager.UndoManager;
 import gui.object.CompositeBlockFD;

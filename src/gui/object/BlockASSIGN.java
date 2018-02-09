@@ -12,9 +12,9 @@ import javax.swing.JLabel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import gui.AssignEditDialog;
-import gui.BlockEditDialog;
-import gui.DeclareEditDialog;
+import gui.editDialog.AssignEditDialog;
+import gui.editDialog.BlockEditDialog;
+import gui.editDialog.DeclareEditDialog;
 import gui.manager.UndoManager;
 
 public class BlockASSIGN extends OrdinaryBlockFD{

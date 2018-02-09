@@ -8,9 +8,9 @@ import javax.swing.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import gui.BlockEditDialog;
-import gui.DeclareEditDialog;
-import gui.IfEditDialog;
+import gui.editDialog.BlockEditDialog;
+import gui.editDialog.DeclareEditDialog;
+import gui.editDialog.IfEditDialog;
 import gui.manager.UndoManager;
 
 public class BlockDECLARE extends OrdinaryBlockFD {

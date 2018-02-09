@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import org.json.JSONObject;
 
-import gui.BlockEditDialog;
+import gui.editDialog.BlockEditDialog;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.mouselistener.BlockDragListener;

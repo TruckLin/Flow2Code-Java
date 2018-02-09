@@ -1,4 +1,4 @@
-package gui;
+package gui.popupMenu;
 
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import gui.commands.DeleteBlockCommand;
+import gui.editDialog.BlockEditDialog;
 import gui.manager.UndoManager;
 import gui.object.*;
 

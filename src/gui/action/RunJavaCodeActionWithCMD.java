@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.compiler.batch.BatchCompiler;
 import com.tcg.json.FileHandle;
 
 import gui.codeView.CodeViewContainer;
+import gui.manager.SaveAndLoadManagerFD;
 
 public class RunJavaCodeActionWithCMD implements ActionListener{
 	
@@ -48,7 +49,7 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 		
 		Runtime run = Runtime.getRuntime();
 		String javaCode = codeViewContainer.getCodeEditPanel().getText();
-		FileHandle.saveTextFileFromString(codeViewContainer.getCodeEditPanel().getText(), ".\\temp\\FlowCode.java");
+		SaveAndLoadManagerFD.saveTextFileFromString(codeViewContainer.getCodeEditPanel().getText(), ".\\temp\\FlowCode.java");
 		
 		CompilationProgress progress = null; // instantiate your subclass
 		

@@ -3,7 +3,7 @@ package gui.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import gui.Flow2Code;
+import gui.mainFrame.Flow2Code;
 
 public class UpdateLanguageAction implements ActionListener{
 

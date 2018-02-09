@@ -1,4 +1,4 @@
-package gui;
+package gui.mainFrame;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import gui.codeView.CodeEditPanel;
 import gui.codeView.CodeViewContainer;
 import gui.codeView.CodeViewToolBar;
+import gui.flowView.FlowDiagramToolBar;
+import gui.flowView.ScrollablePanelForFD;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.object.BlockFD;

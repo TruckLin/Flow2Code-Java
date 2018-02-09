@@ -74,65 +74,15 @@ public abstract class SaveAndLoadManagerFD {
 				//System.out.println(currentEntry.getName().substring(begin, end));
 				//System.out.println(currentEntry.getName().substring(begin, end).equals("Func"));
 				
-				if(currentEntry.getName().substring(begin, end).equals("Func")) continue;
+				if(currentEntry.getName().substring(begin, end).equals("Func")) {
+					continue;
+					
+					//
+				}
                 
 				/** Read in the content from ZipInputStream **/
 				
 				String temp = ""; // this holds all the characters in the current entry.
-				
-				// Version 1
-				/*
-				byte[] buffer = new byte[5096];
-				//byte[] buffer = new byte[1024];
-				int len;
-				
-
-				//Testing
-				//System.out.println(temp);
-				
-				
-				while ((len = in.read(buffer,0,buffer.length)) != -1){
-					ByteArrayInputStream byteIn = new ByteArrayInputStream(buffer);
-					DataInputStream dataIn = new DataInputStream(byteIn);
-					
-					
-					for (int i = 0; i < len/2; i++) {
-						char myChar = dataIn.readChar();
-						temp = temp + myChar;
-						//System.out.print(myChar);
-						
-					}
-					//Testing
-					//System.out.println();
-					//System.out.println("len = " + len);
-                    //System.out.println("buffer.length = " + buffer.length);
-					
-					dataIn.close();
-                   
-				}
-				*/
-				//Version 2
-			/*	byte in1,in2;
-				while ( (in1 = in.read()) != -1 && (in2 = in.read()) != -1 ) ){
-					ByteArrayInputStream byteIn = new ByteArrayInputStream(buffer);
-					DataInputStream dataIn = new DataInputStream(byteIn);
-					
-					
-					for (int i = 0; i < len/2; i++) {
-						char myChar = dataIn.readChar();
-						temp = temp + myChar;
-						System.out.print(myChar);
-						
-					}
-					//Testing
-					System.out.println();
-					System.out.println("len = " + len);
-                    System.out.println("buffer.length = " + buffer.length);
-					
-					dataIn.close();
-                   
-				}
-				*/
 				
 				//Version 3
 				Scanner sc = new Scanner(in, "UTF-16");
@@ -144,14 +94,14 @@ public abstract class SaveAndLoadManagerFD {
 			//	 System.out.println("File content = " + temp);
 				
 				if(currentEntry.getName().contains("info")) {
-					// Clone JSONObject
+					// Clone location information JSONObject
 					JSONObject tempModel = new JSONObject(temp);
 					for(String tempKey : tempModel.keySet()) {
 						fdInfo.put( tempKey, tempModel.get(tempKey) );
 					}
 					
 				}else {
-					// Clone JSONObject
+					// Clone model JSONObject
 					
 					//Testing
 					//System.out.print("\n    " + temp);

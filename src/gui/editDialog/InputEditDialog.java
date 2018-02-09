@@ -1,4 +1,4 @@
-package gui;
+package gui.editDialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

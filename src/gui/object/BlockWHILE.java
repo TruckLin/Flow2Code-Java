@@ -2,8 +2,8 @@ package gui.object;
 
 import org.json.JSONObject;
 
-import gui.BlockEditDialog;
-import gui.WhileEditDialog;
+import gui.editDialog.BlockEditDialog;
+import gui.editDialog.WhileEditDialog;
 import gui.interfaces.WithInport;
 import gui.interfaces.WithOutport;
 import gui.manager.UndoManager;
