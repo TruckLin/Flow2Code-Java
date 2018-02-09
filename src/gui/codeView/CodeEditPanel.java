@@ -20,7 +20,11 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 
 	private Font codeFont;
 	private int textSize = 15;
-	private int lineNumberBarWidth = 25;
+	private int lineNumberBarWidth;
+	
+	//Some colors that we need
+	public static final Color backGroundColor = new Color(195,195,195);
+	public static final Color lineNumberBarColor = new Color(0,185,255,150);
 	
 	private TextBranch textModel = null;
 	
@@ -119,6 +123,9 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		this.lineDescent = FM.getDescent();
 		this.lineHeight = FM.getHeight();
 		this.numLineSoFar = 1;
+		
+		//Set line number bar width
+		this.lineNumberBarWidth = FM.stringWidth("111");
 	}
 	
 	public CodeEditPanel(TextBranch textModel){
@@ -134,6 +141,9 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		this.lineAscent = FM.getAscent();
 		this.lineDescent = FM.getDescent();
 		this.lineHeight = FM.getHeight();
+		
+		//Set line number bar width
+		this.lineNumberBarWidth = FM.stringWidth("111");
 		
 		// We should be given a textModel
 		this.textModel = textModel;
@@ -287,7 +297,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		Graphics2D g2 = (Graphics2D)g;
 		g2.clearRect(0, 0, this.getWidth(), this.getHeight());
 		Color fg = g2.getColor();
-		g2.setColor(new Color(195,195,195));
+		g2.setColor(this.backGroundColor);
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g2.setColor(fg);
 		// need to set monospaced font
@@ -303,7 +313,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		this.y_baseLine = this.lineLeading + this.lineAscent; // baseline of the first line
 		
 		// Paint line number bar background
-		g2.setColor(new Color(0,185,255,150));
+		g2.setColor(this.lineNumberBarColor);
 		g2.fillRect(0, 0, this.lineNumberBarWidth, this.getHeight());
 		g2.setColor(fg);
 		

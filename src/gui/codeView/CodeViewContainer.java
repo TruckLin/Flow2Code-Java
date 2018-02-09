@@ -42,7 +42,7 @@ public class CodeViewContainer extends JPanel{
         
         
         JScrollPane scrollPane = new JScrollPane(codeEditPanel);
-        
+        //codeEditPanel.setPreferredSize(scrollPane.getMinimumSize());
         //scrollPane.setPreferredSize(new Dimension(400, 400));
         
         
@@ -55,7 +55,7 @@ public class CodeViewContainer extends JPanel{
         //Add the components
         this.add(codeViewToolBar, BorderLayout.NORTH);
         this.add(codeEditPanel, BorderLayout.CENTER);
-	   // this.add(scrollPane, BorderLayout.CENTER);
+	    //this.add(scrollPane, BorderLayout.CENTER);
 		
 	}
 	
