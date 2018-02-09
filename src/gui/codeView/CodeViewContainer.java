@@ -9,6 +9,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.text.AbstractDocument;
@@ -41,7 +42,12 @@ public class CodeViewContainer extends JPanel{
 		this.codeEditPanel.setTextModel(code);
         
         
-        JScrollPane scrollPane = new JScrollPane(codeEditPanel);
+		
+        JScrollPane scrollPane = new JScrollPane();
+        JViewport viewPort = new JViewport();
+        viewPort.setView(codeEditPanel);
+        this.codeEditPanel.setParentViewport(viewPort);
+        scrollPane.setViewportView(viewPort);
         //codeEditPanel.setPreferredSize(scrollPane.getMinimumSize());
         //scrollPane.setPreferredSize(new Dimension(400, 400));
         
@@ -55,7 +61,7 @@ public class CodeViewContainer extends JPanel{
         //Add the components
         this.add(codeViewToolBar, BorderLayout.NORTH);
         this.add(codeEditPanel, BorderLayout.CENTER);
-	    //this.add(scrollPane, BorderLayout.CENTER);
+	    this.add(scrollPane, BorderLayout.CENTER);
 		
 	}
 	

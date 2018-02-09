@@ -9,10 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.TextField;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.event.CaretListener;
 
@@ -23,8 +25,8 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	private int lineNumberBarWidth;
 	
 	//Some colors that we need
-	public static final Color backGroundColor = new Color(195,195,195);
-	public static final Color lineNumberBarColor = new Color(0,185,255,150);
+	public final Color backGroundColor = new Color(195,195,195);
+	public final Color lineNumberBarColor = new Color(0,185,255,150);
 	
 	private TextBranch textModel = null;
 	
@@ -37,8 +39,14 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	private int x_baseLine;
 	private int y_baseLine;
 	
+	private int maximum_x;
+	private int maximum_y;
+	
 	// Maybe we can store Font metric here
 	private FontMetrics FM;
+	
+	// parent ScrollPane
+	private JViewport parentViewport;
 	
 	// Listeners that should help to repaint
 	private CaretListener textFieldListener = e->{
@@ -108,6 +116,9 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		}
 	};
 	
+	private PropertyChangeListener viewportListener = e->{
+		this.adjustSize();
+	};
 	
 	public CodeEditPanel() {
 		//¡@set layout to be null
@@ -169,6 +180,31 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		}
 	}
 	
+	
+	
+	// Adjust size
+	public void adjustSize() {
+		if (this.parentViewport == null) return;
+		
+		Dimension viewPortSize = this.parentViewport.getSize();
+		int newWidth = 0;
+		int newHeight = 0;
+		if(viewPortSize.getWidth() > this.maximum_x) {
+			newWidth = (int) viewPortSize.getWidth();
+		}else {
+			newWidth = this.maximum_x;
+		}
+		
+		if(viewPortSize.getHeight() > this.maximum_y) {
+			newHeight = (int) viewPortSize.getHeight();
+		}else {
+			newHeight = this.maximum_y;
+		}
+		
+		this.setPreferredSize(new Dimension(newWidth,newHeight));
+		this.revalidate();
+	}
+	
 	/* Find textAreas in textModel and add it to the panel
 	 * */
 	public void addTextComponentInTextModel() {
@@ -186,8 +222,28 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		*/
 		this.x_baseLine = this.lineNumberBarWidth;
 		this.y_baseLine = this.lineLeading + this.lineAscent; // baseline of the first line
+		
+		this.maximum_x = Integer.MIN_VALUE;
+		this.maximum_y = Integer.MIN_VALUE;
 
+		//Testing
+		//System.out.println("addTextComponentInTextModel() is called.");
+		//System.out.println("Before:");
+		//System.out.println("Max x = " + this.maximum_x);
+		//System.out.println("Max y = " + this.maximum_y);
+		
 		this.addTextComponentInTextModel(textModel);
+		
+		//Testing
+		//System.out.println("After:");
+		//System.out.println("Max x = " + this.maximum_x);
+		//System.out.println("Max y = " + this.maximum_y);
+		
+		// Set preffered size the reset maximum x and y
+		this.adjustSize();
+		
+		this.maximum_x = Integer.MIN_VALUE;
+		this.maximum_y = Integer.MIN_VALUE;
 		
 	}
 	
@@ -195,26 +251,25 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	public void addTextComponentInTextModel(TextTree textTree) {
 		if(this.textModel == null) return; // if there is no model, do nothing.
 		
-		/* Whenever we encounter a TextComponent in the model, we need to calculate
-		*  where the top-left corner of the textComponent should be.
-		*  In order to do so, we need to have
-		*  1. Line height
-		*  2. width of each character, (since we are coding , characters should be uniformly sized.)
-		*  3. number of current line
-		*  4. number of characters in the currentLine so far.
-		*  5. How will the width of textArea and TextFiled affect the final result?(if we specify the width and height
-		*     of the textComponent, it shouldn't be a problem)
-		*/
+		
 		if(textTree instanceof TextLeaf) {
 			String txt = textTree.getText();	
 			char[] charList = txt.toCharArray();
 			for(Character letter : charList) {
 				if(letter.equals('\n')) {
+					
+					//Update maximum_y
+					if(this.maximum_y < (y_baseLine+this.lineDescent)) this.maximum_y = y_baseLine+this.lineDescent;
+					
 					this.x_baseLine = this.lineNumberBarWidth;
 					this.y_baseLine = this.y_baseLine + this.lineHeight;
 				} else {
 					int width = FM.stringWidth(letter.toString());
 					this.x_baseLine = this.x_baseLine + width;
+					
+					//Update maximum_x
+					if(this.maximum_x < x_baseLine) this.maximum_x = x_baseLine;
+					
 				}
 			}
 			
@@ -404,6 +459,40 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	/** Getters and Setters **/
 	public String getText() {
 		return this.textModel.getText();
+	}
+	
+	public Color getBackgroundColor() {
+		return this.backGroundColor;
+	}
+	public Color getLineNumberBarColor(){
+		return this.lineNumberBarColor;
+	}
+	
+	public int getLineNumberBarWidth() {
+		return this.lineNumberBarWidth;
+	}
+	
+	public void setParentViewport(JViewport parent) {
+		this.parentViewport = parent;
+		
+		if(this.parentViewport != null) {
+			this.parentViewport.addPropertyChangeListener(viewportListener);
+		}else {
+			return;
+		}
+		
+		
+		Dimension viewPortSize = this.parentViewport.getSize();
+		if(viewPortSize != null) {
+			//Testing
+			System.out.println("viewPort's Size is not null");
+			System.out.println("viewPort's size = " + viewPortSize);
+			
+			adjustSize();
+		}else {
+			//Testing
+			System.out.println("viewPort's Size is null");
+		}
 	}
 	
 	/** Scrollable interface **/

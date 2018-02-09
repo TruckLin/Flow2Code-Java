@@ -162,7 +162,7 @@ public class Flow2Code extends JFrame{
 	    this.scrollablePanelForFD = new ScrollablePanelForFD((BlockFlowDiagram) this.blockFlowDiagram);
 	    JViewport myViewport = new JViewport();
 	    myViewport.setView(this.scrollablePanelForFD);
-	    myViewport.setExtentSize(new Dimension(50,50));
+	    //myViewport.setExtentSize(new Dimension(50,50));
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setViewport(myViewport);
 	    
