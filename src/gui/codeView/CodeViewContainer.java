@@ -42,14 +42,12 @@ public class CodeViewContainer extends JPanel{
 		this.codeEditPanel.setTextModel(code);
         
         
-		
-        JScrollPane scrollPane = new JScrollPane();
-        JViewport viewPort = new JViewport();
-        viewPort.setView(codeEditPanel);
-        this.codeEditPanel.setParentViewport(viewPort);
-        scrollPane.setViewportView(viewPort);
-        //codeEditPanel.setPreferredSize(scrollPane.getMinimumSize());
-        //scrollPane.setPreferredSize(new Dimension(400, 400));
+		CodeViewport myViewport = new CodeViewport(codeEditPanel);
+    	myViewport.setView(codeEditPanel);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewport(myViewport);
+        
+        
         
         
         //Testing
@@ -60,7 +58,7 @@ public class CodeViewContainer extends JPanel{
         
         //Add the components
         this.add(codeViewToolBar, BorderLayout.NORTH);
-        this.add(codeEditPanel, BorderLayout.CENTER);
+        //this.add(codeEditPanel, BorderLayout.CENTER);
 	    this.add(scrollPane, BorderLayout.CENTER);
 		
 	}

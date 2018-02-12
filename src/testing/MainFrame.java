@@ -41,7 +41,7 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 
 	    documentTree.addTree(new TextFieldLeaf());
 	    
-	    this.setContentPane(new CodeEditPanel(documentTree));
+	   // this.setContentPane(new CodeEditPanel(documentTree));
 	   
 	   
 	    //this.setContentPane(new TestingPanel());

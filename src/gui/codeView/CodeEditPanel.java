@@ -35,18 +35,19 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	private int lineLeading;
 	private int lineAscent;
 	private int lineDescent;
-	private int numLineSoFar;
+
 	private int x_baseLine;
 	private int y_baseLine;
 	
+	private int numLineSoFar;
+	private int totalNumberOfLine;
+	
+
 	private int maximum_x;
 	private int maximum_y;
 	
 	// Maybe we can store Font metric here
 	private FontMetrics FM;
-	
-	// parent ScrollPane
-	private JViewport parentViewport;
 	
 	// Listeners that should help to repaint
 	private CaretListener textFieldListener = e->{
@@ -116,10 +117,6 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		}
 	};
 	
-	private PropertyChangeListener viewportListener = e->{
-		this.adjustSize();
-	};
-	
 	public CodeEditPanel() {
 		//¡@set layout to be null
 		this.setLayout(null);
@@ -138,71 +135,31 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		//Set line number bar width
 		this.lineNumberBarWidth = FM.stringWidth("111");
 	}
-	
-	public CodeEditPanel(TextBranch textModel){
-		//¡@set layout to be null
-		this.setLayout(null);
-		
-		// Decide a font
-		this.codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize );
-		
-		// New a JTextField just to get the FontMetric
-		this.FM = new JTextField().getFontMetrics(codeFont);
-		this.lineLeading = FM.getLeading();
-		this.lineAscent = FM.getAscent();
-		this.lineDescent = FM.getDescent();
-		this.lineHeight = FM.getHeight();
-		
-		//Set line number bar width
-		this.lineNumberBarWidth = FM.stringWidth("111");
-		
-		// We should be given a textModel
-		this.textModel = textModel;
-		
-		// set up and add certain textField or text area
-		this.addTextComponentInTextModel();
-		
-	}
-	
+
 	public void setTextModel(TextBranch textModel) {
 		this.numLineSoFar = 1;
 		
-		// If this.textModel is not null, we may have some component on the panel.
-		if(this.textModel != null) {
-			this.removeAll();
-		}
+		this.removeAll();
 		
 		this.textModel = textModel;// replace the model
 		
 		if(this.textModel!= null) {
+			
 			this.addTextComponentInTextModel();
 			this.repaint();
+			
+			//Testing
+			//System.out.println("this.textModel!=null");
 		}
 	}
 	
 	
 	
 	// Adjust size
-	public void adjustSize() {
-		if (this.parentViewport == null) return;
-		
-		Dimension viewPortSize = this.parentViewport.getSize();
-		int newWidth = 0;
-		int newHeight = 0;
-		if(viewPortSize.getWidth() > this.maximum_x) {
-			newWidth = (int) viewPortSize.getWidth();
-		}else {
-			newWidth = this.maximum_x;
-		}
-		
-		if(viewPortSize.getHeight() > this.maximum_y) {
-			newHeight = (int) viewPortSize.getHeight();
-		}else {
-			newHeight = this.maximum_y;
-		}
-		
-		this.setPreferredSize(new Dimension(newWidth,newHeight));
+	public void adjustSize() {		
+		this.setPreferredSize(new Dimension(this.maximum_x,this.maximum_y));
 		this.revalidate();
+		repaint();
 	}
 	
 	/* Find textAreas in textModel and add it to the panel
@@ -288,12 +245,25 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				// Add caret listener
 				ta.addCaretListener(this.textAreaListener);
 				
+				//Update maximum_x
+				if(this.maximum_x < (x_baseLine + initialWidth)) this.maximum_x = x_baseLine + initialWidth;
+				//Update maximum_y
+				if(this.maximum_y < (y_baseLine + ta.getHeight() + this.lineDescent)) 
+									this.maximum_y = y_baseLine + ta.getHeight() + this.lineDescent;
+				
 				//Update y_baseLine location and x_baseLine location
 				this.x_baseLine = this.lineNumberBarWidth;
 				this.y_baseLine += ta.getHeight();
 			}else {
 				/** if the TextAreaLeaf is initialised **/
 				ta.setLocation(x_baseLine, y_baseLine-this.lineAscent);
+				
+				//Update maximum_x
+				if(this.maximum_x < (x_baseLine + ta.getWidth())) this.maximum_x = x_baseLine + ta.getWidth();
+				//Update maximum_y
+				if(this.maximum_y < (y_baseLine + ta.getHeight() + this.lineDescent)) 
+									this.maximum_y = y_baseLine + ta.getHeight() + this.lineDescent;
+				
 				
 				//Update y_baseLine location and x_baseLine location
 				this.x_baseLine = this.lineNumberBarWidth;
@@ -321,6 +291,9 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				//Update x_baseline location
 				this.x_baseLine = this.x_baseLine + initialWidth;
 				
+				//Update maximum_x
+				if(this.maximum_x < x_baseLine) this.maximum_x = x_baseLine;
+				
 			} else {
 				/** if the TextFieldTree is initialised **/
 				// Testing
@@ -332,6 +305,9 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				
 				tf.setLocation(x_baseLine, y_baseLine-this.lineAscent);
 				this.x_baseLine = this.x_baseLine + ((TextFieldLeaf)textTree).getCurrentWidth();
+				
+				//Update maximum_x
+				if(this.maximum_x < x_baseLine) this.maximum_x = x_baseLine;
 				
 				//Testing
 			//	System.out.println("x position after addition of width = " + this.x_baseLine);
@@ -472,29 +448,6 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		return this.lineNumberBarWidth;
 	}
 	
-	public void setParentViewport(JViewport parent) {
-		this.parentViewport = parent;
-		
-		if(this.parentViewport != null) {
-			this.parentViewport.addPropertyChangeListener(viewportListener);
-		}else {
-			return;
-		}
-		
-		
-		Dimension viewPortSize = this.parentViewport.getSize();
-		if(viewPortSize != null) {
-			//Testing
-			System.out.println("viewPort's Size is not null");
-			System.out.println("viewPort's size = " + viewPortSize);
-			
-			adjustSize();
-		}else {
-			//Testing
-			System.out.println("viewPort's Size is null");
-		}
-	}
-	
 	/** Scrollable interface **/
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
@@ -505,7 +458,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	@Override
 	public int getScrollableBlockIncrement(Rectangle arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 50;
 	}
 
 	@Override
@@ -523,7 +476,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	@Override
 	public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 10;
 	}
 
 }
