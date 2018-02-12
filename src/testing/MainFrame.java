@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.plaf.LayerUI;
 
 import gui.codeView.CodeEditPanel;
 import gui.codeView.TextAreaLeaf;
@@ -24,6 +25,11 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private int x_baseLine = 0;
+	private int panelHeight = 100;
+	
+	private JScrollPane scrollPane;
+	
 	public MainFrame() {
 	    
 	    // Allocate the GUI components
@@ -41,27 +47,25 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 
 	    documentTree.addTree(new TextFieldLeaf());
 	    
-	   // this.setContentPane(new CodeEditPanel(documentTree));
-	   
-	   
-	    //this.setContentPane(new TestingPanel());
+	    JPanel panel = new JPanel();
 	    
-	/*    JPanel np = new JPanel(null);
-		JTextField tf = new JTextField();
-		tf.setBounds(100,100,100,50);
-		np.add(tf);
-		int initialWidth = 100;
-		tf.addCaretListener(e -> {
-					int newWidth = tf.getText().length()*8;
-					if(newWidth > initialWidth) {
-						tf.setBounds(tf.getLocation().x, tf.getLocation().y, newWidth, 50 );
-					} else {
-						tf.setBounds(tf.getLocation().x, tf.getLocation().y, initialWidth, 50 );
-					}
-				});
-		
-		this.setContentPane(np);
-		*/
+	    panel.setPreferredSize(new Dimension(500, this.panelHeight));
+	    panel.add(new JButton("Testing button"));
+	    
+	    this.scrollPane = new JScrollPane(panel);
+	    this.scrollPane.getViewport().setBackground(Color.RED);
+	    
+	    LineBar lineBar = new LineBar();
+	    scrollPane.setRowHeaderView(lineBar);
+	    
+	    // These two listener inform viewport when to repaint()
+	 		scrollPane.getHorizontalScrollBar().addAdjustmentListener(e->{
+	 			this.x_baseLine = e.getValue();
+	 			lineBar.repaint();
+	 		});
+	    
+	    
+	    this.getContentPane().add(scrollPane);
 	    
 	    // Source object adds listener
 	    // .....
@@ -73,7 +77,45 @@ public class MainFrame extends JFrame implements MouseListener, ActionListener{
 	    setVisible(true);
 	}
 	
-
+	private class LineBar extends JComponent{
+		
+		public LineBar() {
+			this.setPreferredSize(new Dimension(100,panelHeight));
+		}
+		
+		@Override
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D)g.create();
+			
+			g2.setColor(Color.YELLOW);
+			g2.fillRect(0, 0, LineBar.this.getWidth(), LineBar.this.getHeight());
+			
+			g2.setColor(Color.black);
+			int _x = 25;
+			int _y = 20;
+			for(int i = 0; i<100; i++) {
+				g2.drawString(Integer.toString(i), _x , _y);
+				_y += 10;
+			}
+			
+			g2.dispose();
+		}
+	}
+	private class MyLayerUISubclass extends LayerUI<JComponent>{
+		@Override
+		public void paint(Graphics g, JComponent c) {
+			super.paint(g, c);
+			
+			Graphics2D g2 = (Graphics2D) g.create();
+			g2.setColor(new Color(255,0,0));
+			g2.fillOval(0, 0, c.getWidth(), c.getHeight());
+			
+			g2.drawString("oooomg", x_baseLine, 50);
+			
+			g2.dispose();
+		}
+	}
 	public static void main(String[] args) {
 		// Run GUI codes in Event-Dispatching thread for thread-safety
 		

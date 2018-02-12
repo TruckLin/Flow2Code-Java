@@ -30,7 +30,7 @@ public class ForJavaCodeGenProcess implements CodeGenerationProcess{
 		
 		// Check whether we should generate the code.
 		if(!model.getBoolean("CodeGen")) {
-			code.addTree(new TextLeaf("// Fill in the content of this for loop.\n" + indent + "for("));
+			code.addTree(new TextLeaf(indent + "// Fill in the content of this for loop.\n" + indent + "for("));
 			code.addTree(new TextFieldLeaf());
 			code.addTree(new TextLeaf(") {\n"));
 		} else {

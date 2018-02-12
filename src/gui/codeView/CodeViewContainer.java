@@ -3,6 +3,7 @@ package gui.codeView;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.HashMap;
 
 import javax.swing.AbstractAction;
@@ -41,31 +42,18 @@ public class CodeViewContainer extends JPanel{
 		code = (TextBranch) codeGenerator.generate(this.mainFrame.getFlowDiagramModel(), code, "");
 		this.codeEditPanel.setTextModel(code);
         
-        
-		CodeViewport myViewport = new CodeViewport(codeEditPanel);
-    	myViewport.setView(codeEditPanel);
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewport(myViewport);
-        
-        
-        
-        
-        //Testing
-        //this.undo = new MyTestUndoManager();
-        
+		JScrollPane scrollPane = new JScrollPane(this.codeEditPanel);
+		scrollPane.setRowHeaderView(new LineNumberBar(codeEditPanel));
+		scrollPane.getViewport().setBackground(codeEditPanel.getBackgroundColor());
+		       
         
         this.codeViewToolBar = new CodeViewToolBar(this);
         
         //Add the components
         this.add(codeViewToolBar, BorderLayout.NORTH);
-        //this.add(codeEditPanel, BorderLayout.CENTER);
 	    this.add(scrollPane, BorderLayout.CENTER);
 		
 	}
-	
-
-    
-
 
 	/** Getters and Setters **/
 	public CodeViewToolBar getCodeViewToolBar() {

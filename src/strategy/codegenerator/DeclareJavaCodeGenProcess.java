@@ -21,6 +21,7 @@ public class DeclareJavaCodeGenProcess implements CodeGenerationProcess{
 		if(!model.getBoolean("CodeGen")) {
 			code.addTree(new TextLeaf(indent + "// Write your own Declaration.\n" + indent));
 			code.addTree(new TextAreaLeaf());
+			code.addTree(new TextLeaf("\n"));
 		}
 		
 		JSONArray variables = model.getJSONArray("Variables");

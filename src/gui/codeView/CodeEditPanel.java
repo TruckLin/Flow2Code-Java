@@ -19,14 +19,14 @@ import javax.swing.Scrollable;
 import javax.swing.event.CaretListener;
 
 public class CodeEditPanel extends JPanel implements Scrollable{
-
-	private Font codeFont;
+	
 	private int textSize = 15;
-	private int lineNumberBarWidth;
+	
+	// Decide a font, textSize must be set first!!!
+	private Font codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize );
 	
 	//Some colors that we need
-	public final Color backGroundColor = new Color(195,195,195);
-	public final Color lineNumberBarColor = new Color(0,185,255,150);
+	private final Color backGroundColor = new Color(195,195,195);
 	
 	private TextBranch textModel = null;
 	
@@ -39,15 +39,14 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	private int x_baseLine;
 	private int y_baseLine;
 	
-	private int numLineSoFar;
-	private int totalNumberOfLine;
-	
+	private int totalNumberOfLine = 0;	
 
 	private int maximum_x;
 	private int maximum_y;
 	
 	// Maybe we can store Font metric here
 	private FontMetrics FM;
+	
 	
 	// Listeners that should help to repaint
 	private CaretListener textFieldListener = e->{
@@ -121,23 +120,20 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		//¡@set layout to be null
 		this.setLayout(null);
 		
-		// Decide a font
-		this.codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize );
-		
 		// New a JTextField just to get the FontMetric
 		this.FM = new JTextField().getFontMetrics(codeFont);
 		this.lineLeading = FM.getLeading();
 		this.lineAscent = FM.getAscent();
 		this.lineDescent = FM.getDescent();
 		this.lineHeight = FM.getHeight();
-		this.numLineSoFar = 1;
+		this.totalNumberOfLine = 1;
 		
-		//Set line number bar width
-		this.lineNumberBarWidth = FM.stringWidth("111");
+		//Testing
+		//System.out.println(this.lineNumberBarWidth);
 	}
 
 	public void setTextModel(TextBranch textModel) {
-		this.numLineSoFar = 1;
+		this.totalNumberOfLine = 1;
 		
 		this.removeAll();
 		
@@ -152,8 +148,6 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 			//System.out.println("this.textModel!=null");
 		}
 	}
-	
-	
 	
 	// Adjust size
 	public void adjustSize() {		
@@ -177,7 +171,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		*  5. How will the width of textArea and TextFiled affect the final result?(if we specify the width and height
 		*     of the textComponent, it shouldn't be a problem)
 		*/
-		this.x_baseLine = this.lineNumberBarWidth;
+		this.x_baseLine = 0;
 		this.y_baseLine = this.lineLeading + this.lineAscent; // baseline of the first line
 		
 		this.maximum_x = Integer.MIN_VALUE;
@@ -189,6 +183,10 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		//System.out.println("Max x = " + this.maximum_x);
 		//System.out.println("Max y = " + this.maximum_y);
 		
+		// Reset TotalNumberOfLine, we will count it again
+		int oldNumLine = this.totalNumberOfLine;
+		this.totalNumberOfLine = 1;
+		
 		this.addTextComponentInTextModel(textModel);
 		
 		//Testing
@@ -199,9 +197,8 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		// Set preffered size the reset maximum x and y
 		this.adjustSize();
 		
-		this.maximum_x = Integer.MIN_VALUE;
-		this.maximum_y = Integer.MIN_VALUE;
-		
+		// Fire propertyChangeEvent to inform other component that number of lines has changed.
+		this.firePropertyChange("totalNumberOfLine", oldNumLine, this.totalNumberOfLine);
 	}
 	
 	// Do not invoke this method directly.
@@ -210,16 +207,20 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		
 		
 		if(textTree instanceof TextLeaf) {
-			String txt = textTree.getText();	
+			String txt = textTree.getText();
 			char[] charList = txt.toCharArray();
 			for(Character letter : charList) {
 				if(letter.equals('\n')) {
+					this.x_baseLine = 0;
+					
+					this.y_baseLine = this.y_baseLine + this.lineHeight;
 					
 					//Update maximum_y
 					if(this.maximum_y < (y_baseLine+this.lineDescent)) this.maximum_y = y_baseLine+this.lineDescent;
 					
-					this.x_baseLine = this.lineNumberBarWidth;
-					this.y_baseLine = this.y_baseLine + this.lineHeight;
+					// Add 1 to totalNumberOfLine
+					this.totalNumberOfLine ++;
+					
 				} else {
 					int width = FM.stringWidth(letter.toString());
 					this.x_baseLine = this.x_baseLine + width;
@@ -252,8 +253,12 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 									this.maximum_y = y_baseLine + ta.getHeight() + this.lineDescent;
 				
 				//Update y_baseLine location and x_baseLine location
-				this.x_baseLine = this.lineNumberBarWidth;
-				this.y_baseLine += ta.getHeight();
+				this.x_baseLine += ta.getWidth();
+				this.y_baseLine += (ta.getHeight() - this.lineHeight);
+				
+				// Update totalNumebrOfLine
+				this.totalNumberOfLine += (ta.getHeight()/this.lineHeight - 1);
+				
 			}else {
 				/** if the TextAreaLeaf is initialised **/
 				ta.setLocation(x_baseLine, y_baseLine-this.lineAscent);
@@ -266,8 +271,11 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 				
 				
 				//Update y_baseLine location and x_baseLine location
-				this.x_baseLine = this.lineNumberBarWidth;
-				this.y_baseLine += ta.getHeight();
+				this.x_baseLine += ta.getWidth();
+				this.y_baseLine += (ta.getHeight() - this.lineHeight);
+				
+				// Update totalNumebrOfLine
+				this.totalNumberOfLine += (ta.getHeight()/this.lineHeight - 1);
 
 			}
 			
@@ -325,31 +333,24 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D)g;
+		Graphics2D g2 = (Graphics2D)g.create();
 		g2.clearRect(0, 0, this.getWidth(), this.getHeight());
 		Color fg = g2.getColor();
 		g2.setColor(this.backGroundColor);
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g2.setColor(fg);
+		
 		// need to set monospaced font
 		g2.setFont(this.codeFont);
+		
 		
 		this.lineLeading = FM.getLeading();
 		this.lineAscent = FM.getAscent();
 		this.lineDescent = FM.getDescent();
 		//this.lineHeight = FM.getLeading() + FM.getAscent() + FM.getDescent();
 		this.lineHeight = FM.getHeight();
-		this.numLineSoFar = 1;
-		this.x_baseLine = this.lineNumberBarWidth;
+		this.x_baseLine = 0;
 		this.y_baseLine = this.lineLeading + this.lineAscent; // baseline of the first line
-		
-		// Paint line number bar background
-		g2.setColor(this.lineNumberBarColor);
-		g2.fillRect(0, 0, this.lineNumberBarWidth, this.getHeight());
-		g2.setColor(fg);
-		
-		//Paint the first line number
-		this.paintCurerentLineNumberBar(g2);
 
 		//Testing
 		//System.out.println("Leading = " + FM.getLeading());
@@ -360,6 +361,8 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		/** Draw all textModel recursively **/
 		this.paintTextTree(textModel, g2);
 		
+		
+		g2.dispose();
 	}
 	
 	// This function should only be called by paintComponent(Graphics g).
@@ -370,20 +373,28 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	 */
 	private void paintTextTree(TextTree textTree, Graphics2D g2) {
 		
+		//Testing
+		//System.out.println("FM is null = " + FM==null);
+		//System.out.println(FM.stringWidth("hohoho"));
+		//System.out.println("charWidth : " + FM.charWidth('c'));
+		
 		if(textTree instanceof TextLeaf) {
 			String txt = textTree.getText();	
 			char[] charList = txt.toCharArray();
 			for(Character letter : charList) {
 				if(letter.equals('\n')) {
-					this.numLineSoFar++;
-					this.x_baseLine = this.lineNumberBarWidth;
+					this.x_baseLine = 0;
 					this.y_baseLine = this.y_baseLine + this.lineHeight;
-					this.paintCurerentLineNumberBar(g2);
+					
+					//Testing
+					//System.out.println("x_baseline = " + x_baseLine);
+					//System.out.println("y_baseline = " + y_baseLine);
 					
 				} else {
 					g2.drawString(letter.toString(), this.x_baseLine, this.y_baseLine);
 					int width = FM.stringWidth(letter.toString());
 					this.x_baseLine = this.x_baseLine + width;
+					
 				}
 			}
 			
@@ -396,15 +407,10 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 			//System.out.println("y_baseLine before = " + this.y_baseLine);
 			
 			int taHeight = ta.getHeight();
-			int numline = taHeight/this.lineHeight;
-			for(int i=0; i<numline; i++) {
-				this.y_baseLine += this.lineHeight;
-				this.numLineSoFar++;
-				this.paintCurerentLineNumberBar(g2);
-			}
-			
+			this.y_baseLine += (taHeight - this.getLineHeight() );
+
 			//Update x_baseLine location
-			this.x_baseLine = this.lineNumberBarWidth;
+			this.x_baseLine = ta.getWidth();
 			
 			//Testing
 			//System.out.println("y_baseLine after = " + this.y_baseLine);
@@ -426,12 +432,6 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 		}
 	}
 	
-	private void paintCurerentLineNumberBar(Graphics2D g2) {
-		String lineNumber = Integer.toString(this.numLineSoFar);
-		int numWidth = this.FM.stringWidth(lineNumber);
-		g2.drawString(lineNumber, this.lineNumberBarWidth/2-numWidth/2 , this.y_baseLine);
-	}
-	
 	/** Getters and Setters **/
 	public String getText() {
 		return this.textModel.getText();
@@ -440,12 +440,27 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	public Color getBackgroundColor() {
 		return this.backGroundColor;
 	}
-	public Color getLineNumberBarColor(){
-		return this.lineNumberBarColor;
-	}
 	
-	public int getLineNumberBarWidth() {
-		return this.lineNumberBarWidth;
+	public int getLineHeight() {
+		return this.lineHeight;
+	}
+	public int getLineAscent() {
+		return this.lineAscent;
+	}
+	public int getLineLeading() {
+		return this.lineLeading;
+	}
+	public int getLineDescent() {
+		return this.lineDescent;
+	}
+	public int getTotalNumberOfLine() {
+		return this.totalNumberOfLine;
+	}
+	public FontMetrics getMyFontMetrics() {
+		return this.FM;
+	}
+	public Font getCodeFont() {
+		return this.codeFont;
 	}
 	
 	/** Scrollable interface **/

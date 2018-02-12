@@ -38,6 +38,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 												if(!model.getBoolean("CodeGen")) {
 													code.addTree(new TextLeaf(indent + "//Write your own assignments\n" + indent));
 													code.addTree(new TextAreaLeaf());
+													code.addTree(new TextLeaf("\n"));
 													return code;
 												}
 												JSONArray assignments = model.getJSONArray("Assignments");
