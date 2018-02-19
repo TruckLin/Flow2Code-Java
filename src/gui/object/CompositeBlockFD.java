@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import gui.manager.NameCounterManager;
 import gui.manager.UndoManager;
 import gui.mouselistener.LineRightClickListener;
-import simple.geometry.GeometryTools;
+import simple.geometry.GeometricTools;
 
 public abstract class CompositeBlockFD extends BlockFD{
 
@@ -69,7 +69,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 	public void addLineFD(LineFD line) {
 		line.addPropertyChangeListener(repaintListener);
 		this.lineList.add(line);
-		GeometryTools.generateLineSegments(line);
+		GeometricTools.generateLineSegments(line);
 		this.repaint();
 	}
 	
@@ -236,7 +236,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 	/** Generate Line segments for one LineFD **/
 	public void generateLineSegmentsForAllLines() {
 		for(LineFD line :lineList) {
-			GeometryTools.generateLineSegments(line);
+			GeometricTools.generateLineSegments(line);
 			//generateLineSegments(line);
 		}
 	}

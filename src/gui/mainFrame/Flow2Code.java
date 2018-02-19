@@ -1,6 +1,8 @@
 package gui.mainFrame;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -20,8 +22,8 @@ import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.BlockFlowDiagram;
 import gui.object.CompositeBlockFD;
-import strategy.generator.BlockGenerator;
-import strategy.generator.ModelGenerator;
+import strategy.blockgenerator.BlockGenerator;
+import strategy.blockgenerator.ModelGenerator;
 import gui.manager.SaveAndLoadManagerFD;
 
 public class Flow2Code extends JFrame{
@@ -69,6 +71,7 @@ public class Flow2Code extends JFrame{
 	public ScrollablePanelForFD getScrollablePanelForFD() {return this.scrollablePanelForFD;}
 	public CodeEditPanel getCodeEditPanel() {return this.codeViewContainer.getCodeEditPanel();}
 	public CodeViewContainer getCodeViewContainer() {return this.codeViewContainer;}
+
 	
 	public Flow2Code() {
 		

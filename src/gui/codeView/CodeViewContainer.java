@@ -19,7 +19,6 @@ import javax.swing.text.StyledDocument;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
-import gui.commands.UndoableEditCommand;
 import gui.mainFrame.Flow2Code;
 import gui.manager.UndoManager;
 import strategy.codegenerator.JavaCodeGenerator;
@@ -49,7 +48,7 @@ public class CodeViewContainer extends JPanel{
         
         this.codeViewToolBar = new CodeViewToolBar(this);
         
-        //Add the components
+        //Add the components	
         this.add(codeViewToolBar, BorderLayout.NORTH);
 	    this.add(scrollPane, BorderLayout.CENTER);
 		

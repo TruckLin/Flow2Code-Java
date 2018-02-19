@@ -23,7 +23,7 @@ public class CodeEditPanel extends JPanel implements Scrollable{
 	private int textSize = 15;
 	
 	// Decide a font, textSize must be set first!!!
-	private Font codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize );
+	private Font codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize);
 	
 	//Some colors that we need
 	private final Color backGroundColor = new Color(195,195,195);

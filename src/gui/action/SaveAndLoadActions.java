@@ -15,7 +15,7 @@ import gui.mainFrame.Flow2Code;
 import gui.manager.SaveAndLoadManagerFD;
 import gui.manager.UndoManager;
 import gui.object.CompositeBlockFD;
-import strategy.generator.BlockGenerator;
+import strategy.blockgenerator.BlockGenerator;
 
 public class SaveAndLoadActions {
 

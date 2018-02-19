@@ -9,7 +9,7 @@ import gui.object.BlockFD;
 import gui.object.LineFD;
 import gui.object.PortFD;
 
-public abstract class GeometryTools {
+public abstract class GeometricTools {
 	public static final double Angle_Tol = 0.00000001;
 	
 	public static double modulo2PI(double theta) {

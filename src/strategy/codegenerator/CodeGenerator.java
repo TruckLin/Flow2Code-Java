@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import gui.codeView.TextBranch;
 import gui.codeView.TextTree;
 import gui.object.BlockFD;
-import strategy.generator.ModelGenerationProcess;
+import strategy.blockgenerator.ModelGenerationProcess;
 
 public abstract class CodeGenerator{
 	protected HashMap<String, CodeGenerationProcess> registry = new HashMap<String, CodeGenerationProcess>();

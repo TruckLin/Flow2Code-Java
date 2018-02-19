@@ -35,22 +35,22 @@ public class FullLine {
 	
 	public boolean parallelTo(double phi) {
 		phi = phi % (2 * Math.PI);
-		boolean sameDirection = Math.abs(phi - this.theta) < GeometryTools.Angle_Tol;
-		boolean oppositeDirection = Math.abs(phi + this.theta) < GeometryTools.Angle_Tol;
+		boolean sameDirection = Math.abs(phi - this.theta) < GeometricTools.Angle_Tol;
+		boolean oppositeDirection = Math.abs(phi + this.theta) < GeometricTools.Angle_Tol;
 		return sameDirection || oppositeDirection;
 	}
 	
 	public boolean contains(Point2D p) {
 		// if the points are very close to each other.
-		if(this.origin.distance(p) < GeometryTools.Angle_Tol ) return true;
+		if(this.origin.distance(p) < GeometricTools.Angle_Tol ) return true;
 		
 		// otherwise
 		double dx = p.getX() - this.origin.getX();
 		double dy = p.getY() - this.origin.getY();
 		double phi = Math.atan2(dy, dx) % (2 * Math.PI);
 		
-		boolean sameDirection = Math.abs(phi - this.theta) < GeometryTools.Angle_Tol;
-		boolean oppositeDirection = Math.abs(phi + this.theta) < GeometryTools.Angle_Tol;
+		boolean sameDirection = Math.abs(phi - this.theta) < GeometricTools.Angle_Tol;
+		boolean oppositeDirection = Math.abs(phi + this.theta) < GeometricTools.Angle_Tol;
 		return sameDirection || oppositeDirection;
 	}
 	

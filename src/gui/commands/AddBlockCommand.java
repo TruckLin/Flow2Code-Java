@@ -11,8 +11,8 @@ import gui.manager.UndoManager;
 import gui.object.BlockFD;
 import gui.object.CompositeBlockFD;
 import gui.object.LineFD;
-import strategy.generator.BlockGenerator;
-import strategy.generator.ModelGenerator;
+import strategy.blockgenerator.BlockGenerator;
+import strategy.blockgenerator.ModelGenerator;
 import gui.interfaces.*;
 
 public class AddBlockCommand implements Command {

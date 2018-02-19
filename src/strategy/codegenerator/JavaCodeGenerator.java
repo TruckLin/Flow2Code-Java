@@ -10,7 +10,7 @@ import gui.codeView.TextBranch;
 import gui.codeView.TextLeaf;
 import gui.manager.SaveAndLoadManagerFD;
 import gui.object.CompositeBlockFD;
-import strategy.generator.BlockGenerator;
+import strategy.blockgenerator.BlockGenerator;
 
 
 

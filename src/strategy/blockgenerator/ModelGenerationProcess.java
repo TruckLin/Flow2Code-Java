@@ -1,4 +1,4 @@
-package strategy.generator;
+package strategy.blockgenerator;
 
 import org.json.JSONObject;
 
