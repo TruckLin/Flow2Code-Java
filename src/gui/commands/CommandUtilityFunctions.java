@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import gui.object.BlockFD;
 import gui.object.LineFD;
 
-public class CommandUtilityFunctions {
+public abstract class CommandUtilityFunctions {
 	
 	public static void addJSONObjectToParentModel(JSONObject parentModel, JSONObject currentModel, JSONObject sourceModel, JSONObject terminalModel,
 													BlockFD parentBlock, LineFD sourceLine) {

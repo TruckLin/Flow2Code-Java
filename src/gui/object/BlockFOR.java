@@ -23,6 +23,7 @@ public class BlockFOR extends BlockLOOPFD{
 	
 	public BlockFOR(JSONObject model){
 		super(model);
+		this.CompositeBlockBackgroundColor = new Color(0,0,255,150);
 	}
 	
 	/** Getters and Setters **/	

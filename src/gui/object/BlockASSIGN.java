@@ -68,6 +68,7 @@ public class BlockASSIGN extends OrdinaryBlockFD{
 			((CompositeBlockFD)this.getParent()).setAppropriateBounds();
 		}
 	}
+	
 	@Override
 	public BlockEditDialog getBlockEditDialog(UndoManager undoManager) {
 		this.editDialog = new AssignEditDialog(undoManager, this);

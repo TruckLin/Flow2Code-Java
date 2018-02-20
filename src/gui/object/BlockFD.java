@@ -31,6 +31,8 @@ public abstract class BlockFD extends JPanel{
 	
 	protected final int textSize = 20;
 	
+	protected Color BlockBackgroundColor = new Color(255,0,0);
+	
 	//I18N
 	protected ResourceBundle languageBundle;
 	

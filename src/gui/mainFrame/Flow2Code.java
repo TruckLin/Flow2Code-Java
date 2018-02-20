@@ -72,7 +72,7 @@ public class Flow2Code extends JFrame{
 	public CodeEditPanel getCodeEditPanel() {return this.codeViewContainer.getCodeEditPanel();}
 	public CodeViewContainer getCodeViewContainer() {return this.codeViewContainer;}
 
-	
+		
 	public Flow2Code() {
 		
 		// I18N construction

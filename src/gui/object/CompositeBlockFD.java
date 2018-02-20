@@ -33,6 +33,8 @@ public abstract class CompositeBlockFD extends BlockFD{
 				repaint(); // repaint the lines
 			};
 	
+	protected Color CompositeBlockBackgroundColor = new Color(255,255,155,80);
+	
 	public CompositeBlockFD(JSONObject model) {
 		super(model);
 		
@@ -81,7 +83,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 		Graphics2D g2 = (Graphics2D)g;
 		
 		//Testing transparent backgroundColor
-		g2.setColor(new Color(255,255,155,80));
+		g2.setColor(this.CompositeBlockBackgroundColor);
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		//Testing how we could draw text.

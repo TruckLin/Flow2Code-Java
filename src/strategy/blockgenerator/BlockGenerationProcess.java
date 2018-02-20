@@ -7,6 +7,7 @@ import gui.object.BlockFD;
 public interface BlockGenerationProcess{
 	public BlockFD generateBlock(JSONObject model,JSONObject graphicalInfo);
 	
+	
 	public static void setGraphicalDetail(BlockFD tempBlock, JSONObject graphicalInfo) {
 		if(tempBlock.getModel().has("Name")) {
 			String myKey = tempBlock.getModel().get("Name").toString();
