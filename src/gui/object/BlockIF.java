@@ -2,6 +2,8 @@ package gui.object;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -114,6 +116,12 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	}
 	
 	/** Utilities **/
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.drawString("false", 0, this.getHeight());
+	}
 	@Override
 	public void updateInport() {
 	//	Point oldPoint = this.getInport();

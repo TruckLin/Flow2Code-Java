@@ -175,6 +175,16 @@ public class ModelGenerator{
 				model.put("CodeGen", true);
 				return model;	
 		});
+		
+		register("Break", 
+				(modelGenerator, nameCounterManager) -> {
+					JSONObject model = new JSONObject();
+					model.put("Type", "Break");
+					model.put("Name", nameCounterManager.getAvailableName());
+					model.put("Child", "");
+					model.put("CodeGen", true);
+					return model;	
+			});
 	}
 	
 	

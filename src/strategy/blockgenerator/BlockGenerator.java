@@ -52,6 +52,11 @@ public class BlockGenerator{
 													BlockGenerationProcess.setGraphicalDetail(myPanel, graphicalInfo);
 													return myPanel;	
 													});
+		
+		register("Break", (model, graphicalInfo) -> {BlockBreak myPanel = new BlockBreak(model);
+		BlockGenerationProcess.setGraphicalDetail(myPanel, graphicalInfo);
+		return myPanel;	
+		});
 	}
 	
 	

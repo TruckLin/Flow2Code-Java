@@ -57,6 +57,10 @@ public class JavaCodeGenerator extends CodeGenerator {
 												return code;
 											});
 		register("Input", new InputJavaCodeGenProcess(this));
+		register("Break", (model, code, indent) -> {	
+			code.addTree(new TextLeaf(indent + "break;\n"));
+			return code;
+		});
 		
 	}
 	
@@ -68,32 +72,4 @@ public class JavaCodeGenerator extends CodeGenerator {
 		return this.variableList;
 	}
 	
-	public static void main(String[] args) {
-		// For testing purpose.
-		JSONObject FlowDiagramModel = new JSONObject();
-		JSONObject FlowDiagramInfo = new JSONObject();
-		SaveAndLoadManagerFD.loadFlowDiagramFromZippedFile(FlowDiagramModel, FlowDiagramInfo, 
-				".\\assets\\Demo-DeclareScope.foo");
-		
-		CompositeBlockFD blockFlowDiagram;
-		BlockGenerator blockGenerator = new BlockGenerator();
-	    //this.FlowDiagramModel = modelGenerator.generate("FlowDiagram");
-	    blockFlowDiagram = (CompositeBlockFD)blockGenerator.generate(FlowDiagramModel, FlowDiagramInfo);
-	    
-		JavaCodeGenerator codeGenerator = new JavaCodeGenerator(blockFlowDiagram);
-		TextBranch code = new TextBranch();
-		code = (TextBranch)codeGenerator.generate(FlowDiagramModel,code, "");
-		System.out.println(code);
-		
-		//Testing
-		/*
-		int[] myNumbers = new int[5];
-		myNumbers[0] = 5;
-		myNumbers[1] = 0;
-		myNumbers[2] = 5;
-		myNumbers[3] = 0;
-		myNumbers[4] = 5;
-		System.out.println(myNumbers[0]);
-		*/
-	}
 }

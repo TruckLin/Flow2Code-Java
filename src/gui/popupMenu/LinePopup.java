@@ -28,7 +28,7 @@ public class LinePopup extends JPopupMenu{
 	private JMenuItem forItem = new JMenuItem("");
 	private JMenuItem whileItem = new JMenuItem("");
 	private JMenuItem ifItem = new JMenuItem("");
-	
+	private JMenuItem breakItem = new  JMenuItem("");
 	
 	public LinePopup(CompositeBlockFD compositeBlock, LineFD line) {
 		super();
@@ -46,6 +46,7 @@ public class LinePopup extends JPopupMenu{
 		this.forItem.setText(languageBundle.getString("For"));
 		this.whileItem.setText(languageBundle.getString("While"));
 		this.ifItem.setText(languageBundle.getString("If"));
+		this.breakItem.setText(languageBundle.getString("Break"));
 		
 		// Add all the menu items
 		this.add(this.declareItem);
@@ -55,6 +56,7 @@ public class LinePopup extends JPopupMenu{
 		this.add(this.forItem);
 		this.add(this.whileItem);
 		this.add(this.ifItem);
+		this.add(this.breakItem);
 	}
 	
 	/** Getters and Setters **/
@@ -93,6 +95,10 @@ public class LinePopup extends JPopupMenu{
 		for(ActionListener listener : listenerList) {
 			this.ifItem.removeActionListener(listener);
 		}
+		listenerList = this.breakItem.getActionListeners();
+		for(ActionListener listener : listenerList) {
+			this.breakItem.removeActionListener(listener);
+		}
 		
 		// Add new action listener to menu items
 		this.declareItem.addActionListener(e -> addBlockAction(compositeBlock, newLine, "Declare"));
@@ -102,6 +108,7 @@ public class LinePopup extends JPopupMenu{
 		this.forItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "For"));
 		this.whileItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "While"));
 		this.ifItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "If"));
+		this.breakItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "Break"));
 		
 	}
 	

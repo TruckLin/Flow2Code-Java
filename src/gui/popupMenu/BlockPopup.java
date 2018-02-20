@@ -36,7 +36,9 @@ public class BlockPopup extends JPopupMenu{
 		
 		// Add all the menu items
 		this.add(this.deleteItem);
-		this.add(this.editItem);
+		if(!(block instanceof BlockBreak)) {
+			this.add(this.editItem);
+		}
 		
 	}
 	
@@ -73,7 +75,9 @@ public class BlockPopup extends JPopupMenu{
 	
 	public void showEditDialog(UndoManager undoManager,BlockFD block) {
 		BlockEditDialog myDialog = block.getBlockEditDialog(undoManager);
-		myDialog.setVisible(true);
+		if(myDialog != null) {
+			myDialog.setVisible(true);
+		}
 	}
 	
 	/** The action that tells undoManager to execute various command **/
