@@ -1,8 +1,11 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 
@@ -22,7 +25,6 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	
 	private PortFD trueOutport = new PortFD(new Point(this.getWidth() - 1, Math.round(this.getHeight()/2)), "right");
 	private PortFD falseOutport = new PortFD(new Point( 0 , Math.round(this.getHeight()/2)), "left");
-	
 	public BlockStartIF(JSONObject model){
 		super(model);
 		
@@ -33,28 +35,81 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		this.setLayout(null);
 		
 		// Set Default bounds
-		this.setBounds(0,0,100,25);
+		this.setBounds(0,0,100,50);
 		
 		// Add a listener that change the border of it's parent when mouse enter.
 		MouseEnterListener mouseEnter = new MouseEnterListener(this);
 		mouseEnter.setSouldChangeParentBlock(true);
 		this.addMouseListener(mouseEnter);
-		
 		//Testing
 /*		System.out.println("startIF.getBounds = " + this.getBounds().toString());
-		System.out.println("blockStartTrueIF.getTrueOutport = " + this.getTrueOutport());
-		System.out.println("blockStartFalseIF.getFalseOutport = " + this.getFalseOutport()); */
-		
+		System.out.println("blockStartTrueIF.getTrueOutport = " + this.getTrueOutport().toString());
+		System.out.println("blockStartFalseIF.getFalseOutport = " + this.getFalseOutport().toString());*/ 
+
 		this.blockLabel.setText("StartIF");
 		this.adjustLabelSize();
 		this.adjustBlockSizeByLabel();
 		this.adjustLabelLocation();
 		this.add(blockLabel);
-		
 		// Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+//		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBorder(BorderFactory.createEmptyBorder());
 	}
 	
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setColor(new Color(0,0,0));
+		
+		int[] xPoints = { 0, this.getWidth()/2, this.getWidth(), this.getWidth()/2};
+		int[] yPoints = {this.getHeight()/2, 0, this.getHeight()/2, this.getHeight()};
+		
+		g2.drawPolygon(xPoints, yPoints, 4);
+	}
+	
+	@Override
+	public void adjustBlockSizeByLabel() {
+		//super.adjustBlockSizeByLabel();
+		int minWidth = (int)Math.round(100*this.currentZoomRatio);
+		int minHeight = (int)Math.round(50*this.currentZoomRatio);
+		
+		boolean sizeShouldChange = false;
+		
+		int newWidth = minWidth;
+		int newHeight = minHeight;
+		
+		
+		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		
+		// We need to also deal with the case when text label got shorter. BlockSize needs to shrink.
+		int x = (int)this.getLocation().getX();
+		int y = (int)this.getLocation().getY();
+		
+		this.setBounds(x,y, minWidth , minHeight);
+		
+		if(labelDimension.getWidth() > minWidth) {
+			newWidth = (int)labelDimension.getWidth();
+			sizeShouldChange = true;
+		}
+		if(labelDimension.getHeight() > minHeight){
+			newHeight = (int)labelDimension.getHeight();
+			sizeShouldChange = true;
+		}
+		
+		/** Mark it always true as supervisor requested.**/
+		sizeShouldChange = true;
+		int coefficient = 5;
+		newHeight = (int) ((labelDimension.getWidth()/coefficient) + labelDimension.getHeight());
+		newWidth = (int) (coefficient*newHeight);
+		
+		if(sizeShouldChange) {
+			this.setBounds(x,y,
+					newWidth + (int)Math.round(10*this.currentZoomRatio),
+					newHeight + (int)Math.round(0*this.currentZoomRatio));
+		}
+	}
+
 	/** Getters and Setters for ports**/
 	public PortFD getTrueOutport(){
 		return this.trueOutport;
@@ -98,7 +153,7 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	protected void updatePorts() {
 		// reset inport
 		this.inport.setPortLocation(new Point( Math.round(this.getWidth()/2), 0) );
-				
+		
 		// reset Outport panels
 		this.trueOutport.setPortLocation( new Point(this.getWidth() - 1, Math.round(this.getHeight()/2) ) );
 		this.falseOutport.setPortLocation(new Point( 0 , Math.round(this.getHeight()/2) ) );

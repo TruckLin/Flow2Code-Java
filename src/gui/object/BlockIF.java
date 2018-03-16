@@ -2,6 +2,7 @@ package gui.object;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -49,8 +50,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	public BlockIF(JSONObject model) {
 		super(model);
 
-		this.setOpaque(false); // we should always see through this while panel.
-
+		this.setOpaque(false); // we should always see through this while panel.;
 		//Set various default property
 		this.setSize(110,110);
 		this.setLayout(null);
@@ -120,7 +120,11 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		
+		//change font size
+		//g2.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
 		g2.drawString("false", 0, this.getHeight());
+		g2.drawString("true", this.getWidth()-20, this.getHeight());
 	}
 	@Override
 	public void updateInport() {
@@ -151,7 +155,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		this.blockStartIF.adjustLabelSize();
 		this.blockStartIF.adjustBlockSizeByLabel();
 		this.blockStartIF.adjustLabelLocation();
-
+		
 		this.setAppropriateBounds();
 	}
 	

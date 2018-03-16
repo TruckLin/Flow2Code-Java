@@ -20,7 +20,7 @@ import javax.swing.event.CaretListener;
 
 public class CodeEditPanel extends JPanel implements Scrollable{
 	
-	private int textSize = 15;
+	private int textSize = 24;
 	
 	// Decide a font, textSize must be set first!!!
 	private Font codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize);

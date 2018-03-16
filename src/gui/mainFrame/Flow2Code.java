@@ -100,14 +100,14 @@ public class Flow2Code extends JFrame{
 	    this.menuBar = new JMenuBar();
 	 
 	    // First Menu	
-	    fileMenu = new JMenu("File");
-	    fileMenu.setMnemonic(KeyEvent.VK_F);  // alt short-cut key
-	    this.menuBar.add(fileMenu);  // the menu-bar adds this menu
+//	    fileMenu = new JMenu("File");
+//	    fileMenu.setMnemonic(KeyEvent.VK_F);  // alt short-cut key
+//	    this.menuBar.add(fileMenu);  // the menu-bar adds this menu
 	    
 	    // Second Menu
-	    this.optionMenu = new JMenu("Option");
-	    this.optionMenu.setMnemonic(KeyEvent.VK_O);  // short-cut key
-	    this.menuBar.add(this.optionMenu);  // the menu bar adds this menu
+//	    this.optionMenu = new JMenu("Option");
+//	    this.optionMenu.setMnemonic(KeyEvent.VK_O);  // short-cut key
+//	    this.menuBar.add(this.optionMenu);  // the menu bar adds this menu
 	    
 	    /** Initialisation of various managers and user interfaces **/
 	    this.undoManager = new UndoManager();
@@ -185,7 +185,7 @@ public class Flow2Code extends JFrame{
 	 
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       // Exit the program when the close-window button clicked
-	    setTitle("......");  // "super" JFrame sets title
+	    setTitle("CodeFlow");  // "super" JFrame sets title
 	    setSize(1000, 600);   // "super" JFrame sets initial size
 	    setVisible(true);    // "super" JFrame shows
 	    

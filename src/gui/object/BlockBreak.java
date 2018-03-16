@@ -30,7 +30,6 @@ public class BlockBreak extends OrdinaryBlockFD{
 	public void paintComponent(Graphics g){
 	    Graphics2D g2 = (Graphics2D)g;
 			
-	    //Testing transparent backgroundColor
 	    g2.setColor(new Color(0,0,0));
 	    g2.drawOval(0, 0, this.getWidth(), this.getHeight());
 	    g2.fillOval(0, 0, this.getWidth(), this.getHeight());
