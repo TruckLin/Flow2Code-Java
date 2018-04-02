@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyChangeListener;
@@ -33,8 +35,8 @@ public abstract class CompositeBlockFD extends BlockFD{
 				repaint(); // repaint the lines
 			};
 	
-	protected Color CompositeBlockBackgroundColor = new Color(255,255,155,80);
-	
+	//protected Color CompositeBlockBackgroundColor = new Color(255,255,155,80);
+			protected Color CompositeBlockBackgroundColor = new Color(255,255,155,80);
 	public CompositeBlockFD(JSONObject model) {
 		super(model);
 		
@@ -92,24 +94,125 @@ public abstract class CompositeBlockFD extends BlockFD{
 		//g2.setColor(Color.BLACK);
 		//String testText = "Testing drawChars";
 		//g2.drawString(testText, 0,50);
-		
+		int[] xPoints = new int[3];
+	    int[] yPoints = new int[3];
 		for(int i = 0; i < lineList.size(); i++) {
 			LineFD currentLine = this.lineList.get(i);
 			
 			for(int j = 0; j < lineList.get(i).getLineSegments().size(); j++) {
 				ArrayList<Line2D> segments = lineList.get(i).getLineSegments();
 				Line2D segment = segments.get(j);
+				boolean isvertical = true;
+				boolean isLtoR = false;
+				boolean isAtoD = false;
+				if(segment.getP1().getX() != segment.getP2().getX()) {
+					isvertical = false;
+					if(segment.getP1().getX() < segment.getP2().getX()) {
+						isLtoR = true;
+					}
+				}else {
+					if(segment.getP1().getY() < segment.getP2().getY() ) {
+						isAtoD = true;
+					}
+				}
 				
+				//when the segment is the last one, draw arrow in the end of the line
+				
+			    if(j == lineList.get(i).getLineSegments().size()-1) {
+			    	if(isvertical){
+			    		if(isAtoD) {
+			    			xPoints[0] = (int)segment.getP2().getX() + 10;
+						    xPoints[1] = (int)segment.getP2().getX();
+						    xPoints[2] = (int)segment.getP2().getX() - 10;
+						    yPoints[0] = (int)segment.getP2().getY()-5;
+						    yPoints[1] = (int)segment.getP2().getY()-5 + 10;
+						    yPoints[2] = (int)segment.getP2().getY()-5;
+						    g2.fillPolygon(xPoints, yPoints, 3);
+			    		}
+			    		else{
+			    			xPoints[0] = (int)segment.getP2().getX() - 10;
+						    xPoints[1] = (int)segment.getP2().getX();
+						    xPoints[2] = (int)segment.getP2().getX() + 10;
+						    yPoints[0] = (int)segment.getP2().getY()+5;
+						    yPoints[1] = (int)segment.getP2().getY()+5 - 10;
+						    yPoints[2] = (int)segment.getP2().getY()+5;
+						    g2.fillPolygon(xPoints, yPoints, 3);
+			    		}
+					}
+			    	else {
+			    		if(isLtoR) {
+			    			xPoints[0] = (int)segment.getP2().getX() - 10 +5;
+						    xPoints[1] = (int)segment.getP2().getX() +5;
+						    xPoints[2] = (int)segment.getP2().getX() - 10 +5;
+						    yPoints[0] = (int)segment.getP2().getY() - 10;
+						    yPoints[1] = (int)segment.getP2().getY();
+						    yPoints[2] = (int)segment.getP2().getY() + 10;
+						    g2.fillPolygon(xPoints, yPoints, 3);
+			    		}else{
+			    			xPoints[0] = (int)segment.getP2().getX() + 10 -5;
+						    xPoints[1] = (int)segment.getP2().getX() -5;
+						    xPoints[2] = (int)segment.getP2().getX() + 10 -5;
+						    yPoints[0] = (int)segment.getP2().getY() + 10;
+						    yPoints[1] = (int)segment.getP2().getY();
+						    yPoints[2] = (int)segment.getP2().getY() - 10;
+						    g2.fillPolygon(xPoints, yPoints, 3);
+			    		}
+			    	}
+			    }
+			    
+			    //when the line is onCover
 				if(currentLine.getHasBorder()) {
 					g2.setColor(currentLine.getLineBorderColor());
 					BasicStroke myStroke = new BasicStroke((float)currentLine.getTriggerRagius(),
 													BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND, 10.0f);
+					if(j == lineList.get(i).getLineSegments().size()-1) {
+						if(isvertical){
+							if(isAtoD) {
+				    			xPoints[0] = (int)segment.getP2().getX() + 10;
+							    xPoints[1] = (int)segment.getP2().getX();
+							    xPoints[2] = (int)segment.getP2().getX() - 10;
+							    yPoints[0] = (int)segment.getP2().getY()-5;
+							    yPoints[1] = (int)segment.getP2().getY()-5 + 10;
+							    yPoints[2] = (int)segment.getP2().getY()-5;
+							    g2.fillPolygon(xPoints, yPoints, 3);
+				    		}
+				    		else{
+				    			xPoints[0] = (int)segment.getP2().getX() - 10;
+							    xPoints[1] = (int)segment.getP2().getX();
+							    xPoints[2] = (int)segment.getP2().getX() + 10;
+							    yPoints[0] = (int)segment.getP2().getY()+5;
+							    yPoints[1] = (int)segment.getP2().getY()+5 - 10;
+							    yPoints[2] = (int)segment.getP2().getY()+5;
+							    g2.fillPolygon(xPoints, yPoints, 3);
+				    		}
+						}
+						else {
+							if(isLtoR) {
+				    			xPoints[0] = (int)segment.getP2().getX() - 10 +5;
+							    xPoints[1] = (int)segment.getP2().getX() +5;
+							    xPoints[2] = (int)segment.getP2().getX() - 10 +5;
+							    yPoints[0] = (int)segment.getP2().getY() - 10;
+							    yPoints[1] = (int)segment.getP2().getY();
+							    yPoints[2] = (int)segment.getP2().getY() + 10;
+							    g2.fillPolygon(xPoints, yPoints, 3);
+				    		}else{
+				    			xPoints[0] = (int)segment.getP2().getX() + 10 -5;
+							    xPoints[1] = (int)segment.getP2().getX() -5;
+							    xPoints[2] = (int)segment.getP2().getX() + 10 -5;
+							    yPoints[0] = (int)segment.getP2().getY() + 10;
+							    yPoints[1] = (int)segment.getP2().getY();
+							    yPoints[2] = (int)segment.getP2().getY() - 10;
+							    g2.fillPolygon(xPoints, yPoints, 3);
+				    		}
+				    	}
+				    }
 					g2.setStroke(myStroke);
 					g2.draw(segment);
 				}
 				g2.setColor(currentLine.getLineColor());
 				g2.setStroke(new BasicStroke());
-				g2.draw(segment);
+			    g2.draw(segment);
+				
 			}
 		}
 	}

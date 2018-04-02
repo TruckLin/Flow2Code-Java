@@ -99,9 +99,9 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		
 		/** Mark it always true as supervisor requested.**/
 		sizeShouldChange = true;
-		int coefficient = 5;
-		newHeight = (int) ((labelDimension.getWidth()/coefficient) + labelDimension.getHeight());
-		newWidth = (int) (coefficient*newHeight);
+		int offset = (int)(minHeight - labelDimension.getHeight());
+		newHeight = (int) (labelDimension.getHeight() + offset);
+		newWidth = (int) (((labelDimension.getWidth()*labelDimension.getHeight())/offset) + labelDimension.getWidth());
 		
 		if(sizeShouldChange) {
 			this.setBounds(x,y,
