@@ -20,13 +20,13 @@ import javax.swing.event.CaretListener;
 
 public class CodeEditPanel extends JPanel implements Scrollable{
 	
-	private int textSize = 24;
+	private int textSize = 20;
 	
 	// Decide a font, textSize must be set first!!!
 	private Font codeFont = new Font(Font.MONOSPACED, Font.PLAIN, this.textSize);
 	
 	//Some colors that we need
-	private final Color backGroundColor = new Color(195,195,195);
+	private final Color backGroundColor = new Color(200,255,200);
 	
 	private TextBranch textModel = null;
 	

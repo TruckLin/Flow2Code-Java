@@ -46,7 +46,7 @@ public class LinePopup extends JPopupMenu{
 		this.forItem.setText(languageBundle.getString("For"));
 		this.whileItem.setText(languageBundle.getString("While"));
 		this.ifItem.setText(languageBundle.getString("If"));
-		this.breakItem.setText(languageBundle.getString("Break"));
+		//this.breakItem.setText(languageBundle.getString("Break"));
 		
 		// Add all the menu items
 		this.add(this.declareItem);
@@ -108,7 +108,7 @@ public class LinePopup extends JPopupMenu{
 		this.forItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "For"));
 		this.whileItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "While"));
 		this.ifItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "If"));
-		this.breakItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "Break"));
+		//this.breakItem.addActionListener(e -> addBlockAction( compositeBlock, newLine, "Break"));
 		
 	}
 	

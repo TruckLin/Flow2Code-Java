@@ -16,21 +16,33 @@ import gui.manager.UndoManager;
 public class BlockDECLARE extends OrdinaryBlockFD {
 	
 	private DeclareEditDialog editDialog;
-	
+	private Color bgColor = new Color(255,214,153,255);
 	public BlockDECLARE(JSONObject model) {
 		super(model);
 		
 		this.updateBlockContent();
+		blockLabel.setOpaque(false);
+		this.setBackground(null);
 		this.add(blockLabel);
 		
 		//Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
+		//this.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f),borderColor));
+		//this.setBorder(BorderFactory.createEtchedBorder(new Color(255,153,0),bgCOlor));
+
 		//Testing
 		//System.out.println("Constructor 1 of BlockDECLARE is called and N = " + N);
 
 	}
-	
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setColor(bgColor);
+		g2.drawRoundRect(0, 0, this.getWidth(),this.getHeight(),20,20);
+		g2.fillRoundRect(0, 0, this.getWidth(),this.getHeight(),20,20);
+	}
 	/** Getters and Setters **/
 	public JSONArray getVariables() {
 		return this.getModel().getJSONArray("Variables");

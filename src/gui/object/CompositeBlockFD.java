@@ -102,6 +102,11 @@ public abstract class CompositeBlockFD extends BlockFD{
 			for(int j = 0; j < lineList.get(i).getLineSegments().size(); j++) {
 				ArrayList<Line2D> segments = lineList.get(i).getLineSegments();
 				Line2D segment = segments.get(j);
+				for(Component comp : this.getComponents()) {
+					if( (comp instanceof BlockStartIF) ) {
+						
+					}
+				}
 				boolean isvertical = true;
 				boolean isLtoR = false;
 				boolean isAtoD = false;

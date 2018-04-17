@@ -42,14 +42,13 @@ public class CodeViewToolBar extends JToolBar{
 	
 	public CodeViewToolBar(CodeViewContainer codeViewContainer) {
 		super();
-		
 		this.codeViewContainer = codeViewContainer;
 		
 		saveIcon = new ImageIcon("icon/save.png");
 		saveIcon = 
 			new ImageIcon(saveIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
 		this.saveButton = new JButton(saveIcon);
-		this.add(this.saveButton);
+		//this.add(this.saveButton);
 		
 		/** Undo and Redo **/
 		//Swing Version
@@ -79,7 +78,10 @@ public class CodeViewToolBar extends JToolBar{
 		this.add(redoButton);
 */
 		// Run button
-		this.runButton = new JButton("Run");
+		runIcon = new ImageIcon("icon/Run.png");
+		runIcon = 
+				new ImageIcon(runIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		this.runButton = new JButton(runIcon);
 		this.runAction = new RunJavaCodeActionWithCMD(this.codeViewContainer);
 		this.runButton.addActionListener(runAction);
 		this.add(runButton);

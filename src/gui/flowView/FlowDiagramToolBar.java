@@ -2,8 +2,10 @@ package gui.flowView;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -45,7 +47,8 @@ public class FlowDiagramToolBar extends JToolBar{
 	
 	private JButton codeGenButton;
 	private ImageIcon codeGenIcon;
-	
+	private JButton optionButton;
+	private ImageIcon optionIcon;
 	private PropertyChangeListener undoRedoListener = e -> updateUndoRedoButtons();
 	
 	public FlowDiagramToolBar(Flow2Code mainFrame) {
@@ -124,15 +127,19 @@ public class FlowDiagramToolBar extends JToolBar{
 		JPanel codeGenPanel = new JPanel();
 		
 		
-		codeGenButton = new JButton("CodeGen");
-		codeGenButton.addActionListener(e -> {
+		codeGenIcon = new ImageIcon("icon/coding.png");
+		codeGenIcon = 
+				new ImageIcon(codeGenIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+		this.codeGenButton = new JButton(codeGenIcon);
+		codeGenButton.setContentAreaFilled(false);
+		this.codeGenButton.addActionListener(e -> {
 			JavaCodeGenerator codeGenerator = new JavaCodeGenerator(this.mainFrame.getBlockFlowDiagram());
 			TextBranch code = new TextBranch();
 			code = (TextBranch) codeGenerator.generate(this.mainFrame.getFlowDiagramModel(),code, "");
 			this.mainFrame.getCodeEditPanel().setTextModel(code);
 		});
 		
-		codeGenPanel.add(codeGenButton);
+		//codeGenPanel.add(codeGenButton);
 		
 		//Testing
 		JCheckBoxMenuItem forBox = new JCheckBoxMenuItem("for");
@@ -170,22 +177,46 @@ public class FlowDiagramToolBar extends JToolBar{
 			boolean shouldCodeGen = box.getState();
 			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("Assign", shouldCodeGen);
 		});
+	    JCheckBoxMenuItem outputBox = new JCheckBoxMenuItem("output");
+	    outputBox.setSelected(true);
+	    outputBox.addActionListener(e->{
+			JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+			boolean shouldCodeGen = box.getState();
+			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("Output", shouldCodeGen);
+		});
+	    JCheckBoxMenuItem inputBox = new JCheckBoxMenuItem("input");
+	    inputBox.setSelected(true);
+	    inputBox.addActionListener(e->{
+			JCheckBoxMenuItem box = (JCheckBoxMenuItem) e.getSource();
+			boolean shouldCodeGen = box.getState();
+			this.mainFrame.getBlockFlowDiagram().setCodeGenForAll("Input", shouldCodeGen);
+		});
 	    
+	    optionIcon = new ImageIcon("icon/option.png");
+	    optionIcon = 
+				new ImageIcon(optionIcon.getImage().getScaledInstance(iconWidth, iconHeight, java.awt.Image.SCALE_SMOOTH));
+	    optionButton = new JButton(optionIcon);
 	    JMenuBar menuBar = new JMenuBar();
-	    JMenu myMenu = new JMenu("Options");
+	    JMenu myMenu = new JMenu();
+	    
+	    myMenu.setIcon(optionIcon);
 	    myMenu.add(forBox);
 	    myMenu.add(whileBox);
 	    myMenu.add(ifBox);
 	    myMenu.add(declareBox);
 	    myMenu.add(assignBox);
+	    myMenu.add(inputBox);
+	    myMenu.add(outputBox);
 	    menuBar.add(myMenu);
-		
-		codeGenPanel.add(menuBar);
+	    codeGenPanel.add(codeGenButton);
+	    codeGenPanel.add(menuBar);
+	    
+	    codeGenPanel.setBackground(null);
 		codeGenPanel.setOpaque(false);
 		
 		this.add(codeGenPanel);
+	    
 		
-		//this.add(codeGenButton);
 		
 	}
 	

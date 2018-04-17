@@ -54,7 +54,7 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 		String fileExtension = 
 				".java";
 		String errorFilePath = 
-				systemTempFloder + "\\\\Flow2CodeError.txt";
+				systemTempFloder + java.util.UUID.randomUUID();//"Flow2CodeError.txt";
 		Runtime run = Runtime.getRuntime();
 		String javaCode = codeViewContainer.getCodeEditPanel().getText();
 		SaveAndLoadManagerFD.saveTextFileFromString(javaCode, ".\\temp\\FlowCode.java");
@@ -81,7 +81,7 @@ public class RunJavaCodeActionWithCMD implements ActionListener{
 		
 		//Testing
 		//System.out.println("Compilation success = " + success);
-		
+		//System.out.println(errorFilePath);
 		if(success) {
 		    try {
 		    	Process p = Runtime.getRuntime().exec("cmd.exe /c start cmd /k java -cp " + ".\\temp " +fileName);

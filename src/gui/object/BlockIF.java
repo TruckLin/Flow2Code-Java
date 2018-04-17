@@ -123,8 +123,8 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		
 		//change font size
 		//g2.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
-		g2.drawString("false", 0, this.getHeight());
-		g2.drawString("true", this.getWidth()-20, this.getHeight());
+//		g2.drawString("false", 0, this.getHeight());
+//		g2.drawString("true", this.getWidth()-20, this.getHeight());
 	}
 	@Override
 	public void updateInport() {

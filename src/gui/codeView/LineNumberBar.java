@@ -13,7 +13,7 @@ public class LineNumberBar extends JComponent{
 	private CodeEditPanel cep;
 	private int lineBarWidth;
 	
-	private Color backGroundColor = new Color(0,185,255,150);
+	private Color backGroundColor = new Color(168,216,185);
 	private Color numberColor = Color.BLACK;
 	
 	
