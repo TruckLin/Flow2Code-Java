@@ -36,7 +36,7 @@ public abstract class CompositeBlockFD extends BlockFD{
 			};
 	
 	//protected Color CompositeBlockBackgroundColor = new Color(255,255,155,80);
-			protected Color CompositeBlockBackgroundColor = new Color(255,255,155,80);
+			protected Color CompositeBlockBackgroundColor = new Color(230,230,230,255);
 	public CompositeBlockFD(JSONObject model) {
 		super(model);
 		
@@ -46,9 +46,8 @@ public abstract class CompositeBlockFD extends BlockFD{
 		LineRightClickListener lineListener = new LineRightClickListener(this);
 		this.addMouseListener(lineListener);
 		this.addMouseMotionListener(lineListener);
-		
-		// Temporary
 		this.setOpaque(false);
+		// Temporary
 	//	this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		//Testing for transparent background.
@@ -129,34 +128,34 @@ public abstract class CompositeBlockFD extends BlockFD{
 			    			xPoints[0] = (int)segment.getP2().getX() + 10;
 						    xPoints[1] = (int)segment.getP2().getX();
 						    xPoints[2] = (int)segment.getP2().getX() - 10;
-						    yPoints[0] = (int)segment.getP2().getY()-5;
-						    yPoints[1] = (int)segment.getP2().getY()-5 + 10;
-						    yPoints[2] = (int)segment.getP2().getY()-5;
+						    yPoints[0] = (int)segment.getP2().getY()-10;
+						    yPoints[1] = (int)segment.getP2().getY()-3 + 10;
+						    yPoints[2] = (int)segment.getP2().getY()-10;
 						    g2.fillPolygon(xPoints, yPoints, 3);
 			    		}
 			    		else{
 			    			xPoints[0] = (int)segment.getP2().getX() - 10;
 						    xPoints[1] = (int)segment.getP2().getX();
 						    xPoints[2] = (int)segment.getP2().getX() + 10;
-						    yPoints[0] = (int)segment.getP2().getY()+5;
-						    yPoints[1] = (int)segment.getP2().getY()+5 - 10;
-						    yPoints[2] = (int)segment.getP2().getY()+5;
+						    yPoints[0] = (int)segment.getP2().getY()+10;
+						    yPoints[1] = (int)segment.getP2().getY()+3 - 10;
+						    yPoints[2] = (int)segment.getP2().getY()+10;
 						    g2.fillPolygon(xPoints, yPoints, 3);
 			    		}
 					}
 			    	else {
 			    		if(isLtoR) {
-			    			xPoints[0] = (int)segment.getP2().getX() - 10 +5;
+			    			xPoints[0] = (int)segment.getP2().getX() - 10 +3;
 						    xPoints[1] = (int)segment.getP2().getX() +5;
-						    xPoints[2] = (int)segment.getP2().getX() - 10 +5;
+						    xPoints[2] = (int)segment.getP2().getX() - 10 +3;
 						    yPoints[0] = (int)segment.getP2().getY() - 10;
 						    yPoints[1] = (int)segment.getP2().getY();
 						    yPoints[2] = (int)segment.getP2().getY() + 10;
 						    g2.fillPolygon(xPoints, yPoints, 3);
 			    		}else{
-			    			xPoints[0] = (int)segment.getP2().getX() + 10 -5;
+			    			xPoints[0] = (int)segment.getP2().getX() + 10 -3;
 						    xPoints[1] = (int)segment.getP2().getX() -5;
-						    xPoints[2] = (int)segment.getP2().getX() + 10 -5;
+						    xPoints[2] = (int)segment.getP2().getX() + 10 -3;
 						    yPoints[0] = (int)segment.getP2().getY() + 10;
 						    yPoints[1] = (int)segment.getP2().getY();
 						    yPoints[2] = (int)segment.getP2().getY() - 10;
@@ -176,34 +175,34 @@ public abstract class CompositeBlockFD extends BlockFD{
 				    			xPoints[0] = (int)segment.getP2().getX() + 10;
 							    xPoints[1] = (int)segment.getP2().getX();
 							    xPoints[2] = (int)segment.getP2().getX() - 10;
-							    yPoints[0] = (int)segment.getP2().getY()-5;
-							    yPoints[1] = (int)segment.getP2().getY()-5 + 10;
-							    yPoints[2] = (int)segment.getP2().getY()-5;
+							    yPoints[0] = (int)segment.getP2().getY()-10;
+							    yPoints[1] = (int)segment.getP2().getY()-3 + 10;
+							    yPoints[2] = (int)segment.getP2().getY()-10;
 							    g2.fillPolygon(xPoints, yPoints, 3);
 				    		}
 				    		else{
 				    			xPoints[0] = (int)segment.getP2().getX() - 10;
 							    xPoints[1] = (int)segment.getP2().getX();
 							    xPoints[2] = (int)segment.getP2().getX() + 10;
-							    yPoints[0] = (int)segment.getP2().getY()+5;
-							    yPoints[1] = (int)segment.getP2().getY()+5 - 10;
-							    yPoints[2] = (int)segment.getP2().getY()+5;
+							    yPoints[0] = (int)segment.getP2().getY()+10;
+							    yPoints[1] = (int)segment.getP2().getY()+3 - 10;
+							    yPoints[2] = (int)segment.getP2().getY()+10;
 							    g2.fillPolygon(xPoints, yPoints, 3);
 				    		}
 						}
 						else {
 							if(isLtoR) {
-				    			xPoints[0] = (int)segment.getP2().getX() - 10 +5;
+				    			xPoints[0] = (int)segment.getP2().getX() - 10 +3;
 							    xPoints[1] = (int)segment.getP2().getX() +5;
-							    xPoints[2] = (int)segment.getP2().getX() - 10 +5;
+							    xPoints[2] = (int)segment.getP2().getX() - 10 +3;
 							    yPoints[0] = (int)segment.getP2().getY() - 10;
 							    yPoints[1] = (int)segment.getP2().getY();
 							    yPoints[2] = (int)segment.getP2().getY() + 10;
 							    g2.fillPolygon(xPoints, yPoints, 3);
 				    		}else{
-				    			xPoints[0] = (int)segment.getP2().getX() + 10 -5;
+				    			xPoints[0] = (int)segment.getP2().getX() + 10 -3;
 							    xPoints[1] = (int)segment.getP2().getX() -5;
-							    xPoints[2] = (int)segment.getP2().getX() + 10 -5;
+							    xPoints[2] = (int)segment.getP2().getX() + 10 -3;
 							    yPoints[0] = (int)segment.getP2().getY() + 10;
 							    yPoints[1] = (int)segment.getP2().getY();
 							    yPoints[2] = (int)segment.getP2().getY() - 10;
@@ -212,12 +211,12 @@ public abstract class CompositeBlockFD extends BlockFD{
 				    	}
 				    }
 					g2.setStroke(myStroke);
-					g2.draw(segment);
+				    g2.draw(segment);
+				}else{
+					g2.setColor(currentLine.getLineColor());
+					g2.setStroke(new BasicStroke(5.0f));
+				    g2.draw(segment);
 				}
-				g2.setColor(currentLine.getLineColor());
-				g2.setStroke(new BasicStroke());
-			    g2.draw(segment);
-				
 			}
 		}
 	}

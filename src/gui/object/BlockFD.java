@@ -50,6 +50,7 @@ public abstract class BlockFD extends JPanel{
 		
 		this.blockLabel.setFont(new Font("Courier New", Font.PLAIN, 
 									(int)Math.round(this.textSize*this.currentZoomRatio)));
+		this.blockLabel.setMaximumSize(new Dimension(150,75));
 		this.adjustLabelSize();
 		this.adjustLabelLocation();
 		
@@ -321,6 +322,7 @@ public abstract class BlockFD extends JPanel{
 	}
 	
 	public void adjustBlockSizeByLabel() {
+		
 		int minWidth = (int)Math.round(100*this.currentZoomRatio);
 		int minHeight = (int)Math.round(25*this.currentZoomRatio);
 		

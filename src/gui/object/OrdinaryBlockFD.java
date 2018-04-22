@@ -19,7 +19,6 @@ public abstract class OrdinaryBlockFD extends BlockFD implements WithInport, Wit
 	
 	public OrdinaryBlockFD(JSONObject model) {
 		super(model);
-		
 		// Set defaultBounds
 		this.setBounds(0,0,100,25);
 	}

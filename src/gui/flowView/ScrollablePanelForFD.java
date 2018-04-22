@@ -25,7 +25,8 @@ public class ScrollablePanelForFD extends JPanel implements Scrollable {
 	public ScrollablePanelForFD(CompositeBlockFD flowDiagram) {
 		super();
 		this.setLayout(null);
-		this.setBackground(Color.white);
+		Color bgColor = new Color(230,230,230,255);
+		this.setBackground(bgColor);
 		this.setPreferredSize(new Dimension(500,400));
 		
 		

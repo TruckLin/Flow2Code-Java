@@ -29,7 +29,9 @@ import gui.manager.SaveAndLoadManagerFD;
 public class Flow2Code extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
-	
+	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private static double screenWidth = screenSize.getWidth();
+	private static double screenHeight = screenSize.getHeight();
 	// Private instance variables
 	private JSONObject FlowDiagramModel = new JSONObject();
 	private JSONObject FlowDiagramInfo = new JSONObject();
@@ -148,9 +150,11 @@ public class Flow2Code extends JFrame{
 	    JScrollPane scrollPane = new JScrollPane(this.scrollablePanelForFD);
 	    
 	    //Testing
-	    scrollPane.getViewport().setBackground(Color.white);
+	    Color bgColor = new Color(230,230,230,255);
+	    scrollPane.getViewport().setBackground(bgColor);
 	    
-	    
+	    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+	    scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 	    /** Left flowDiagram tool bar **/
 	    this.fdToolBar = new FlowDiagramToolBar(this);
 	    
@@ -164,7 +168,7 @@ public class Flow2Code extends JFrame{
 	    
 	    /** JSplitPane Construction**/
 	    JSplitPane splitPane = new JSplitPane();
-	    splitPane.setDividerLocation(700);
+	    splitPane.setDividerLocation((int)((screenWidth*2)/3)-50);
 	    splitPane.add(leftPanel,JSplitPane.LEFT);
 	    splitPane.add(codeViewContainer, JSplitPane.RIGHT);
 	    
@@ -186,7 +190,7 @@ public class Flow2Code extends JFrame{
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       // Exit the program when the close-window button clicked
 	    setTitle("CodeFlow");  // "super" JFrame sets title
-	    setSize(1000, 600);   // "super" JFrame sets initial size
+	    setSize((int)(screenWidth-200), (int)(screenHeight-200));   // "super" JFrame sets initial size
 	    setVisible(true);    // "super" JFrame shows
 	    
 	    

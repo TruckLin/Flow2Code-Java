@@ -24,7 +24,8 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	private BlockEndIF blockEndIF;
 	
 	private IfEditDialog editDialog;
-	
+	private Color bgColor = new Color(204,153,255,80);
+	private Color labelColor = new Color(217, 179, 255,255);
 	// This listener listen to the change in bounds and move BlockEndLOOP to the correct place.
 	private PropertyChangeListener MoveBlockEndLoopListener = 
 			e -> {  // Find out the maximum Y coordinate without BlockEndLOOP.
@@ -46,7 +47,7 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 					//System.out.println("MoveBlockEndLoopListener triggered.");
 					//System.out.println("height = " + h);
 				};
-
+	
 	public BlockIF(JSONObject model) {
 		super(model);
 
@@ -63,8 +64,6 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 		//Testing for transparent background.
 		//this.setOpaque(true);
 		//this.setBackground(Color.CYAN);
-		//this.setBackground(new Color(255,255,128));
-
 		
 		// Add listener that change the position of BlockEndLOOP, order is important,
 		// it needs to be put after setBounds or any setters of the component.
@@ -120,11 +119,13 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		//g2.setColor(bgColor);
+		//g2.fillRoundRect(0, 0, this.getWidth(),this.getHeight(),20,20);
 		
 		//change font size
 		//g2.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
-//		g2.drawString("false", 0, this.getHeight());
-//		g2.drawString("true", this.getWidth()-20, this.getHeight());
+		//g2.drawString("false", 0, this.getHeight());
+		//g2.drawString("true", this.getWidth()-20, this.getHeight());
 	}
 	@Override
 	public void updateInport() {
@@ -149,9 +150,16 @@ public class BlockIF extends OrdinaryCompositeBlockFD{
 	@Override
 	public void updateBlockContent() {
 		// TODO Auto-generated method stub
-		String displayString = ("If( " + this.getExpression() + " )");
+		String expression = this.getExpression();
+		if(expression == "" || expression.isEmpty()) {
+			expression = "If(  )";
+		}else {
+			expression = "If(...)";
+		}
+		String displayString = (expression);//"If( " + this.getExpression() + " )");
 		this.blockStartIF.getBlockLabel().setText(displayString);
-		
+		this.blockStartIF.getBlockLabel().setOpaque(false);
+		this.blockStartIF.getBlockLabel().setBackground(labelColor);
 		this.blockStartIF.adjustLabelSize();
 		this.blockStartIF.adjustBlockSizeByLabel();
 		this.blockStartIF.adjustLabelLocation();

@@ -1,7 +1,11 @@
 package gui.object;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
 
 import org.json.JSONObject;
 
@@ -21,7 +25,6 @@ public abstract class OrdinaryCompositeBlockFD extends CompositeBlockFD implemen
 	public OrdinaryCompositeBlockFD(JSONObject model) {
 		super(model);
 	}
-	
 	/** Abstract functions needed override **/
 	@Override
 	protected void updatePorts() {

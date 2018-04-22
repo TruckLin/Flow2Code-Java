@@ -25,6 +25,8 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	
 	private PortFD trueOutport = new PortFD(new Point(this.getWidth() - 1, Math.round(this.getHeight()/2)), "right");
 	private PortFD falseOutport = new PortFD(new Point( 0 , Math.round(this.getHeight()/2)), "left");
+	private Color bgColor = new Color(217, 179, 255,255);
+	
 	public BlockStartIF(JSONObject model){
 		super(model);
 		
@@ -60,12 +62,13 @@ public class BlockStartIF extends BlockFD implements WithInport{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.setColor(new Color(0,0,0));
+		g2.setColor(bgColor);
 		
 		int[] xPoints = { 0, this.getWidth()/2, this.getWidth(), this.getWidth()/2};
 		int[] yPoints = {this.getHeight()/2, 0, this.getHeight()/2, this.getHeight()};
 		
-		g2.drawPolygon(xPoints, yPoints, 4);
+		//g2.drawPolygon(xPoints, yPoints, 4);
+		g2.fillPolygon(xPoints, yPoints, 4);
 	}
 	
 	@Override
@@ -79,8 +82,8 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		int newWidth = minWidth;
 		int newHeight = minHeight;
 		
-		
-		Dimension labelDimension = this.blockLabel.getPreferredSize();
+		//this.blockLabel.setMaximumSize(new Dimension(150,50));
+		Dimension labelDimension = this.blockLabel.getMaximumSize();//this.blockLabel.getPreferredSize();
 		
 		// We need to also deal with the case when text label got shorter. BlockSize needs to shrink.
 		int x = (int)this.getLocation().getX();
@@ -100,8 +103,10 @@ public class BlockStartIF extends BlockFD implements WithInport{
 		/** Mark it always true as supervisor requested.**/
 		sizeShouldChange = true;
 		int offset = (int)(minHeight - labelDimension.getHeight());
-		newHeight = (int) (labelDimension.getHeight() + offset);
-		newWidth = (int) (((labelDimension.getWidth()*labelDimension.getHeight())/offset) + labelDimension.getWidth());
+		newHeight = (int) labelDimension.getHeight();
+		newWidth = (int) labelDimension.getWidth();
+		//newHeight = (int) (labelDimension.getHeight() + offset);
+		//newWidth = (int) (((labelDimension.getWidth()*labelDimension.getHeight())/offset) + labelDimension.getWidth());
 		
 		if(sizeShouldChange) {
 			this.setBounds(x,y,

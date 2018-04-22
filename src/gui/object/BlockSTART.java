@@ -13,21 +13,24 @@ import gui.manager.UndoManager;
 
 public class BlockSTART extends BlockFD implements WithOutport{
 	private PortFD outport = new PortFD(new Point( Math.round(this.getWidth()/2), (int)this.getHeight()), "bottom");
-	
+	private Color bgColor = new Color(166,166,166,255);
+	private Color fontColor = new Color(255,255,255,255);
 	/** Constructors **/
 	public BlockSTART(JSONObject model){
 		super(model);
 		
-		this.setBounds(0, 0, 100, 25);
+		//this.setBounds(0, 0, 25, 25);
 		
-		this.blockLabel.setText("Start");
+		this.blockLabel.setText(" ");
 		this.adjustBlockSizeByLabel();
 		this.adjustLabelSize();
 		this.adjustLabelLocation();
-		this.add(blockLabel);
-		
+		blockLabel.setOpaque(false);
+		blockLabel.setForeground(fontColor);
+		this.setBackground(null);
+		//this.add(blockLabel);
 		// Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		//Testing
 /*		Font myFont = blockLabel.getFont();
@@ -37,6 +40,53 @@ public class BlockSTART extends BlockFD implements WithOutport{
 		System.out.println("Size : " + myFont.getSize());
 		//blockLabel.setFont(new Font(myFont.getFontName(), Font.PLAIN, myFont.getSize())); 
 		System.out.println("Label preferred size : " + blockLabel.getPreferredSize());*/
+	}
+	@Override
+	public void adjustBlockSizeByLabel() {
+		super.adjustBlockSizeByLabel();
+		int minWidth = (int)Math.round(100*this.currentZoomRatio);
+		int minHeight = (int)Math.round(25*this.currentZoomRatio);
+		
+		boolean sizeShouldChange = false;
+		
+		int newWidth = minWidth;
+		int newHeight = minHeight;
+		
+
+		this.blockLabel.setMaximumSize(new Dimension(20,30));
+		Dimension labelDimension = this.blockLabel.getMaximumSize();
+		
+		// We need to also deal with the case when text label got shorter. BlockSize needs to shrink.
+		int x = (int)this.getLocation().getX();
+		int y = (int)this.getLocation().getY();
+		this.setBounds(x,y, minWidth , minHeight);
+		
+		if(labelDimension.getWidth() > minWidth) {
+			newWidth = (int)labelDimension.getWidth();
+			sizeShouldChange = true;
+		}
+		if(labelDimension.getHeight() > minHeight){
+			newHeight = (int)labelDimension.getHeight();
+			sizeShouldChange = true;
+		}
+		
+		/** Mark it always true as supervisor requested.**/
+		sizeShouldChange = true;
+		newWidth = (int) labelDimension.getWidth();
+		newHeight = (int) labelDimension.getHeight();
+		
+		if(sizeShouldChange) {
+			this.setBounds(x,y,
+					newWidth + (int)Math.round(10*this.currentZoomRatio),
+					newHeight + (int)Math.round(0*this.currentZoomRatio));
+		}
+	}
+	@Override
+	public void paintComponent(Graphics g){
+		//super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+		g2.setColor(new Color(0,0,0));
+	    g2.fillOval(0, 0, this.getWidth(), this.getHeight());
 	}
 	
 	/** Getters and Setters **/

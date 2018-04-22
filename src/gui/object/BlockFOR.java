@@ -2,6 +2,8 @@ package gui.object;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeListener;
@@ -20,10 +22,11 @@ import gui.manager.UndoManager;
 public class BlockFOR extends BlockLOOPFD{
 	
 	private ForEditDialog editDialog;
-	
+	private Color bgColor = new Color(153,194,255,80);
+	private Color labelColor = new Color(153,194,255,255);
 	public BlockFOR(JSONObject model){
 		super(model);
-		this.CompositeBlockBackgroundColor = new Color(0,0,255,150);
+		//this.CompositeBlockBackgroundColor = new Color(0,0,255,150);
 	}
 	
 	/** Getters and Setters **/	
@@ -52,7 +55,14 @@ public class BlockFOR extends BlockLOOPFD{
 		return this.getModel().getString("StepBy");
 	}
 	
-	
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D)g;
+//		g2.setColor(bgColor);
+//		g2.drawRoundRect(0, 0, this.getWidth(),this.getHeight(),20,20);
+//		g2.fillRoundRect(0, 0, this.getWidth(),this.getHeight(),20,20);
+	}
 	/** EventHandling functions **/
 	@Override
 	public void updateBlockContent() {
@@ -74,7 +84,8 @@ public class BlockFOR extends BlockLOOPFD{
 									+ postprocess + " )";
 
 		this.blockStartLOOP.getBlockLabel().setText(displayString);
-		
+		this.blockStartLOOP.getBlockLabel().setOpaque(true);
+		this.blockStartLOOP.getBlockLabel().setBackground(labelColor);
 		this.blockStartLOOP.adjustLabelSize();
 		this.blockStartLOOP.adjustBlockSizeByLabel();
 		this.blockStartLOOP.adjustLabelLocation();

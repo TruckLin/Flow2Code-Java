@@ -16,8 +16,8 @@ public class LineFD{
 	private PortFD endPort;// These two coordinate are with respect to container.
 	
 	// Various variables that control the appearance of the line. 
-	private Color color = Color.RED;
-	private Color borderColor = new Color(153,217,234);
+	private Color color = new Color(163,163,194,255);
+	private Color borderColor = new Color(140,140,140,255);
 	private boolean hasBorder = false;
 	private double triggerRadius = 5;
 	

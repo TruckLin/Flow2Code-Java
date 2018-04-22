@@ -1,8 +1,11 @@
 package gui.object;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 import javax.swing.BorderFactory;
@@ -16,7 +19,6 @@ import gui.mouselistener.MouseEnterListener;
 public class BlockStartLOOP extends OrdinaryBlockFD{
 	
 	private PortFD loopOutport = new PortFD(new Point( Math.round(this.getWidth()/4), this.getHeight() ), "bottom");
-	
 	public BlockStartLOOP(JSONObject model) {
 		super(model);
 		
@@ -40,13 +42,14 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		this.adjustLabelSize();
 		this.adjustBlockSizeByLabel();
 		this.adjustLabelLocation();
+		//blockLabel.setOpaque(true);
 		this.add(blockLabel);
 		
 		// Temporary
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		//this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
-	
+
 	/** Getters and Setters **/
 
 	public PortFD getLoopOutport() {
@@ -94,5 +97,5 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		// TODO Auto-generated method stub
 		// do nothing
 	}
-
+	
 }
