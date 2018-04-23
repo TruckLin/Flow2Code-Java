@@ -78,11 +78,15 @@ public class BlockFOR extends BlockLOOPFD{
 		}
 		postprocess = postprocess + this.getStepBy();
 		
-		
-		String displayString = "for( " +  initialisation + "; " 
+		String displayString = "";
+		String forStatement = "for( " +  initialisation + "; " 
 									+ condition + "; "
 									+ postprocess + " )";
-
+		if(forStatement.length() > 24) {
+			displayString = "for( ... )";
+		}else{
+			displayString = "for(   )";
+		}
 		this.blockStartLOOP.getBlockLabel().setText(displayString);
 		this.blockStartLOOP.getBlockLabel().setOpaque(true);
 		this.blockStartLOOP.getBlockLabel().setBackground(labelColor);

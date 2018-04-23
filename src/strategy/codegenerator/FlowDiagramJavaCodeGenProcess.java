@@ -3,6 +3,7 @@ package strategy.codegenerator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import gui.codeView.TextAreaLeaf;
 import gui.codeView.TextBranch;
 import gui.codeView.TextLeaf;
 
@@ -51,12 +52,17 @@ public class FlowDiagramJavaCodeGenProcess implements CodeGenerationProcess{
 				}
 			}
 		}
-		
-		
-		// Check whether Scanner is used
-		if(code.contains("import java.util.Scanner;")) {
-			code.addTree(new TextLeaf(indent + "    " + "    " +"sc.close();\n"));
+		if(code.contains("sc.next")) {
+			if(code.contains("import java.util.Scanner;")) {
+				code.addTree(new TextLeaf(indent + "    " + "    " +"sc.close();\n"));
+			}
+		}else if (code.contains("import java.util.Scanner;")){
+			code.addTree(new TextLeaf(indent+"    " + "    " + "// Process your own input object.\n" + indent + "    " + "    " ));
+			code.addTree(new TextAreaLeaf());
+			code.addTree(new TextLeaf("\n"));
 		}
+		// Check whether Scanner is used
+		
 		
 		code.addTree(new TextLeaf(indent + "    " + "}\n" + indent +"}")); // this is always the final leaf.
 		

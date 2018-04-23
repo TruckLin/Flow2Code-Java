@@ -80,6 +80,7 @@ public class BlockEND extends BlockFD implements WithInport{
 		//g2.drawRoundRect(0, 0, this.getWidth(),this.getHeight(),20,20);
 		g2.setColor(new Color(0,0,0,255));
 		g2.fillOval(0, 0, this.getWidth(), this.getHeight());
+		//g2.setStroke(new BasicStroke(1.0f));
 		g2.setColor(new Color(255,255,255,255));
 		g2.drawOval(5, 5, this.getWidth()-10,this.getHeight()-10);
 	}

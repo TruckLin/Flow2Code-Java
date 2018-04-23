@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import gui.codeView.TextAreaLeaf;
 import gui.codeView.TextBranch;
 import gui.codeView.TextLeaf;
 
@@ -78,15 +79,34 @@ public class InputJavaCodeGenProcess implements CodeGenerationProcess{
 			if ( !code.contains("import java.util.Scanner;")) {
 				code.insertTree(0, new TextLeaf("import java.util.Scanner; \n"));
 				int indexOfClass = code.getIndexOfLeafContainString("args)");
-				
-				if(indexOfClass != -1) {
-					code.insertTree(indexOfClass + 1, new TextLeaf("    " + "    " + "Scanner sc = new Scanner(System.in);\n" ));
+				if(!model.getBoolean("CodeGen")) {
+					if(indexOfClass != -1) {
+						code.insertTree(indexOfClass + 1, new TextLeaf("    " + "    " + "// Build your own input object.\n"));
+						code.insertTree(indexOfClass + 2, new TextLeaf("    " + "    "));
+						code.insertTree(indexOfClass + 3, new TextAreaLeaf());
+						code.insertTree(indexOfClass + 4, new TextLeaf("\n"));
+					}
+					code.addTree(new TextLeaf(indent + "// Write your own input statement.\n" + indent));
+					code.addTree(new TextAreaLeaf());
+					code.addTree(new TextLeaf("\n"));
+				}else {
+					if(indexOfClass != -1) {
+						code.insertTree(indexOfClass + 1, new TextLeaf("    " + "    " + "Scanner sc = new Scanner(System.in);\n" ));
+					}
+					code.addTree(new TextLeaf(indent + model.getString("TargetVariable") + readInStatement));
 				}
 				//Testing
 				//sSystem.out.println("indexOfClass = " + indexOfClass);
 				
+			}else {
+				if(!model.getBoolean("CodeGen")) {
+					code.addTree(new TextLeaf(indent + "// Write your own input statement.\n" + indent));
+					code.addTree(new TextAreaLeaf());
+					code.addTree(new TextLeaf("\n"));
+				}else {
+					code.addTree(new TextLeaf(indent + model.getString("TargetVariable") + readInStatement));
+				}
 			}
-			code.addTree(new TextLeaf(indent + model.getString("TargetVariable") + readInStatement));
 			return code;
 		}
 		

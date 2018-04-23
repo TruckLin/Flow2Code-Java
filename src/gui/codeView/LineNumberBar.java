@@ -35,7 +35,7 @@ public class LineNumberBar extends JComponent{
 	
 	public LineNumberBar(CodeEditPanel cep) {
 		this.cep = cep;
-		this.lineBarWidth = cep.getMyFontMetrics().stringWidth(Integer.toString(cep.getTotalNumberOfLine()));
+		this.lineBarWidth = cep.getMyFontMetrics().stringWidth(Integer.toString(cep.getTotalNumberOfLine()))+8;
 		cep.addPropertyChangeListener(this.lineNumberListener);
 		this.setPreferredSize(new Dimension(this.lineBarWidth, cep.getHeight()));
 		

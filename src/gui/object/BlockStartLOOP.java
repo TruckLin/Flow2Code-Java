@@ -21,7 +21,6 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 	private PortFD loopOutport = new PortFD(new Point( Math.round(this.getWidth()/4), this.getHeight() ), "bottom");
 	public BlockStartLOOP(JSONObject model) {
 		super(model);
-		
 		// set the specific outport for BlockStartLOOP
 		this.outport.setPortLocation(new Point( this.getWidth() - 1, (int)this.getHeight()/2 ));
 		this.outport.setSide("right");
@@ -39,6 +38,7 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 		this.addMouseListener(mouseEnter);
 
 		this.blockLabel.setText("StartLoop");
+		this.blockLabel.setMaximumSize(new Dimension(150,50));
 		this.adjustLabelSize();
 		this.adjustBlockSizeByLabel();
 		this.adjustLabelLocation();
@@ -77,6 +77,7 @@ public class BlockStartLOOP extends OrdinaryBlockFD{
 			this.loopOutport.setPortLocation(new Point( Math.round(this.getWidth()/4), this.getHeight() ));
 		}
 	}
+	
 	@Override
 	protected boolean shouldAddBlockDrag() {
 		return false;

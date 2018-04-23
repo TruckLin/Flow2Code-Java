@@ -50,10 +50,16 @@ public class JavaCodeGenerator extends CodeGenerator {
 												//code += "\n";
 												return code;
 											});
-		register("Output", (model, code, indent) -> {	
-												code.addTree(new TextLeaf(indent + 
-														"System.out.println( " + model.getString("Expression") 
-															+ " );" + "\n"));
+		register("Output", (model, code, indent) -> {
+												if(!model.getBoolean("CodeGen")) {
+													code.addTree(new TextLeaf(indent + "// Write your own Output statement.\n" + indent));
+													code.addTree(new TextAreaLeaf());
+													code.addTree(new TextLeaf("\n"));
+												}else {
+													code.addTree(new TextLeaf(indent + 
+															"System.out.println( " + model.getString("Expression") 
+																+ " );" + "\n"));
+												}
 												return code;
 											});
 		register("Input", new InputJavaCodeGenProcess(this));

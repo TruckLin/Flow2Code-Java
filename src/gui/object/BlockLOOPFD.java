@@ -3,6 +3,7 @@ package gui.object;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -115,7 +116,11 @@ public abstract class BlockLOOPFD extends OrdinaryCompositeBlockFD{
 		}
 
 	}
-	
+	@Override
+	public void adjustLabelSize() {
+		Dimension labelDimension = this.blockLabel.getMaximumSize();
+		this.blockLabel.setSize(labelDimension);
+	}
 	/** Paint Component function**/
 	// This function is responsible for painting the lines.
 	@Override

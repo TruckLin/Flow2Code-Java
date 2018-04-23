@@ -50,13 +50,14 @@ public class BlockWHILE extends BlockLOOPFD{
 		this.blockStartLOOP.getBlockLabel().setText(displayString);
 		this.blockStartLOOP.getBlockLabel().setOpaque(true);
 		this.blockStartLOOP.getBlockLabel().setBackground(labelColor);
+		//this.blockStartLOOP.getBlockLabel().setMaximumSize(new Dimension(150,50));
 		this.blockStartLOOP.adjustLabelSize();
 		this.blockStartLOOP.adjustBlockSizeByLabel();
 		this.blockStartLOOP.adjustLabelLocation();
 		
 		//Testing
-		//System.out.println("blockStartLOOP's label's preferrable size = : " + 
-		//						this.blockStartLOOP.getDisplayLabel().getPreferredSize());
+		System.out.println("blockStartLOOP's label's preferrable size = : " + 
+								this.blockStartLOOP.getPreferredSize());
 		
 		// blockStartLOOP may need to change size and location
 		// this.blockStartLOOP.setAppropriateBounds();
